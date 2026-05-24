@@ -2,485 +2,608 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>🍉 Fruit Slice × Story Protocol</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
-    min-height: 100vh;
-    font-family: Arial, sans-serif;
-    color: white;
-    overflow: hidden;
-    user-select: none;
-  }
-  #gameCanvas { display: block; margin: 0 auto; touch-action: none; cursor: crosshair; }
-  #ui {
-    position: fixed; top: 10px; left: 0; right: 0;
-    display: flex; justify-content: space-between;
-    padding: 0 12px; z-index: 10;
-  }
-  .box {
-    background: rgba(255,255,255,0.12);
-    backdrop-filter: blur(10px);
-    border-radius: 14px; padding: 6px 14px; text-align: center;
-    border: 1px solid rgba(255,255,255,0.15);
-  }
-  .box span { font-size: 10px; opacity: 0.7; display: block; letter-spacing: 1px; }
-  .box strong { font-size: 22px; font-weight: 900; }
-  .lives-row { display: flex; gap: 2px; font-size: 16px; }
-  #connectBtn {
-    position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
-    background: linear-gradient(135deg, #f093fb, #f5576c);
-    border: none; color: white; padding: 12px 28px;
-    border-radius: 30px; font-size: 14px; font-weight: bold;
-    cursor: pointer; z-index: 10;
-    box-shadow: 0 4px 20px rgba(240,147,251,0.5);
-    white-space: nowrap;
-  }
-  #toast {
-    position: fixed; bottom: 75px; left: 50%; transform: translateX(-50%);
-    background: rgba(0,255,150,0.15); border: 1px solid rgba(0,255,150,0.4);
-    padding: 10px 18px; border-radius: 20px; font-size: 12px;
-    text-align: center; z-index: 10; max-width: 320px;
-    display: none; backdrop-filter: blur(10px);
-  }
-  #overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.85);
-    display: none; flex-direction: column;
-    align-items: center; justify-content: center;
-    z-index: 20; gap: 14px;
-  }
-  #overlay h2 { font-size: 38px; }
-  #overlay .fscore { font-size: 26px; color: #f093fb; font-weight: bold; }
-  #overlay .new-record { color: #ffd700; font-size: 14px; }
-  .btn {
-    padding: 13px 32px; border-radius: 30px; border: none;
-    font-size: 16px; cursor: pointer; font-weight: bold; min-width: 200px;
-  }
-  #registerBtn { background: linear-gradient(135deg, #f093fb, #f5576c); color: white; }
-  #restartBtn { background: #4ecdc4; color: #1a1a2e; }
-  #startScreen {
-    position: fixed; inset: 0;
-    background: linear-gradient(135deg, #1a1a2e, #0f3460);
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    z-index: 30; gap: 16px;
-  }
-  #startScreen h1 { font-size: 42px; }
-  #startScreen p { opacity: 0.7; font-size: 14px; text-align: center; padding: 0 30px; }
-  #startBtn {
-    padding: 15px 40px; border-radius: 30px; border: none;
-    background: linear-gradient(135deg, #f093fb, #f5576c);
-    color: white; font-size: 18px; font-weight: bold; cursor: pointer;
-    box-shadow: 0 4px 20px rgba(240,147,251,0.5);
-  }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{
+  background:#0f0c29;
+  min-height:100vh;min-height:100dvh;
+  font-family:'Segoe UI',Arial,sans-serif;
+  color:white;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;
+}
+#wrap{position:relative;width:100%;max-width:480px;height:100vh;height:100dvh;}
+canvas{display:block;width:100%;height:100%;}
+#ui{
+  position:absolute;top:8px;left:0;right:0;
+  display:flex;justify-content:space-between;
+  padding:0 10px;z-index:10;pointer-events:none;
+}
+.box{
+  background:rgba(255,255,255,0.13);
+  backdrop-filter:blur(12px);
+  border-radius:14px;padding:5px 14px;text-align:center;
+  border:1px solid rgba(255,255,255,0.2);min-width:70px;
+}
+.box span{font-size:9px;opacity:0.7;display:block;letter-spacing:1px;text-transform:uppercase;}
+.box strong{font-size:22px;font-weight:900;display:block;}
+.lives-row{display:flex;gap:3px;justify-content:center;font-size:15px;min-height:24px;align-items:center;}
+/* Bottom bar */
+#bottomBar{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:10px 14px 18px;z-index:10;
+  display:flex;flex-direction:column;gap:8px;align-items:center;
+}
+.btn-main{
+  width:100%;max-width:340px;
+  padding:13px 20px;border-radius:30px;border:none;
+  font-size:15px;font-weight:700;cursor:pointer;
+  transition:all 0.2s;
+}
+#connectBtn{background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;box-shadow:0 4px 18px rgba(240,147,251,0.45);}
+#mmBtn{background:linear-gradient(135deg,#f6851b,#e2761b);color:#fff;display:none;box-shadow:0 4px 18px rgba(246,133,27,0.4);}
+#toast{
+  width:100%;max-width:340px;
+  background:rgba(0,255,150,0.13);border:1px solid rgba(0,255,150,0.35);
+  padding:9px 14px;border-radius:20px;font-size:12px;text-align:center;
+  display:none;backdrop-filter:blur(10px);line-height:1.4;
+}
+/* Overlay */
+#overlay{
+  position:absolute;inset:0;background:rgba(0,0,0,0.88);
+  display:none;flex-direction:column;
+  align-items:center;justify-content:center;
+  z-index:20;gap:14px;padding:20px;
+}
+#overlay h2{font-size:40px;}
+#overlay .fscore{font-size:28px;color:#f093fb;font-weight:900;}
+#overlay .newrec{color:#ffd700;font-size:13px;min-height:18px;}
+.obtn{width:100%;max-width:280px;padding:14px;border-radius:30px;border:none;font-size:15px;font-weight:700;cursor:pointer;}
+#registerBtn{background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;}
+#restartBtn{background:#4ecdc4;color:#1a1a2e;}
+/* Start screen */
+#startScreen{
+  position:absolute;inset:0;
+  background:linear-gradient(160deg,#1a1a2e,#16213e,#0f3460);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  z-index:30;gap:14px;padding:30px;
+}
+#startScreen h1{font-size:44px;text-align:center;line-height:1.2;}
+#startScreen p{opacity:0.75;font-size:14px;text-align:center;line-height:1.6;}
+#startBtn{
+  padding:16px 48px;border-radius:30px;border:none;
+  background:linear-gradient(135deg,#f093fb,#f5576c);
+  color:white;font-size:19px;font-weight:700;cursor:pointer;
+  box-shadow:0 6px 24px rgba(240,147,251,0.5);
+}
+.sub{font-size:11px;opacity:0.45;}
 </style>
 </head>
 <body>
+<div id="wrap">
+  <canvas id="gameCanvas"></canvas>
 
-<canvas id="gameCanvas"></canvas>
-
-<div id="ui">
-  <div class="box">
-    <span>SCORE</span>
-    <strong id="scoreDisplay">0</strong>
+  <div id="ui">
+    <div class="box"><span>Score</span><strong id="scoreD">0</strong></div>
+    <div class="box"><span>Lives</span><div class="lives-row" id="livesD">❤️❤️❤️</div></div>
+    <div class="box"><span>Best</span><strong id="bestD">0</strong></div>
   </div>
-  <div class="box">
-    <span>LIVES</span>
-    <div class="lives-row" id="livesDisplay">❤️❤️❤️</div>
+
+  <div id="bottomBar">
+    <div id="toast"></div>
+    <button class="btn-main" id="mmBtn" onclick="openInMetaMask()">🦊 Open in MetaMask Browser</button>
+    <button class="btn-main" id="connectBtn" onclick="connectWallet()">🔗 Connect Wallet</button>
   </div>
-  <div class="box">
-    <span>BEST</span>
-    <strong id="bestDisplay">0</strong>
+
+  <div id="overlay">
+    <h2>🍉 Game Over!</h2>
+    <div class="fscore" id="finalScore"></div>
+    <div class="newrec" id="newRec"></div>
+    <button class="obtn" id="registerBtn" onclick="registerOnStory()">🏛 Register on Story Protocol</button>
+    <button class="obtn" id="restartBtn" onclick="restartGame()">🔄 Play Again</button>
   </div>
-</div>
 
-<button id="connectBtn" onclick="connectWallet()">🔗 Connect Wallet</button>
-<div id="toast"></div>
-
-<div id="overlay">
-  <h2>🍉 Game Over!</h2>
-  <div class="fscore" id="finalScore"></div>
-  <div class="new-record" id="newRecord"></div>
-  <button class="btn" id="registerBtn" onclick="registerOnStory()">🏛️ Register on Story Protocol</button>
-  <button class="btn" id="restartBtn" onclick="restartGame()">🔄 Play Again</button>
-</div>
-
-<div id="startScreen">
-  <h1>🍉 Fruit Slice</h1>
-  <p>Fruits ko slice karo!<br>💣 Bombs se bachna!<br>Story Protocol pe score register karo!</p>
-  <button id="startBtn" onclick="startGame()">▶ Play Now</button>
-  <p style="font-size:11px; margin-top:5px; opacity:0.5;">Powered by Story Protocol</p>
+  <div id="startScreen">
+    <h1>🍉<br>Fruit Slice</h1>
+    <p>Fruits slice karo!<br>💣 Bombs se bacho!<br>🏛 Story Protocol pe register karo!</p>
+    <button id="startBtn" onclick="startGame()">▶ Play Now</button>
+    <p class="sub">Powered by Story Protocol</p>
+  </div>
 </div>
 
 <script>
-// ═══════════════════════════
-//  CANVAS
-// ═══════════════════════════
+// ══════════════════════════════
+//  CANVAS SETUP — RESPONSIVE
+// ══════════════════════════════
 const canvas = document.getElementById('gameCanvas');
 const ctx    = canvas.getContext('2d');
-canvas.width  = Math.min(window.innerWidth, 480);
-canvas.height = window.innerHeight;
+const wrap   = document.getElementById('wrap');
 
-// ═══════════════════════════
+function resizeCanvas(){
+  canvas.width  = wrap.clientWidth;
+  canvas.height = wrap.clientHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+// ══════════════════════════════
+//  FRUIT DEFINITIONS (drawn, no emoji)
+// ══════════════════════════════
+const FDEFS = [
+  {label:'Apple',  body:'#e63946', shine:'#ff6b6b', leaf:'#2dc653'},
+  {label:'Orange', body:'#f4a261', shine:'#ffd97d', leaf:'#2dc653'},
+  {label:'Lemon',  body:'#e9c46a', shine:'#fff3b0', leaf:'#2dc653'},
+  {label:'Grape',  body:'#9b5de5', shine:'#c77dff', leaf:'#2dc653'},
+  {label:'Melon',  body:'#52b788', shine:'#b7e4c7', leaf:'#2dc653'},
+  {label:'Berry',  body:'#e76f51', shine:'#ff9f7f', leaf:'#2dc653'},
+  {label:'Peach',  body:'#ffb4a2', shine:'#ffd7cc', leaf:'#2dc653'},
+  {label:'Kiwi',   body:'#588157', shine:'#a7c957', leaf:'#2dc653'},
+];
+
+// ══════════════════════════════
 //  STATE
-// ═══════════════════════════
-let score = 0, lives = 3, gameRunning = false;
-let fruits = [], particles = [], slashTrail = [];
-let spawnTimer = 0, spawnInterval = 90, frameId;
-let bestScore = parseInt(localStorage.getItem('fruitBest') || '0');
-document.getElementById('bestDisplay').textContent = bestScore;
+// ══════════════════════════════
+let score=0, lives=3, gameRunning=false;
+let fruits=[], particles=[], slashTrail=[], floats=[];
+let spawnTimer=0, spawnInterval=80, frameId=null;
+let bestScore = parseInt(localStorage.getItem('fruitBest')||'0');
+document.getElementById('bestD').textContent = bestScore;
 
-const FRUITS = ['🍎','🍊','🍋','🍇','🍉','🍓','🍑','🥝','🍍','🥭','🍌'];
-
-// ═══════════════════════════
-//  FRUIT
-// ═══════════════════════════
+// ══════════════════════════════
+//  FRUIT CLASS (canvas drawn)
+// ══════════════════════════════
 class Fruit {
-  constructor() {
-    this.x      = Math.random() * (canvas.width - 80) + 40;
-    this.y      = canvas.height + 50;
-    this.vx     = (Math.random() - 0.5) * 5;
-    this.vy     = -(Math.random() * 13 + 10);
-    this.g      = 0.28;
-    this.size   = 44;
+  constructor(){
+    this.x      = Math.random()*(canvas.width-100)+50;
+    this.y      = canvas.height+60;
+    this.vx     = (Math.random()-0.5)*5;
+    this.vy     = -(Math.random()*12+11);
+    this.g      = 0.3;
+    this.r      = 28 + Math.random()*8;
     this.rot    = 0;
-    this.rotSpd = (Math.random() - 0.5) * 0.18;
+    this.rotSpd = (Math.random()-0.5)*0.15;
     this.sliced = false;
     this.alpha  = 1;
     this.missed = false;
-    this.isBomb = Math.random() < 0.1;
-    this.emoji  = this.isBomb ? '💣' : FRUITS[Math.floor(Math.random() * FRUITS.length)];
+    this.isBomb = Math.random()<0.12;
+    this.def    = FDEFS[Math.floor(Math.random()*FDEFS.length)];
+    // slice halves
+    this.sliceOff = 0;
   }
-  update() {
+
+  update(){
     this.vy += this.g;
     this.x  += this.vx;
     this.y  += this.vy;
-    this.rot += this.rotSpd;
-    if (this.sliced) this.alpha -= 0.06;
+    this.rot+= this.rotSpd;
+    if(this.sliced){ this.alpha -= 0.055; this.sliceOff += 3; }
   }
-  draw() {
+
+  draw(){
+    if(this.alpha<=0) return;
     ctx.save();
-    ctx.globalAlpha = Math.max(0, this.alpha);
+    ctx.globalAlpha = Math.max(0,this.alpha);
     ctx.translate(this.x, this.y);
     ctx.rotate(this.rot);
-    ctx.font = `${this.size}px serif`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(this.emoji, 0, 0);
+
+    if(this.isBomb){
+      this._drawBomb();
+    } else if(this.sliced){
+      this._drawSliced();
+    } else {
+      this._drawWhole();
+    }
     ctx.restore();
   }
-  dead() { return this.y > canvas.height + 70 || this.alpha <= 0; }
-  hit(x, y) {
+
+  _drawWhole(){
+    const d = this.def, r = this.r;
+    // Shadow
+    ctx.shadowColor='rgba(0,0,0,0.4)';
+    ctx.shadowBlur=8;
+    // Body
+    ctx.beginPath();
+    ctx.arc(0,0,r,0,Math.PI*2);
+    const g = ctx.createRadialGradient(-r*0.3,-r*0.3,r*0.1, 0,0,r);
+    g.addColorStop(0,d.shine);
+    g.addColorStop(1,d.body);
+    ctx.fillStyle=g;
+    ctx.fill();
+    ctx.shadowBlur=0;
+    // Leaf
+    ctx.beginPath();
+    ctx.ellipse(0,-r-4, 5,9, -0.3, 0,Math.PI*2);
+    ctx.fillStyle=d.leaf;
+    ctx.fill();
+    // Shine
+    ctx.beginPath();
+    ctx.arc(-r*0.28,-r*0.28,r*0.2,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,255,255,0.4)';
+    ctx.fill();
+  }
+
+  _drawSliced(){
+    const d = this.def, r = this.r;
+    const off = this.sliceOff;
+    // Left half
+    ctx.save();
+    ctx.translate(-off*0.7, -off*0.3);
+    ctx.beginPath();
+    ctx.arc(0,0,r,Math.PI*0.5,Math.PI*1.5);
+    const g1 = ctx.createRadialGradient(0,0,0,0,0,r);
+    g1.addColorStop(0,'#fff8');
+    g1.addColorStop(0.3,d.shine);
+    g1.addColorStop(1,d.body);
+    ctx.fillStyle=g1;
+    ctx.fill();
+    ctx.restore();
+    // Right half
+    ctx.save();
+    ctx.translate(off*0.7, off*0.3);
+    ctx.beginPath();
+    ctx.arc(0,0,r,-Math.PI*0.5,Math.PI*0.5);
+    ctx.fillStyle=d.body;
+    ctx.fill();
+    ctx.restore();
+  }
+
+  _drawBomb(){
+    const r = this.r;
+    // Body
+    ctx.beginPath();
+    ctx.arc(0,0,r,0,Math.PI*2);
+    const g=ctx.createRadialGradient(-r*0.3,-r*0.3,2,0,0,r);
+    g.addColorStop(0,'#555');
+    g.addColorStop(1,'#111');
+    ctx.fillStyle=g;
+    ctx.shadowColor='rgba(255,50,50,0.6)';
+    ctx.shadowBlur=12;
+    ctx.fill();
+    ctx.shadowBlur=0;
+    // Fuse
+    ctx.beginPath();
+    ctx.moveTo(r*0.3,-r);
+    ctx.bezierCurveTo(r*0.8,-r*1.4, r*0.5,-r*1.8, r*0.1,-r*1.5);
+    ctx.strokeStyle='#aaa';
+    ctx.lineWidth=2.5;
+    ctx.stroke();
+    // Spark
+    ctx.beginPath();
+    ctx.arc(r*0.08,-r*1.52,4,0,Math.PI*2);
+    ctx.fillStyle='#ffd93d';
+    ctx.fill();
+    // Shine
+    ctx.beginPath();
+    ctx.arc(-r*0.3,-r*0.3,r*0.15,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,255,255,0.25)';
+    ctx.fill();
+  }
+
+  dead(){ return this.y > canvas.height+90 || this.alpha<=0; }
+  hit(x,y){
     return !this.sliced &&
-           Math.abs(this.x - x) < this.size / 1.8 &&
-           Math.abs(this.y - y) < this.size / 1.8;
+      Math.abs(this.x-x)<this.r*1.4 &&
+      Math.abs(this.y-y)<this.r*1.4;
   }
 }
 
-// ═══════════════════════════
+// ══════════════════════════════
 //  PARTICLES
-// ═══════════════════════════
-class Particle {
-  constructor(x, y, color) {
-    this.x = x; this.y = y;
-    this.vx = (Math.random()-0.5)*9;
-    this.vy = (Math.random()-0.5)*9;
-    this.life = 1;
-    this.color = color;
-    this.r = Math.random()*7+2;
+// ══════════════════════════════
+class Particle{
+  constructor(x,y,color){
+    this.x=x; this.y=y;
+    this.vx=(Math.random()-0.5)*10;
+    this.vy=(Math.random()-0.5)*10;
+    this.life=1;
+    this.color=color;
+    this.r=Math.random()*6+2;
   }
-  update() {
-    this.x += this.vx; this.y += this.vy;
-    this.vy += 0.25; this.life -= 0.04;
-  }
-  draw() {
+  update(){ this.x+=this.vx; this.y+=this.vy; this.vy+=0.3; this.life-=0.04; }
+  draw(){
     ctx.save();
-    ctx.globalAlpha = Math.max(0, this.life);
-    ctx.fillStyle = this.color;
+    ctx.globalAlpha=Math.max(0,this.life);
+    ctx.fillStyle=this.color;
     ctx.beginPath();
-    ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+    ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
     ctx.fill();
     ctx.restore();
   }
 }
 
-const COLORS = ['#ff6b6b','#ffd93d','#6bcb77','#4d96ff','#f093fb','#ff9a3c'];
-
-// ═══════════════════════════
-//  TRAIL
-// ═══════════════════════════
-function addTrail(x, y) {
-  slashTrail.push({x, y, life:1});
-  if (slashTrail.length > 18) slashTrail.shift();
-}
-function drawTrail() {
-  if (slashTrail.length < 2) return;
-  for (let i = 1; i < slashTrail.length; i++) {
-    const a = slashTrail[i-1], b = slashTrail[i];
+// ══════════════════════════════
+//  SLASH TRAIL
+// ══════════════════════════════
+function addTrail(x,y){ slashTrail.push({x,y,life:1}); if(slashTrail.length>20) slashTrail.shift(); }
+function drawTrail(){
+  if(slashTrail.length<2) return;
+  for(let i=1;i<slashTrail.length;i++){
+    const a=slashTrail[i-1],b=slashTrail[i];
     ctx.beginPath();
-    ctx.moveTo(a.x, a.y);
-    ctx.lineTo(b.x, b.y);
-    ctx.strokeStyle = `rgba(255,255,255,${b.life * 0.9})`;
-    ctx.lineWidth = 3;
-    ctx.lineCap = 'round';
+    ctx.moveTo(a.x,a.y);
+    ctx.lineTo(b.x,b.y);
+    ctx.strokeStyle=`rgba(255,255,255,${b.life*0.85})`;
+    ctx.lineWidth=3.5;
+    ctx.lineCap='round';
     ctx.stroke();
   }
-  slashTrail.forEach(p => p.life -= 0.06);
-  slashTrail = slashTrail.filter(p => p.life > 0);
+  slashTrail.forEach(p=>p.life-=0.07);
+  slashTrail=slashTrail.filter(p=>p.life>0);
 }
 
-// ═══════════════════════════
-//  SLICE
-// ═══════════════════════════
-function checkSlice(x, y) {
-  fruits.forEach(f => {
-    if (f.hit(x, y)) {
-      f.sliced = true;
-      if (f.isBomb) {
-        lives--;
-        updateLives();
-        shake();
-        for (let i=0; i<20; i++) particles.push(new Particle(x,y,'#ff4444'));
-        if (lives <= 0) endGame();
-      } else {
-        score++;
-        document.getElementById('scoreDisplay').textContent = score;
-        for (let i=0; i<14; i++)
-          particles.push(new Particle(x, y, COLORS[Math.floor(Math.random()*COLORS.length)]));
-        // Score popup
-        floatText(x, y, '+1');
-      }
+// ══════════════════════════════
+//  FLOAT TEXT
+// ══════════════════════════════
+function floatText(x,y,txt,col='#ffd700'){
+  floats.push({x,y,txt,col,life:1,vy:-2.2});
+}
+function drawFloats(){
+  floats.forEach(f=>{
+    ctx.save();
+    ctx.globalAlpha=f.life;
+    ctx.fillStyle=f.col;
+    ctx.font='bold 24px Arial';
+    ctx.textAlign='center';
+    ctx.fillText(f.txt,f.x,f.y);
+    ctx.restore();
+    f.y+=f.vy; f.life-=0.03;
+  });
+  floats=floats.filter(f=>f.life>0);
+}
+
+// ══════════════════════════════
+//  SLICE CHECK
+// ══════════════════════════════
+const PCOLS=['#ff6b6b','#ffd93d','#6bcb77','#4d96ff','#f093fb','#ff9a3c','#fff'];
+function checkSlice(x,y){
+  fruits.forEach(f=>{
+    if(!f.hit(x,y)) return;
+    f.sliced=true;
+    if(f.isBomb){
+      lives--; updateLives(); shakeWrap();
+      for(let i=0;i<24;i++) particles.push(new Particle(x,y,'#ff4444'));
+      floatText(x,y,'💥 -LIFE','#ff4444');
+      if(lives<=0){ setTimeout(endGame,300); }
+    } else {
+      score++;
+      document.getElementById('scoreD').textContent=score;
+      for(let i=0;i<16;i++)
+        particles.push(new Particle(x,y,PCOLS[Math.floor(Math.random()*PCOLS.length)]));
+      floatText(x,y,'+1');
     }
   });
 }
 
-let floats = [];
-function floatText(x, y, txt) {
-  floats.push({x, y, txt, life:1, vy:-2});
-}
-function drawFloats() {
-  floats.forEach(f => {
-    ctx.save();
-    ctx.globalAlpha = f.life;
-    ctx.fillStyle = '#ffd700';
-    ctx.font = 'bold 22px Arial';
-    ctx.textAlign = 'center';
-    ctx.fillText(f.txt, f.x, f.y);
-    ctx.restore();
-    f.y += f.vy; f.life -= 0.03;
-  });
-  floats = floats.filter(f => f.life > 0);
+function updateLives(){
+  const h=['❤️','❤️','❤️'];
+  for(let i=lives;i<3;i++) h[i]='🖤';
+  document.getElementById('livesD').innerHTML=h.join('');
 }
 
-function shake() {
-  canvas.style.transition = 'none';
-  canvas.style.transform = 'translate(8px,0)';
-  setTimeout(()=>{ canvas.style.transform = 'translate(-8px,0)'; }, 80);
-  setTimeout(()=>{ canvas.style.transform = 'none'; }, 160);
+function shakeWrap(){
+  wrap.style.transition='none';
+  wrap.style.transform='translate(9px,0)';
+  setTimeout(()=>{wrap.style.transform='translate(-9px,0)';},70);
+  setTimeout(()=>{wrap.style.transform='none';},140);
 }
 
-// ═══════════════════════════
-//  LIVES UI
-// ═══════════════════════════
-function updateLives() {
-  const h = ['❤️','❤️','❤️'];
-  for (let i=lives; i<3; i++) h[i] = '🖤';
-  document.getElementById('livesDisplay').innerHTML = h.join('');
-}
-
-// ═══════════════════════════
+// ══════════════════════════════
 //  BACKGROUND
-// ═══════════════════════════
-function drawBg() {
-  const grd = ctx.createLinearGradient(0,0,0,canvas.height);
-  grd.addColorStop(0,'#1a1a2e');
-  grd.addColorStop(1,'#0f3460');
-  ctx.fillStyle = grd;
+// ══════════════════════════════
+function drawBg(){
+  const g=ctx.createLinearGradient(0,0,0,canvas.height);
+  g.addColorStop(0,'#0f0c29');
+  g.addColorStop(0.5,'#302b63');
+  g.addColorStop(1,'#24243e');
+  ctx.fillStyle=g;
   ctx.fillRect(0,0,canvas.width,canvas.height);
 }
 
-// ═══════════════════════════
+// ══════════════════════════════
 //  GAME LOOP
-// ═══════════════════════════
-function gameLoop() {
-  if (!gameRunning) return;
+// ══════════════════════════════
+function gameLoop(){
+  if(!gameRunning) return;
   drawBg();
 
-  // Spawn
   spawnTimer++;
-  if (spawnTimer >= spawnInterval) {
+  if(spawnTimer>=spawnInterval){
     fruits.push(new Fruit());
-    spawnTimer = 0;
-    spawnInterval = Math.max(28, 90 - Math.floor(score/30)*6);
+    spawnTimer=0;
+    spawnInterval=Math.max(30,80-Math.floor(score/25)*5);
   }
 
-  // Fruits
-  fruits.forEach(f => { f.update(); f.draw(); });
+  fruits.forEach(f=>{ f.update(); f.draw(); });
 
-  // Missed fruits
-  fruits.forEach(f => {
-    if (!f.sliced && !f.isBomb && !f.missed && f.y > canvas.height + 55) {
-      f.missed = true;
+  // Missed fruits (not bomb)
+  fruits.forEach(f=>{
+    if(!f.sliced && !f.isBomb && !f.missed && f.y>canvas.height+60){
+      f.missed=true;
       lives--;
       updateLives();
-      if (lives <= 0) { endGame(); return; }
+      if(lives<=0){ setTimeout(endGame,300); }
     }
   });
-  fruits = fruits.filter(f => !f.dead());
+  fruits=fruits.filter(f=>!f.dead());
 
-  // Particles
-  particles.forEach(p => { p.update(); p.draw(); });
-  particles = particles.filter(p => p.life > 0);
+  particles.forEach(p=>{ p.update(); p.draw(); });
+  particles=particles.filter(p=>p.life>0);
 
-  // Trail & floats
   drawTrail();
   drawFloats();
 
-  frameId = requestAnimationFrame(gameLoop);
+  frameId=requestAnimationFrame(gameLoop);
 }
 
-// ═══════════════════════════
+// ══════════════════════════════
 //  START / END / RESTART
-// ═══════════════════════════
-function startGame() {
-  document.getElementById('startScreen').style.display = 'none';
-  gameRunning = true;
+// ══════════════════════════════
+function startGame(){
+  document.getElementById('startScreen').style.display='none';
+  gameRunning=true;
   gameLoop();
 }
 
-function endGame() {
-  gameRunning = false;
+function endGame(){
+  gameRunning=false;
   cancelAnimationFrame(frameId);
-  let isNew = false;
-  if (score > bestScore) {
-    bestScore = score;
-    localStorage.setItem('fruitBest', bestScore);
-    document.getElementById('bestDisplay').textContent = bestScore;
-    isNew = true;
+  let isNew=false;
+  if(score>bestScore){
+    bestScore=score;
+    localStorage.setItem('fruitBest',bestScore);
+    document.getElementById('bestD').textContent=bestScore;
+    isNew=true;
   }
-  document.getElementById('finalScore').textContent = `Score: ${score} 🏆`;
-  document.getElementById('newRecord').textContent = isNew ? '🌟 New Best Record!' : '';
-  document.getElementById('overlay').style.display = 'flex';
-  document.getElementById('registerBtn').textContent = '🏛️ Register on Story Protocol';
-  document.getElementById('registerBtn').disabled = false;
+  document.getElementById('finalScore').textContent=`Score: ${score} 🏆`;
+  document.getElementById('newRec').textContent=isNew?'🌟 New Best Record!':'';
+  document.getElementById('registerBtn').textContent='🏛️ Register on Story Protocol';
+  document.getElementById('registerBtn').disabled=false;
+  document.getElementById('overlay').style.display='flex';
 }
 
-function restartGame() {
-  score=0; lives=3; fruits=[]; particles=[]; slashTrail=[]; floats=[];
-  spawnTimer=0; spawnInterval=90; gameRunning=true;
-  document.getElementById('scoreDisplay').textContent='0';
+function restartGame(){
+  score=0;lives=3;fruits=[];particles=[];slashTrail=[];floats=[];
+  spawnTimer=0;spawnInterval=80;gameRunning=true;
+  document.getElementById('scoreD').textContent='0';
   document.getElementById('overlay').style.display='none';
   updateLives();
   gameLoop();
 }
 
-// ═══════════════════════════
-//  TOUCH + MOUSE
-// ═══════════════════════════
-let slicing = false;
+// ══════════════════════════════
+//  TOUCH + MOUSE INPUT
+// ══════════════════════════════
+let slicing=false;
 
-canvas.addEventListener('mousedown', ()=> slicing=true);
-canvas.addEventListener('mouseup',   ()=>{ slicing=false; slashTrail=[]; });
-canvas.addEventListener('mousemove', e=>{
-  if (!slicing || !gameRunning) return;
-  const r = canvas.getBoundingClientRect();
-  const x = e.clientX-r.left, y = e.clientY-r.top;
-  addTrail(x,y); checkSlice(x,y);
+function getPos(e){
+  const r=canvas.getBoundingClientRect();
+  const scaleX=canvas.width/r.width;
+  const scaleY=canvas.height/r.height;
+  if(e.touches){
+    return{x:(e.touches[0].clientX-r.left)*scaleX, y:(e.touches[0].clientY-r.top)*scaleY};
+  }
+  return{x:(e.clientX-r.left)*scaleX, y:(e.clientY-r.top)*scaleY};
+}
+
+canvas.addEventListener('mousedown',  ()=>slicing=true);
+canvas.addEventListener('mouseup',    ()=>{slicing=false;slashTrail=[];});
+canvas.addEventListener('mouseleave', ()=>{slicing=false;slashTrail=[];});
+canvas.addEventListener('mousemove',  e=>{
+  if(!slicing||!gameRunning) return;
+  const p=getPos(e); addTrail(p.x,p.y); checkSlice(p.x,p.y);
 });
-canvas.addEventListener('touchstart', e=>{ e.preventDefault(); slicing=true; },{passive:false});
-canvas.addEventListener('touchend',   e=>{ e.preventDefault(); slicing=false; slashTrail=[]; },{passive:false});
+canvas.addEventListener('touchstart', e=>{e.preventDefault();slicing=true;},{passive:false});
+canvas.addEventListener('touchend',   e=>{e.preventDefault();slicing=false;slashTrail=[];},{passive:false});
 canvas.addEventListener('touchmove',  e=>{
   e.preventDefault();
-  if (!gameRunning) return;
-  const r = canvas.getBoundingClientRect();
-  const t = e.touches[0];
-  const x = t.clientX-r.left, y = t.clientY-r.top;
-  addTrail(x,y); checkSlice(x,y);
+  if(!gameRunning) return;
+  const p=getPos(e); addTrail(p.x,p.y); checkSlice(p.x,p.y);
 },{passive:false});
 
-// ═══════════════════════════
-//  STORY PROTOCOL
-// ═══════════════════════════
-let provider, signer, walletAddress;
+// ══════════════════════════════
+//  WALLET — STORY PROTOCOL
+// ══════════════════════════════
+let provider,signer,walletAddress;
 
-const STORY_CHAIN = {
-  chainId: '0x5E9',
-  chainName: 'Story Network Testnet (Iliad)',
-  rpcUrls: ['https://testnet.storyrpc.io'],
-  nativeCurrency: { name:'IP', symbol:'IP', decimals:18 },
-  blockExplorerUrls: ['https://testnet.storyscan.xyz']
+// Story Protocol Odyssey Testnet
+const STORY_CHAIN={
+  chainId:'0x5EC',  // 1516
+  chainName:'Story Network Testnet',
+  rpcUrls:['https://rpc.odyssey.storyrpc.io'],
+  nativeCurrency:{name:'IP',symbol:'IP',decimals:18},
+  blockExplorerUrls:['https://odyssey.storyscan.xyz']
 };
 
-async function connectWallet() {
-  if (!window.ethereum) {
-    toast('⚠️ MetaMask app install karo!', true); return;
+function isMobile(){
+  return /Android|iPhone|iPad/i.test(navigator.userAgent);
+}
+
+function openInMetaMask(){
+  const url=window.location.href.replace(/^https?:\/\//,'');
+  window.location.href='https://metamask.app.link/dapp/'+url;
+}
+
+async function connectWallet(){
+  // No MetaMask
+  if(!window.ethereum){
+    if(isMobile()){
+      toast('📱 Mobile pe MetaMask browser use karo — neeche button dabao!',true);
+      document.getElementById('mmBtn').style.display='block';
+    } else {
+      toast('⚠️ MetaMask browser extension install karo!',true);
+    }
+    return;
   }
-  try {
-    provider = new ethers.providers.Web3Provider(window.ethereum);
-    await provider.send('eth_requestAccounts', []);
-    try {
+  try{
+    provider=new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send('eth_requestAccounts',[]);
+
+    // Switch / add Story chain
+    try{
       await window.ethereum.request({
         method:'wallet_switchEthereumChain',
-        params:[{chainId: STORY_CHAIN.chainId}]
+        params:[{chainId:STORY_CHAIN.chainId}]
       });
-    } catch(e) {
-      if (e.code === 4902) {
+    } catch(e){
+      if(e.code===4902||e.code===-32603){
         await window.ethereum.request({
           method:'wallet_addEthereumChain',
           params:[STORY_CHAIN]
         });
       }
     }
-    signer = provider.getSigner();
-    walletAddress = await signer.getAddress();
-    const s = walletAddress.slice(0,6)+'...'+walletAddress.slice(-4);
-    document.getElementById('connectBtn').textContent = `✅ ${s}`;
-    toast('✅ Wallet connected! Khelo aur register karo 🎮');
-  } catch(e) {
-    toast('❌ ' + e.message.slice(0,60), true);
+
+    signer=provider.getSigner();
+    walletAddress=await signer.getAddress();
+    const s=walletAddress.slice(0,6)+'...'+walletAddress.slice(-4);
+    document.getElementById('connectBtn').textContent='✅ '+s;
+    document.getElementById('connectBtn').style.background='linear-gradient(135deg,#43e97b,#38f9d7)';
+    toast('✅ Wallet connected! Ab khelo aur register karo 🎮');
+  } catch(e){
+    toast('❌ '+e.message.slice(0,70),true);
   }
 }
 
-async function registerOnStory() {
-  if (!signer) {
-    toast('⚠️ Pehle wallet connect karo!', true); return;
+async function registerOnStory(){
+  if(!signer){
+    toast('⚠️ Pehle wallet connect karo!',true);
+    return;
   }
-  const btn = document.getElementById('registerBtn');
-  btn.textContent = '⏳ Registering on Story...';
-  btn.disabled = true;
-  try {
-    const ipData = `STORY_IP|game=FruitSlice|score=${score}|player=${walletAddress}|ts=${Date.now()}`;
-    const tx = await signer.sendTransaction({
-      to: walletAddress,
-      value: ethers.utils.parseEther('0'),
-      data: ethers.utils.hexlify(ethers.utils.toUtf8Bytes(ipData))
+  const btn=document.getElementById('registerBtn');
+  btn.textContent='⏳ Story Protocol pe register ho raha hai...';
+  btn.disabled=true;
+  try{
+    const ipData=`STORY_IP|game=FruitSlice|score=${score}|player=${walletAddress}|ts=${Date.now()}`;
+    const tx=await signer.sendTransaction({
+      to:walletAddress,
+      value:ethers.utils.parseEther('0'),
+      data:ethers.utils.hexlify(ethers.utils.toUtf8Bytes(ipData))
     });
-    toast('⏳ Transaction pending...');
+    toast('⏳ Transaction confirm ho raha hai...');
     await tx.wait();
-    const short = tx.hash.slice(0,12)+'...';
-    toast(`🎉 IP Registered! TX: ${short}`);
-    btn.textContent = `✅ Registered! Score: ${score}`;
+    btn.textContent=`✅ Registered! Score: ${score}`;
+    toast(`🎉 IP Registered on Story! TX: ${tx.hash.slice(0,14)}...`);
     setTimeout(()=>{
-      window.open(`https://testnet.storyscan.xyz/tx/${tx.hash}`, '_blank');
-    }, 1500);
-  } catch(e) {
-    btn.disabled = false;
-    btn.textContent = '🏛️ Register on Story Protocol';
-    toast('❌ ' + e.message.slice(0,60), true);
+      window.open(`https://odyssey.storyscan.xyz/tx/${tx.hash}`,'_blank');
+    },1500);
+  } catch(e){
+    btn.disabled=false;
+    btn.textContent='🏛️ Register on Story Protocol';
+    toast('❌ '+e.message.slice(0,70),true);
   }
 }
 
-function toast(msg, isErr=false) {
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.style.display = 'block';
-  el.style.background = isErr ? 'rgba(255,50,50,0.2)' : 'rgba(0,255,150,0.15)';
-  el.style.borderColor = isErr ? 'rgba(255,50,50,0.5)' : 'rgba(0,255,150,0.4)';
+function toast(msg,isErr=false){
+  const el=document.getElementById('toast');
+  el.textContent=msg;
+  el.style.display='block';
+  el.style.background=isErr?'rgba(255,50,50,0.18)':'rgba(0,255,150,0.13)';
+  el.style.borderColor=isErr?'rgba(255,50,50,0.5)':'rgba(0,255,150,0.35)';
   clearTimeout(el._t);
-  el._t = setTimeout(()=> el.style.display='none', 4000);
+  el._t=setTimeout(()=>el.style.display='none',5000);
 }
 </script>
 </body>
