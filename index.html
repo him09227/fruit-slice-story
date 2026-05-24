@@ -9,8 +9,6 @@
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{width:100%;height:100%;overflow:hidden;background:#0f0c29;font-family:Arial,sans-serif;color:#fff;}
 #gameCanvas{position:fixed;top:0;left:0;}
-
-/* TOP UI */
 #ui{position:fixed;top:8px;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 8px;z-index:10;pointer-events:none;}
 .box{background:rgba(255,255,255,0.13);border-radius:14px;padding:5px 10px;text-align:center;border:1px solid rgba(255,255,255,0.18);min-width:62px;}
 .box span{font-size:8px;opacity:0.65;display:block;letter-spacing:1px;text-transform:uppercase;}
@@ -18,15 +16,11 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f0c29;font-family:
 .hr{display:flex;gap:2px;justify-content:center;font-size:13px;min-height:22px;align-items:center;}
 .topBtns{display:flex;gap:6px;pointer-events:all;}
 .iconBtn{background:rgba(255,255,255,0.13);border:1px solid rgba(255,255,255,0.18);border-radius:50%;width:34px;height:34px;font-size:15px;cursor:pointer;color:#fff;display:flex;align-items:center;justify-content:center;}
-
-/* BOTTOM BAR */
 #bottomBar{position:fixed;bottom:0;left:0;right:0;padding:8px 14px 20px;z-index:10;display:flex;flex-direction:column;gap:7px;align-items:center;}
 .btnM{width:100%;max-width:340px;padding:12px;border-radius:30px;border:none;font-size:14px;font-weight:700;cursor:pointer;}
 #connectBtn{background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;box-shadow:0 4px 16px rgba(240,147,251,0.4);}
 #mmBtn{background:linear-gradient(135deg,#f6851b,#e2761b);color:#fff;display:none;}
 #toast{width:100%;max-width:340px;padding:8px 14px;border-radius:20px;font-size:12px;text-align:center;display:none;line-height:1.5;border:1px solid rgba(0,255,150,0.35);background:rgba(0,255,150,0.13);}
-
-/* GAME OVER */
 #overlay{position:fixed;inset:0;background:rgba(0,0,0,0.93);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:20;gap:10px;padding:20px;overflow-y:auto;}
 #overlay h2{font-size:36px;}
 .oScore{font-size:26px;color:#f093fb;font-weight:900;}
@@ -34,8 +28,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f0c29;font-family:
 .oBtn{width:100%;max-width:280px;padding:12px;border-radius:30px;border:none;font-size:14px;font-weight:700;cursor:pointer;margin-top:2px;}
 #regBtn{background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;}
 #rstBtn{background:#4ecdc4;color:#1a1a2e;}
-
-/* PANELS — shared base */
 .panel{position:fixed;inset:0;background:#0d0d1a;display:none;flex-direction:column;z-index:40;overflow:hidden;}
 .panelHead{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;background:rgba(255,255,255,0.04);border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0;}
 .panelHead h2{font-size:20px;}
@@ -43,8 +35,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f0c29;font-family:
 .panelBody{flex:1;overflow-y:auto;padding:14px 14px 30px;}
 .pCard{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:14px;margin-bottom:12px;}
 .pCard h3{font-size:11px;opacity:0.55;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;}
-
-/* PROFILE */
 .statsGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 .stat{background:rgba(255,255,255,0.06);border-radius:12px;padding:10px;text-align:center;}
 .stat .sv{font-size:26px;font-weight:900;color:#f093fb;}
@@ -53,22 +43,15 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f0c29;font-family:
 .walletBox{font-size:11px;opacity:0.55;word-break:break-all;margin-top:6px;padding:8px;background:rgba(255,255,255,0.05);border-radius:8px;}
 .noData{text-align:center;opacity:0.4;font-size:13px;padding:16px;}
 #clearBtn{width:100%;padding:10px;border-radius:16px;border:1px solid rgba(255,80,80,0.35);background:rgba(255,80,80,0.1);color:#ff6b6b;font-size:13px;cursor:pointer;margin-top:6px;}
-
-/* HISTORY in profile */
 .histItem{display:flex;justify-content:space-between;align-items:center;padding:8px 2px;border-bottom:1px solid rgba(255,255,255,0.06);font-size:12px;}
 .histItem:last-child{border-bottom:none;}
 .histScore{font-weight:700;color:#ffd700;}
 .histDate{font-size:10px;opacity:0.45;}
 .histTx{font-size:10px;color:#4cc9f0;cursor:pointer;text-decoration:underline;}
-.verified{font-size:10px;color:#43e97b;}
-
-/* LEADERBOARD */
 .lbTabs{display:flex;gap:8px;margin-bottom:14px;}
 .lbTab{flex:1;padding:8px;border-radius:20px;border:none;font-size:12px;font-weight:700;cursor:pointer;background:rgba(255,255,255,0.08);color:#fff;transition:all .2s;}
 .lbTab.active{background:linear-gradient(135deg,#f093fb,#f5576c);}
-
-/* Leaderboard row */
-.lbRow{display:flex;align-items:center;gap:8px;padding:10px 10px;border-radius:12px;margin-bottom:6px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07);transition:all .2s;}
+.lbRow{display:flex;align-items:center;gap:8px;padding:10px;border-radius:12px;margin-bottom:6px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07);}
 .lbRow.mine{background:rgba(240,147,251,0.12);border:1px solid rgba(240,147,251,0.4);box-shadow:0 0 12px rgba(240,147,251,0.15);}
 .lbRow.top1{background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.35);}
 .lbRow.top2{background:rgba(192,192,192,0.08);border:1px solid rgba(192,192,192,0.25);}
@@ -84,21 +67,17 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f0c29;font-family:
 .myRankCard h3{font-size:11px;opacity:0.6;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
 .myRankBig{font-size:42px;font-weight:900;color:#f093fb;line-height:1;}
 .myRankSub{font-size:12px;opacity:0.6;margin-top:4px;}
-
-/* START SCREEN */
 #startScreen{position:fixed;inset:0;background:linear-gradient(160deg,#1a1a2e,#16213e,#0f3460);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:30;gap:14px;padding:30px;}
 #startScreen h1{font-size:44px;text-align:center;line-height:1.2;}
 #startScreen p{opacity:0.75;font-size:14px;text-align:center;line-height:1.7;}
 #startBtn{padding:15px 46px;border-radius:30px;border:none;background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;font-size:18px;font-weight:700;cursor:pointer;box-shadow:0 6px 24px rgba(240,147,251,0.5);}
-
-/* Confirm modal */
-#confirmModal{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:50;padding:20px;}
+#confirmModal{position:fixed;inset:0;background:rgba(0,0,0,0.88);display:none;align-items:center;justify-content:center;z-index:50;padding:20px;}
 .confirmBox{background:#1a1a2e;border:1px solid rgba(240,147,251,0.4);border-radius:24px;padding:24px;max-width:320px;width:100%;box-shadow:0 8px 32px rgba(240,147,251,0.2);}
 .confirmBox h3{font-size:18px;margin-bottom:14px;text-align:center;}
 .confirmRow{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.07);font-size:13px;}
 .confirmRow:last-of-type{border:none;}
 .confirmRow span:first-child{opacity:0.6;}
-.confirmRow span:last-child{font-weight:700;color:#f093fb;}
+.confirmRow span:last-child{font-weight:700;}
 .confirmBtns{display:flex;gap:10px;margin-top:16px;}
 .confirmBtns button{flex:1;padding:12px;border-radius:20px;border:none;font-size:14px;font-weight:700;cursor:pointer;}
 #confirmYes{background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;}
@@ -109,25 +88,22 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f0c29;font-family:
 
 <canvas id="gameCanvas"></canvas>
 
-<!-- TOP UI -->
 <div id="ui">
   <div class="box"><span>Score</span><strong id="scoreD">0</strong></div>
   <div class="box"><span>Lives</span><div class="hr" id="livesD"></div></div>
   <div class="box"><span>Best</span><strong id="bestD">0</strong></div>
   <div class="topBtns">
-    <button class="iconBtn" onclick="openLB()" title="Leaderboard">🏆</button>
-    <button class="iconBtn" onclick="openProfile()" title="Profile">👤</button>
+    <button class="iconBtn" onclick="openLB()">🏆</button>
+    <button class="iconBtn" onclick="openProfile()">👤</button>
   </div>
 </div>
 
-<!-- BOTTOM BAR -->
 <div id="bottomBar">
   <div id="toast"></div>
   <button class="btnM" id="mmBtn" onclick="openMM()">🦊 Open in MetaMask Browser</button>
   <button class="btnM" id="connectBtn" onclick="connectWallet()">🔗 Connect Wallet</button>
 </div>
 
-<!-- GAME OVER -->
 <div id="overlay">
   <h2>🍉 Game Over!</h2>
   <div class="oScore" id="finalScore"></div>
@@ -142,11 +118,12 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f0c29;font-family:
 <div id="confirmModal">
   <div class="confirmBox">
     <h3>🏛️ Story Mainnet Register</h3>
-    <div class="confirmRow"><span>Score</span><span id="cScore">0 pts</span></div>
+    <div class="confirmRow"><span>Score</span><span id="cScore" style="color:#f093fb;">0 pts</span></div>
     <div class="confirmRow"><span>Fruits Sliced</span><span id="cFruits">0 🍉</span></div>
-    <div class="confirmRow"><span>Wallet</span><span id="cWallet">—</span></div>
-    <div class="confirmRow"><span>Network</span><span>Story Mainnet</span></div>
-    <div class="confirmRow"><span>Gas Fee</span><span style="color:#43e97b;">~Bahut Kam IP</span></div>
+    <div class="confirmRow"><span>Wallet</span><span id="cWallet" style="color:#4cc9f0;">—</span></div>
+    <div class="confirmRow"><span>Network</span><span style="color:#43e97b;">Story Mainnet</span></div>
+    <div class="confirmRow"><span>Balance</span><span id="cBalance" style="color:#4cc9f0;">—</span></div>
+    <div class="confirmRow"><span>Gas Fee</span><span id="cGasFee" style="color:#43e97b;">Calculating...</span></div>
     <div class="confirmBtns">
       <button id="confirmNo" onclick="closeConfirm()">Cancel</button>
       <button id="confirmYes" onclick="registerStory()">Confirm ✓</button>
@@ -154,42 +131,35 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f0c29;font-family:
   </div>
 </div>
 
-<!-- LEADERBOARD PANEL -->
+<!-- LEADERBOARD -->
 <div class="panel" id="lbPanel">
   <div class="panelHead">
     <h2>🏆 Leaderboard</h2>
     <button class="closeBtn" onclick="closeLB()">✕</button>
   </div>
   <div class="panelBody">
-    <!-- My Rank Card -->
     <div class="myRankCard" id="myRankCard">
       <h3>🎯 Meri Rank</h3>
       <div class="myRankBig" id="myRankNum">#—</div>
       <div class="myRankSub" id="myRankSub">Best: 0 pts</div>
     </div>
-
-    <!-- Tabs -->
     <div class="lbTabs">
-      <button class="lbTab active" id="tabAll" onclick="switchTab('all')">🌍 All Scores</button>
+      <button class="lbTab active" id="tabAll" onclick="switchTab('all')">🌍 All</button>
       <button class="lbTab" id="tabVerified" onclick="switchTab('verified')">✅ Verified</button>
-      <button class="lbTab" id="tabMine" onclick="switchTab('mine')">👤 My Games</button>
+      <button class="lbTab" id="tabMine" onclick="switchTab('mine')">👤 Mine</button>
     </div>
-
     <div id="lbList"></div>
   </div>
 </div>
 
-<!-- PROFILE PANEL -->
+<!-- PROFILE -->
 <div class="panel" id="profilePanel">
   <div class="panelHead">
     <h2>👤 My Profile</h2>
     <button class="closeBtn" onclick="closeProfile()">✕</button>
   </div>
   <div class="panelBody">
-    <div class="pCard">
-      <h3>🔗 Wallet</h3>
-      <div id="pWallet"></div>
-    </div>
+    <div class="pCard"><h3>🔗 Wallet</h3><div id="pWallet"></div></div>
     <div class="pCard">
       <h3>📊 Stats</h3>
       <div class="statsGrid">
@@ -199,53 +169,46 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f0c29;font-family:
         <div class="stat"><div class="sv" id="pAvg">0</div><div class="sl">Avg Score</div></div>
       </div>
     </div>
-    <div class="pCard">
-      <h3>🏅 Badges</h3>
-      <div id="pBadges"></div>
-    </div>
-    <div class="pCard">
-      <h3>📜 Recent Games</h3>
-      <div id="pHistory"></div>
-    </div>
-    <button id="clearBtn" onclick="clearData()">🗑️ Clear All My Data</button>
+    <div class="pCard"><h3>🏅 Badges</h3><div id="pBadges"></div></div>
+    <div class="pCard"><h3>📜 Recent Games</h3><div id="pHistory"></div></div>
+    <button id="clearBtn" onclick="clearData()">🗑️ Clear All Data</button>
   </div>
 </div>
 
 <!-- START SCREEN -->
 <div id="startScreen">
   <h1>🍉<br>Fruit Slice</h1>
-  <p>Fruits slice karo!<br>💣 Bombs se bacho!<br>🏛️ Story Mainnet pe score register karo!</p>
+  <p>Fruits slice karo!<br>💣 Bombs se bacho!<br>🏛️ Story Mainnet pe register karo!</p>
   <button id="startBtn" onclick="startGame()">▶ Play Now</button>
   <p style="font-size:11px;opacity:0.35;margin-top:4px;">Powered by Story Protocol Mainnet</p>
 </div>
 
 <script>
-// ═══════════════════════════════════════
+// ═══════════════════════════════
 //  CANVAS
-// ═══════════════════════════════════════
+// ═══════════════════════════════
 const canvas = document.getElementById('gameCanvas');
 const ctx    = canvas.getContext('2d');
 function resize(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
 resize();
-window.addEventListener('resize', resize);
+window.addEventListener('resize',resize);
 
-// ═══════════════════════════════════════
+// ═══════════════════════════════
 //  STORAGE
-// ═══════════════════════════════════════
+// ═══════════════════════════════
 function getProfile(){
-  try{ return JSON.parse(localStorage.getItem('fsProfile')||'{}'); }
-  catch(e){ return {}; }
+  try{ return JSON.parse(localStorage.getItem('fsProfile')||'{}'); }catch(e){ return {}; }
 }
-function saveProfile(p){ localStorage.setItem('fsProfile', JSON.stringify(p)); }
+function saveProfile(p){ localStorage.setItem('fsProfile',JSON.stringify(p)); }
 
-function recordGame(sc, fr, txHash){
-  const p = getProfile();
+function recordGame(sc,fr,txHash){
+  const p=getProfile();
   if(!p.games) p.games=[];
   if(!p.totalFruits) p.totalFruits=0;
-  p.games.unshift({ score:sc, fruits:fr, ts:Date.now(), tx:txHash||null });
+  p.games.unshift({score:sc,fruits:fr,ts:Date.now(),tx:txHash||null});
   if(p.games.length>100) p.games=p.games.slice(0,100);
   p.totalFruits=(p.totalFruits||0)+fr;
-  p.best=Math.max(p.best||0, sc);
+  p.best=Math.max(p.best||0,sc);
   saveProfile(p);
 }
 
@@ -268,9 +231,9 @@ function clearData(){
   toast('🗑️ Data cleared!');
 }
 
-// ═══════════════════════════════════════
+// ═══════════════════════════════
 //  FRUIT DEFS
-// ═══════════════════════════════════════
+// ═══════════════════════════════
 const FD=[
   {body:'#e63946',shine:'#ff8c94',inner:'#c1121f'},
   {body:'#f4a261',shine:'#ffd97d',inner:'#e76f51'},
@@ -284,19 +247,19 @@ const FD=[
   {body:'#4cc9f0',shine:'#ade8f4',inner:'#0096c7'},
 ];
 
-// ═══════════════════════════════════════
+// ═══════════════════════════════
 //  STATE
-// ═══════════════════════════════════════
-let score=0, lives=3, running=false;
-let fruits=[], parts=[], trail=[], floats=[];
-let spawnT=0, spawnI=75, fid=null;
+// ═══════════════════════════════
+let score=0,lives=3,running=false;
+let fruits=[],parts=[],trail=[],floats=[];
+let spawnT=0,spawnI=75,fid=null;
 let fruitsSliced=0;
 let best=parseInt(localStorage.getItem('fsb')||'0');
 document.getElementById('bestD').textContent=best;
 
-// ═══════════════════════════════════════
+// ═══════════════════════════════
 //  FRUIT CLASS
-// ═══════════════════════════════════════
+// ═══════════════════════════════
 class Fruit{
   constructor(){
     const W=canvas.width,H=canvas.height;
@@ -369,9 +332,9 @@ class Fruit{
   hit(x,y){return !this.sliced&&Math.abs(this.x-x)<this.r*1.5&&Math.abs(this.y-y)<this.r*1.5;}
 }
 
-// ═══════════════════════════════════════
+// ═══════════════════════════════
 //  PARTICLE
-// ═══════════════════════════════════════
+// ═══════════════════════════════
 class Part{
   constructor(x,y,c){this.x=x;this.y=y;this.vx=(Math.random()-.5)*11;this.vy=(Math.random()-.5)*11;this.life=1;this.c=c;this.r=Math.random()*6+2;}
   update(){this.x+=this.vx;this.y+=this.vy;this.vy+=.3;this.life-=.04;}
@@ -379,9 +342,9 @@ class Part{
 }
 const PC=['#ff6b6b','#ffd93d','#6bcb77','#4d96ff','#f093fb','#ff9a3c','#fff','#4cc9f0'];
 
-// ═══════════════════════════════════════
+// ═══════════════════════════════
 //  TRAIL
-// ═══════════════════════════════════════
+// ═══════════════════════════════
 function addTrail(x,y){trail.push({x,y,l:1});if(trail.length>22)trail.shift();}
 function drawTrail(){
   if(trail.length<2)return;
@@ -393,9 +356,9 @@ function drawTrail(){
   trail.forEach(p=>p.l-=.07);trail=trail.filter(p=>p.l>0);
 }
 
-// ═══════════════════════════════════════
+// ═══════════════════════════════
 //  FLOAT TEXT
-// ═══════════════════════════════════════
+// ═══════════════════════════════
 function floatTxt(x,y,t,c='#ffd700'){floats.push({x,y,t,c,l:1,vy:-2.2});}
 function drawFloats(){
   floats.forEach(f=>{
@@ -406,9 +369,9 @@ function drawFloats(){
   floats=floats.filter(f=>f.l>0);
 }
 
-// ═══════════════════════════════════════
+// ═══════════════════════════════
 //  SLICE
-// ═══════════════════════════════════════
+// ═══════════════════════════════
 function checkSlice(x,y){
   fruits.forEach(f=>{
     if(!f.hit(x,y))return;
@@ -439,9 +402,9 @@ function shakeScreen(){
   setTimeout(()=>document.body.style.transform='none',140);
 }
 
-// ═══════════════════════════════════════
+// ═══════════════════════════════
 //  BACKGROUND
-// ═══════════════════════════════════════
+// ═══════════════════════════════
 function drawBg(){
   const g=ctx.createLinearGradient(0,0,0,canvas.height);
   g.addColorStop(0,'#0f0c29');g.addColorStop(.5,'#302b63');g.addColorStop(1,'#24243e');
@@ -450,9 +413,9 @@ function drawBg(){
   for(let x=0;x<canvas.width;x+=60){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,canvas.height);ctx.stroke();}
 }
 
-// ═══════════════════════════════════════
+// ═══════════════════════════════
 //  GAME LOOP
-// ═══════════════════════════════════════
+// ═══════════════════════════════
 function loop(){
   if(!running)return;
   drawBg();
@@ -475,12 +438,13 @@ function loop(){
   fid=requestAnimationFrame(loop);
 }
 
-// ═══════════════════════════════════════
+// ═══════════════════════════════
 //  GAME CONTROLS
-// ═══════════════════════════════════════
+// ═══════════════════════════════
 function startGame(){
   document.getElementById('startScreen').style.display='none';
-  score=0;lives=3;fruitsSliced=0;fruits=[];parts=[];trail=[];floats=[];
+  score=0;lives=3;fruitsSliced=0;
+  fruits=[];parts=[];trail=[];floats=[];
   spawnT=0;spawnI=75;
   document.getElementById('scoreD').textContent='0';
   updateLives();running=true;loop();
@@ -499,16 +463,17 @@ function endGame(){
 }
 
 function restartGame(){
-  score=0;lives=3;fruitsSliced=0;fruits=[];parts=[];trail=[];floats=[];
+  score=0;lives=3;fruitsSliced=0;
+  fruits=[];parts=[];trail=[];floats=[];
   spawnT=0;spawnI=75;running=true;
   document.getElementById('scoreD').textContent='0';
   document.getElementById('overlay').style.display='none';
   updateLives();loop();
 }
 
-// ═══════════════════════════════════════
+// ═══════════════════════════════
 //  TOUCH / MOUSE
-// ═══════════════════════════════════════
+// ═══════════════════════════════
 let slicing=false;
 function pos(e){
   const r=canvas.getBoundingClientRect();
@@ -523,16 +488,12 @@ canvas.addEventListener('touchstart',e=>{e.preventDefault();slicing=true;},{pass
 canvas.addEventListener('touchend',e=>{e.preventDefault();slicing=false;trail=[];},{passive:false});
 canvas.addEventListener('touchmove',e=>{e.preventDefault();if(!running)return;const p=pos(e);addTrail(p.x,p.y);checkSlice(p.x,p.y);},{passive:false});
 
-// ═══════════════════════════════════════
+// ═══════════════════════════════
 //  LEADERBOARD
-// ═══════════════════════════════════════
+// ═══════════════════════════════
 let lbTab='all';
-
-function openLB(){
-  renderLB(lbTab);
-  document.getElementById('lbPanel').style.display='flex';
-}
-function closeLB(){ document.getElementById('lbPanel').style.display='none'; }
+function openLB(){renderLB(lbTab);document.getElementById('lbPanel').style.display='flex';}
+function closeLB(){document.getElementById('lbPanel').style.display='none';}
 
 function switchTab(t){
   lbTab=t;
@@ -541,87 +502,64 @@ function switchTab(t){
   renderLB(t);
 }
 
-function getLBData(){
+function renderLB(tab){
   const p=getProfile();
   const games=p.games||[];
-  // Each game becomes a leaderboard entry
-  return games.map((g,i)=>({
-    rank:0,
-    score:g.score,
-    fruits:g.fruits||0,
-    ts:g.ts,
-    tx:g.tx||null,
-    isMe:true,
-    name: walletAddr ? walletAddr.slice(0,6)+'...'+walletAddr.slice(-4) : 'You'
-  }));
-}
+  const sorted=[...games].sort((a,b)=>b.score-a.score);
+  sorted.forEach((e,i)=>e._rank=i+1);
 
-function renderLB(tab){
-  const allEntries = getLBData();
-
-  // Sort by score desc
-  const sorted = [...allEntries].sort((a,b)=>b.score-a.score);
-  sorted.forEach((e,i)=>e.rank=i+1);
-
-  // My best rank
-  const myBest = sorted.find(e=>e.isMe);
-  const myRankCard = document.getElementById('myRankCard');
+  const myBest=sorted[0];
+  const myRankCard=document.getElementById('myRankCard');
   if(myBest){
     myRankCard.style.display='block';
-    document.getElementById('myRankNum').textContent='#'+myBest.rank;
-    document.getElementById('myRankSub').textContent=`Best Score: ${myBest.score} pts • ${allEntries.length} games played`;
+    document.getElementById('myRankNum').textContent='#'+myBest._rank;
+    document.getElementById('myRankSub').textContent=`Best: ${myBest.score} pts • ${games.length} games played`;
   } else {
     myRankCard.style.display='none';
   }
 
-  // Filter
   let filtered;
   if(tab==='verified') filtered=sorted.filter(e=>e.tx);
-  else if(tab==='mine') filtered=sorted.filter(e=>e.isMe);
+  else if(tab==='mine') filtered=sorted;
   else filtered=sorted;
 
   const list=document.getElementById('lbList');
-
   if(!filtered.length){
-    list.innerHTML=`<div class="noData">${tab==='verified'?'Abhi koi verified score nahi — Story pe register karo!':'Abhi koi game nahi khela'}</div>`;
+    list.innerHTML=`<div class="noData">${tab==='verified'?'Koi verified score nahi — Story pe register karo!':'Abhi koi game nahi khela'}</div>`;
     return;
   }
 
   const medals=['🥇','🥈','🥉'];
-  const rankClass=['top1','top2','top3'];
+  const rankCls=['top1','top2','top3'];
+  const name=walletAddr?walletAddr.slice(0,6)+'...'+walletAddr.slice(-4):'You';
 
   list.innerHTML=filtered.map((e,i)=>{
-    const medal = i<3 ? medals[i] : `#${e.rank}`;
-    const cls   = e.isMe ? 'mine' : (i<3 ? rankClass[i] : '');
-    const d     = new Date(e.ts);
-    const ds    = `${d.getDate()}/${d.getMonth()+1} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`;
-    const txBadge = e.tx
-      ? `<span style="font-size:10px;color:#43e97b;cursor:pointer;" onclick="window.open('https://storyscan.xyz/tx/${e.tx}','_blank')">✅ On-Chain</span>`
-      : '<span style="font-size:10px;opacity:0.35;">Unverified</span>';
-    const myTag = e.isMe ? ' <span style="font-size:10px;background:rgba(240,147,251,0.3);padding:2px 6px;border-radius:10px;">YOU</span>' : '';
-    return `
-      <div class="lbRow ${cls}">
-        <div class="lbRank">${medal}</div>
-        <div class="lbInfo">
-          <div class="lbName">${e.name}${myTag}</div>
-          <div class="lbSub">${ds} • ${txBadge}</div>
-        </div>
-        <div class="lbScore">
-          <div class="lbPts">${e.score}</div>
-          <div class="lbFruits">🍉 ${e.fruits}</div>
-        </div>
-      </div>`;
+    const medal=i<3?medals[i]:`#${e._rank}`;
+    const cls=i<3?rankCls[i]:'';
+    const d=new Date(e.ts);
+    const ds=`${d.getDate()}/${d.getMonth()+1} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`;
+    const txBadge=e.tx
+      ?`<span style="font-size:10px;color:#43e97b;cursor:pointer;" onclick="window.open('https://storyscan.xyz/tx/${e.tx}','_blank')">✅ On-Chain</span>`
+      :'<span style="font-size:10px;opacity:0.3;">Unverified</span>';
+    return `<div class="lbRow mine ${cls}">
+      <div class="lbRank">${medal}</div>
+      <div class="lbInfo">
+        <div class="lbName">${name} <span style="font-size:10px;background:rgba(240,147,251,0.3);padding:2px 6px;border-radius:10px;">YOU</span></div>
+        <div class="lbSub">${ds} • ${txBadge}</div>
+      </div>
+      <div class="lbScore">
+        <div class="lbPts">${e.score}</div>
+        <div class="lbFruits">🍉 ${e.fruits||0}</div>
+      </div>
+    </div>`;
   }).join('');
 }
 
-// ═══════════════════════════════════════
+// ═══════════════════════════════
 //  PROFILE
-// ═══════════════════════════════════════
-function openProfile(){
-  renderProfile();
-  document.getElementById('profilePanel').style.display='flex';
-}
-function closeProfile(){ document.getElementById('profilePanel').style.display='none'; }
+// ═══════════════════════════════
+function openProfile(){renderProfile();document.getElementById('profilePanel').style.display='flex';}
+function closeProfile(){document.getElementById('profilePanel').style.display='none';}
 
 function renderProfile(){
   const p=getProfile();
@@ -634,15 +572,13 @@ function renderProfile(){
   document.getElementById('pFruits').textContent=p.totalFruits||0;
   document.getElementById('pAvg').textContent=avg;
 
-  // Wallet section
   const wDiv=document.getElementById('pWallet');
   if(walletAddr){
-    wDiv.innerHTML=`<p style="font-size:13px;color:#4cc9f0;font-weight:700;">✅ Connected (Story Mainnet)</p><div class="walletBox">${walletAddr}</div>`;
+    wDiv.innerHTML=`<p style="font-size:13px;color:#43e97b;font-weight:700;">✅ Story Mainnet Connected</p><div class="walletBox">${walletAddr}</div>`;
   } else {
-    wDiv.innerHTML=`<p style="opacity:0.5;font-size:13px;margin-bottom:8px;">Wallet connected nahi hai</p><button class="btnM" style="background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;max-width:180px;padding:10px;" onclick="connectWallet()">Connect Wallet</button>`;
+    wDiv.innerHTML=`<p style="opacity:0.5;font-size:13px;margin-bottom:8px;">Wallet connect nahi hai</p><button class="btnM" style="background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;max-width:180px;padding:10px;" onclick="connectWallet()">Connect Wallet</button>`;
   }
 
-  // Badges
   const badges=[];
   if(gCount>=1)           badges.push('🎮 First Game');
   if(gCount>=10)          badges.push('🔥 10 Games');
@@ -653,18 +589,20 @@ function renderProfile(){
   if((p.best||0)>=100)    badges.push('👑 Score 100+');
   if((p.totalFruits||0)>=50)  badges.push('🍉 50 Fruits');
   if((p.totalFruits||0)>=200) badges.push('🍇 200 Fruits');
-  if(games.some(g=>g.tx)) badges.push('🏛️ On-Chain Player');
-  document.getElementById('pBadges').innerHTML=badges.length
-    ? badges.map(b=>`<span class="badge">${b}</span>`).join('')
-    : '<p class="noData">Khelo aur badges kamao!</p>';
+  if(games.some(g=>g.tx)) badges.push('🏛 On-Chain Player');
 
-  // History
+  document.getElementById('pBadges').innerHTML=badges.length
+    ?badges.map(b=>`<span class="badge">${b}</span>`).join('')
+    :'<p class="noData">Khelo aur badges kamao!</p>';
+
   const hDiv=document.getElementById('pHistory');
-  if(!games.length){ hDiv.innerHTML='<p class="noData">Abhi koi game nahi khela</p>'; return; }
+  if(!games.length){hDiv.innerHTML='<p class="noData">Abhi koi game nahi khela</p>';return;}
   hDiv.innerHTML=games.slice(0,15).map((g,i)=>{
     const d=new Date(g.ts);
     const ds=`${d.getDate()}/${d.getMonth()+1} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`;
-    const txEl=g.tx?`<span class="histTx" onclick="window.open('https://storyscan.xyz/tx/${g.tx}','_blank')">✅ TX</span>`:'<span style="font-size:10px;opacity:0.35;">—</span>';
+    const txEl=g.tx
+      ?`<span class="histTx" onclick="window.open('https://storyscan.xyz/tx/${g.tx}','_blank')">✅ TX</span>`
+      :'<span style="font-size:10px;opacity:0.3;">—</span>';
     return `<div class="histItem">
       <span style="opacity:0.4;font-size:11px;">#${i+1}</span>
       <span class="histScore">${g.score} pts</span>
@@ -675,13 +613,13 @@ function renderProfile(){
   }).join('');
 }
 
-// ═══════════════════════════════════════
+// ═══════════════════════════════
 //  WALLET — STORY MAINNET
-// ═══════════════════════════════════════
-let provider, signer, walletAddr;
+// ═══════════════════════════════
+let provider,signer,walletAddr;
 
 const CHAIN={
-  chainId:'0x5EA',           // 1514
+  chainId:'0x5EA',
   chainName:'Story Mainnet',
   rpcUrls:['https://mainnet.storyrpc.io'],
   nativeCurrency:{name:'IP',symbol:'IP',decimals:18},
@@ -698,7 +636,7 @@ async function connectWallet(){
     if(/iPhone|iPad|Android/i.test(navigator.userAgent)){
       toast('📱 MetaMask app ke Browser tab se kholna!',true);
       document.getElementById('mmBtn').style.display='block';
-    } else {
+    }else{
       toast('⚠️ MetaMask extension install karo',true);
     }
     return;
@@ -709,7 +647,7 @@ async function connectWallet(){
     try{
       await window.ethereum.request({method:'wallet_addEthereumChain',params:[CHAIN]});
     }catch(e){
-      try{ await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:CHAIN.chainId}]}); }catch(e2){}
+      try{await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:CHAIN.chainId}]});}catch(e2){}
     }
     provider=new ethers.providers.Web3Provider(window.ethereum,'any');
     signer=provider.getSigner();
@@ -724,63 +662,120 @@ async function connectWallet(){
   }
 }
 
-// ═══════════════════════════════════════
+// ═══════════════════════════════
 //  CONFIRM MODAL
-// ═══════════════════════════════════════
-function showConfirm(){
-  if(!signer){ toast('⚠️ Pehle wallet connect karo!',true); return; }
-  document.getElementById('cScore').textContent=score+' pts';
-  document.getElementById('cFruits').textContent=fruitsSliced+' 🍉';
-  document.getElementById('cWallet').textContent=walletAddr?walletAddr.slice(0,8)+'...':'—';
-  document.getElementById('confirmModal').style.display='flex';
-}
-function closeConfirm(){ document.getElementById('confirmModal').style.display='none'; }
+// ═══════════════════════════════
+async function showConfirm(){
+  if(!signer){toast('⚠️ Pehle wallet connect karo!',true);return;}
 
-// ═══════════════════════════════════════
-//  REGISTER ON STORY MAINNET
-// ═══════════════════════════════════════
+  // Balance check
+  try{
+    const bal=await provider.getBalance(walletAddr);
+    const balIP=parseFloat(ethers.utils.formatEther(bal));
+
+    if(balIP<0.0001){
+      toast(`❌ IP tokens nahi hain! Balance: ${balIP.toFixed(6)} IP — Thoda IP chahiye gas ke liye`,true);
+      return;
+    }
+
+    // Gas estimate
+    let gasEst='~0.000021 IP';
+    try{
+      const gasPrice=await provider.getGasPrice();
+      const lowGas=gasPrice.mul(90).div(100);
+      const totalGas=lowGas.mul(60000);
+      const gasIP=parseFloat(ethers.utils.formatEther(totalGas));
+      gasEst=`~${gasIP.toFixed(6)} IP`;
+    }catch(e){}
+
+    document.getElementById('cScore').textContent=score+' pts';
+    document.getElementById('cFruits').textContent=fruitsSliced+' 🍉';
+    document.getElementById('cWallet').textContent=walletAddr.slice(0,8)+'...';
+    document.getElementById('cBalance').textContent=balIP.toFixed(5)+' IP';
+    document.getElementById('cGasFee').textContent=gasEst;
+    document.getElementById('confirmModal').style.display='flex';
+  }catch(e){
+    toast('❌ Balance check fail: '+e.message.slice(0,60),true);
+  }
+}
+
+function closeConfirm(){document.getElementById('confirmModal').style.display='none';}
+
+// ═══════════════════════════════
+//  REGISTER — STORY MAINNET
+// ═══════════════════════════════
 async function registerStory(){
   closeConfirm();
-  if(!signer){ toast('⚠️ Pehle wallet connect karo!',true); return; }
+  if(!signer){toast('⚠️ Pehle wallet connect karo!',true);return;}
   const btn=document.getElementById('regBtn');
-  btn.textContent='⏳ Registering on Mainnet...';
+  btn.textContent='⏳ MetaMask approve karo...';
   btn.disabled=true;
+
   try{
-    const data=`STORY_IP|game=FruitSlice|score=${score}|fruits=${fruitsSliced}|player=${walletAddr}|ts=${Date.now()}`;
+    // Fresh provider after any network switch
+    const fp=new ethers.providers.Web3Provider(window.ethereum,'any');
+    const fs=fp.getSigner();
 
-    // Low gas price — 15% less than current
-    const gasPrice=await provider.getGasPrice();
-    const lowGas=gasPrice.mul(85).div(100);
+    // Network verify
+    const network=await fp.getNetwork();
+    if(network.chainId!==1514){
+      try{
+        await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:'0x5EA'}]});
+      }catch(e){
+        await window.ethereum.request({method:'wallet_addEthereumChain',params:[CHAIN]});
+      }
+      toast('🔄 Network switch hua — dobara Register dabao',true);
+      btn.disabled=false;
+      btn.textContent='🏛️ Register on Story Mainnet';
+      return;
+    }
 
-    const tx=await signer.sendTransaction({
+    const ipData=`STORY_IP|game=FruitSlice|score=${score}|fruits=${fruitsSliced}|player=${walletAddr}|ts=${Date.now()}`;
+    const gasPrice=await fp.getGasPrice();
+    const lowGas=gasPrice.mul(90).div(100);
+
+    const tx=await fs.sendTransaction({
       to:walletAddr,
       value:ethers.utils.parseEther('0'),
-      data:ethers.utils.hexlify(ethers.utils.toUtf8Bytes(data)),
+      data:ethers.utils.hexlify(ethers.utils.toUtf8Bytes(ipData)),
       gasPrice:lowGas,
-      gasLimit:50000
+      gasLimit:60000
     });
-    toast('⏳ Transaction confirming...');
-    await tx.wait();
 
-    // Save tx to latest game
+    btn.textContent='⏳ Blockchain confirm ho raha...';
+    toast('⏳ TX bheja! Confirm hone do...');
+
+    const receipt=await tx.wait(1);
+
+    // Update global provider
+    provider=fp; signer=fs;
+
+    // Save TX to profile
     updateGameTx(tx.hash);
 
-    btn.textContent=`✅ Registered! Score: ${score}`;
+    btn.textContent=`✅ On-Chain! Score: ${score}`;
     toast(`🎉 Story Mainnet pe registered! TX: ${tx.hash.slice(0,14)}...`);
     setTimeout(()=>window.open(`https://storyscan.xyz/tx/${tx.hash}`,'_blank'),1500);
+
   }catch(e){
     btn.disabled=false;
     btn.textContent='🏛️ Register on Story Mainnet';
-    toast('❌ '+e.message.slice(0,80),true);
+    if(e.code===4001){
+      toast('❌ MetaMask mein Cancel kiya',true);
+    }else if(e.message&&e.message.toLowerCase().includes('insufficient')){
+      toast('❌ IP tokens kam hain! Wallet mein IP add karo',true);
+    }else{
+      toast('❌ '+(e.message||'Unknown error').slice(0,80),true);
+    }
   }
 }
 
 function toast(msg,err=false){
   const el=document.getElementById('toast');
-  el.textContent=msg; el.style.display='block';
+  el.textContent=msg;el.style.display='block';
   el.style.background=err?'rgba(255,50,50,0.18)':'rgba(0,255,150,0.13)';
   el.style.borderColor=err?'rgba(255,50,50,0.5)':'rgba(0,255,150,0.35)';
-  clearTimeout(el._t); el._t=setTimeout(()=>el.style.display='none',5000);
+  clearTimeout(el._t);el._t=setTimeout(()=>el.style.display='none',5500);
 }
 
 // Init
