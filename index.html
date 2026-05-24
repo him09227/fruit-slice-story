@@ -2,609 +2,626 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>🍉 Fruit Slice × Story Protocol</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Fruit Slice × Story Protocol</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-body{
-  background:#0f0c29;
-  min-height:100vh;min-height:100dvh;
-  font-family:'Segoe UI',Arial,sans-serif;
-  color:white;overflow:hidden;
-  display:flex;flex-direction:column;align-items:center;
+html,body{width:100%;height:100%;overflow:hidden;background:#0f0c29;font-family:Arial,sans-serif;color:#fff;}
+#gameCanvas{position:fixed;top:0;left:0;}
+
+/* TOP UI */
+#ui{position:fixed;top:8px;left:0;right:0;display:flex;justify-content:space-between;padding:0 10px;z-index:10;pointer-events:none;}
+.box{background:rgba(255,255,255,0.13);border-radius:14px;padding:5px 12px;text-align:center;border:1px solid rgba(255,255,255,0.18);min-width:68px;}
+.box span{font-size:8px;opacity:0.65;display:block;letter-spacing:1px;text-transform:uppercase;}
+.box strong{font-size:21px;font-weight:900;display:block;line-height:1.2;}
+.hr{display:flex;gap:2px;justify-content:center;font-size:14px;min-height:24px;align-items:center;}
+#profileBtn{pointer-events:all;background:linear-gradient(135deg,#f093fb,#f5576c);border:none;border-radius:50%;width:36px;height:36px;font-size:17px;cursor:pointer;box-shadow:0 2px 10px rgba(240,147,251,0.5);align-self:center;}
+
+/* BOTTOM BAR */
+#bottomBar{position:fixed;bottom:0;left:0;right:0;padding:8px 14px 20px;z-index:10;display:flex;flex-direction:column;gap:7px;align-items:center;}
+.btnM{width:100%;max-width:340px;padding:12px;border-radius:30px;border:none;font-size:14px;font-weight:700;cursor:pointer;}
+#connectBtn{background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;box-shadow:0 4px 16px rgba(240,147,251,0.4);}
+#mmBtn{background:linear-gradient(135deg,#f6851b,#e2761b);color:#fff;display:none;}
+#toast{width:100%;max-width:340px;padding:8px 14px;border-radius:20px;font-size:12px;text-align:center;display:none;line-height:1.5;border:1px solid rgba(0,255,150,0.35);background:rgba(0,255,150,0.13);}
+
+/* GAME OVER */
+#overlay{position:fixed;inset:0;background:rgba(0,0,0,0.92);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:20;gap:12px;padding:20px;overflow-y:auto;}
+#overlay h2{font-size:38px;}
+.oScore{font-size:26px;color:#f093fb;font-weight:900;}
+.oNew{color:#ffd700;font-size:12px;min-height:16px;}
+.oBtn{width:100%;max-width:280px;padding:13px;border-radius:30px;border:none;font-size:14px;font-weight:700;cursor:pointer;margin-top:2px;}
+#regBtn{background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;}
+#rstBtn{background:#4ecdc4;color:#1a1a2e;}
+
+/* PROFILE PANEL */
+#profilePanel{
+  position:fixed;inset:0;background:rgba(0,0,0,0.95);
+  display:none;flex-direction:column;z-index:40;
+  overflow-y:auto;padding:20px 16px 30px;
 }
-#wrap{position:relative;width:100%;max-width:480px;height:100vh;height:100dvh;}
-canvas{display:block;width:100%;height:100%;}
-#ui{
-  position:absolute;top:8px;left:0;right:0;
-  display:flex;justify-content:space-between;
-  padding:0 10px;z-index:10;pointer-events:none;
-}
-.box{
-  background:rgba(255,255,255,0.13);
-  backdrop-filter:blur(12px);
-  border-radius:14px;padding:5px 14px;text-align:center;
-  border:1px solid rgba(255,255,255,0.2);min-width:70px;
-}
-.box span{font-size:9px;opacity:0.7;display:block;letter-spacing:1px;text-transform:uppercase;}
-.box strong{font-size:22px;font-weight:900;display:block;}
-.lives-row{display:flex;gap:3px;justify-content:center;font-size:15px;min-height:24px;align-items:center;}
-/* Bottom bar */
-#bottomBar{
-  position:absolute;bottom:0;left:0;right:0;
-  padding:10px 14px 18px;z-index:10;
-  display:flex;flex-direction:column;gap:8px;align-items:center;
-}
-.btn-main{
-  width:100%;max-width:340px;
-  padding:13px 20px;border-radius:30px;border:none;
-  font-size:15px;font-weight:700;cursor:pointer;
-  transition:all 0.2s;
-}
-#connectBtn{background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;box-shadow:0 4px 18px rgba(240,147,251,0.45);}
-#mmBtn{background:linear-gradient(135deg,#f6851b,#e2761b);color:#fff;display:none;box-shadow:0 4px 18px rgba(246,133,27,0.4);}
-#toast{
-  width:100%;max-width:340px;
-  background:rgba(0,255,150,0.13);border:1px solid rgba(0,255,150,0.35);
-  padding:9px 14px;border-radius:20px;font-size:12px;text-align:center;
-  display:none;backdrop-filter:blur(10px);line-height:1.4;
-}
-/* Overlay */
-#overlay{
-  position:absolute;inset:0;background:rgba(0,0,0,0.88);
-  display:none;flex-direction:column;
-  align-items:center;justify-content:center;
-  z-index:20;gap:14px;padding:20px;
-}
-#overlay h2{font-size:40px;}
-#overlay .fscore{font-size:28px;color:#f093fb;font-weight:900;}
-#overlay .newrec{color:#ffd700;font-size:13px;min-height:18px;}
-.obtn{width:100%;max-width:280px;padding:14px;border-radius:30px;border:none;font-size:15px;font-weight:700;cursor:pointer;}
-#registerBtn{background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;}
-#restartBtn{background:#4ecdc4;color:#1a1a2e;}
-/* Start screen */
-#startScreen{
-  position:absolute;inset:0;
-  background:linear-gradient(160deg,#1a1a2e,#16213e,#0f3460);
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  z-index:30;gap:14px;padding:30px;
-}
-#startScreen h1{font-size:44px;text-align:center;line-height:1.2;}
-#startScreen p{opacity:0.75;font-size:14px;text-align:center;line-height:1.6;}
-#startBtn{
-  padding:16px 48px;border-radius:30px;border:none;
-  background:linear-gradient(135deg,#f093fb,#f5576c);
-  color:white;font-size:19px;font-weight:700;cursor:pointer;
-  box-shadow:0 6px 24px rgba(240,147,251,0.5);
-}
-.sub{font-size:11px;opacity:0.45;}
+.ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.ph h2{font-size:22px;}
+#closeProfile{background:rgba(255,255,255,0.1);border:none;color:#fff;border-radius:50%;width:36px;height:36px;font-size:18px;cursor:pointer;}
+.pCard{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:18px;padding:16px;margin-bottom:14px;}
+.pCard h3{font-size:13px;opacity:0.6;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;}
+.statsGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.stat{background:rgba(255,255,255,0.06);border-radius:12px;padding:12px;text-align:center;}
+.stat .sv{font-size:28px;font-weight:900;color:#f093fb;}
+.stat .sl{font-size:10px;opacity:0.6;margin-top:2px;}
+.histItem{display:flex;justify-content:space-between;align-items:center;padding:9px 4px;border-bottom:1px solid rgba(255,255,255,0.07);font-size:13px;}
+.histItem:last-child{border-bottom:none;}
+.histScore{font-weight:700;color:#ffd700;}
+.histDate{font-size:10px;opacity:0.5;}
+.histTx{font-size:10px;color:#4cc9f0;cursor:pointer;text-decoration:underline;}
+.walletBox{font-size:12px;opacity:0.6;word-break:break-all;margin-top:6px;padding:8px;background:rgba(255,255,255,0.05);border-radius:8px;}
+.badge{display:inline-block;background:linear-gradient(135deg,#f093fb,#f5576c);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700;margin:3px;}
+.noData{text-align:center;opacity:0.4;font-size:13px;padding:20px;}
+#clearBtn{width:100%;padding:11px;border-radius:20px;border:none;background:rgba(255,80,80,0.15);color:#ff6b6b;border:1px solid rgba(255,80,80,0.3);font-size:13px;cursor:pointer;margin-top:8px;}
+
+/* START SCREEN */
+#startScreen{position:fixed;inset:0;background:linear-gradient(160deg,#1a1a2e,#16213e,#0f3460);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:30;gap:14px;padding:30px;}
+#startScreen h1{font-size:46px;text-align:center;line-height:1.2;}
+#startScreen p{opacity:0.75;font-size:14px;text-align:center;line-height:1.7;}
+#startBtn{padding:15px 48px;border-radius:30px;border:none;background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;font-size:19px;font-weight:700;cursor:pointer;box-shadow:0 6px 24px rgba(240,147,251,0.5);}
 </style>
 </head>
 <body>
-<div id="wrap">
-  <canvas id="gameCanvas"></canvas>
 
-  <div id="ui">
-    <div class="box"><span>Score</span><strong id="scoreD">0</strong></div>
-    <div class="box"><span>Lives</span><div class="lives-row" id="livesD">❤️❤️❤️</div></div>
-    <div class="box"><span>Best</span><strong id="bestD">0</strong></div>
+<canvas id="gameCanvas"></canvas>
+
+<!-- TOP UI -->
+<div id="ui">
+  <div class="box"><span>Score</span><strong id="scoreD">0</strong></div>
+  <div class="box"><span>Lives</span><div class="hr" id="livesD"></div></div>
+  <div class="box"><span>Best</span><strong id="bestD">0</strong></div>
+  <button id="profileBtn" onclick="openProfile()">👤</button>
+</div>
+
+<!-- BOTTOM BAR -->
+<div id="bottomBar">
+  <div id="toast"></div>
+  <button class="btnM" id="mmBtn" onclick="openMM()">🦊 Open in MetaMask Browser</button>
+  <button class="btnM" id="connectBtn" onclick="connectWallet()">🔗 Connect Wallet</button>
+</div>
+
+<!-- GAME OVER -->
+<div id="overlay">
+  <h2>🍉 Game Over!</h2>
+  <div class="oScore" id="finalScore"></div>
+  <div class="oNew" id="newRec"></div>
+  <button class="oBtn" id="regBtn" onclick="registerStory()">🏛️ Register on Story Protocol</button>
+  <button class="oBtn" id="rstBtn" onclick="restartGame()">🔄 Play Again</button>
+  <button class="oBtn" style="background:rgba(255,255,255,0.1);color:#fff;" onclick="openProfile()">👤 View Profile</button>
+</div>
+
+<!-- PROFILE PANEL -->
+<div id="profilePanel">
+  <div class="ph">
+    <h2>👤 Player Profile</h2>
+    <button id="closeProfile" onclick="closeProfile()">✕</button>
   </div>
 
-  <div id="bottomBar">
-    <div id="toast"></div>
-    <button class="btn-main" id="mmBtn" onclick="openInMetaMask()">🦊 Open in MetaMask Browser</button>
-    <button class="btn-main" id="connectBtn" onclick="connectWallet()">🔗 Connect Wallet</button>
+  <!-- Wallet -->
+  <div class="pCard">
+    <h3>🔗 Wallet</h3>
+    <div id="pWallet">
+      <p style="opacity:0.5;font-size:13px;">Wallet connected nahi hai</p>
+      <button class="btnM" id="pConnectBtn" style="margin-top:10px;background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;max-width:200px;padding:10px;" onclick="connectWallet();closeProfile();">Connect Wallet</button>
+    </div>
   </div>
 
-  <div id="overlay">
-    <h2>🍉 Game Over!</h2>
-    <div class="fscore" id="finalScore"></div>
-    <div class="newrec" id="newRec"></div>
-    <button class="obtn" id="registerBtn" onclick="registerOnStory()">🏛 Register on Story Protocol</button>
-    <button class="obtn" id="restartBtn" onclick="restartGame()">🔄 Play Again</button>
+  <!-- Stats -->
+  <div class="pCard">
+    <h3>📊 Stats</h3>
+    <div class="statsGrid">
+      <div class="stat"><div class="sv" id="pBest">0</div><div class="sl">Best Score</div></div>
+      <div class="stat"><div class="sv" id="pGames">0</div><div class="sl">Games Played</div></div>
+      <div class="stat"><div class="sv" id="pFruits">0</div><div class="sl">Fruits Sliced</div></div>
+      <div class="stat"><div class="sv" id="pAvg">0</div><div class="sl">Avg Score</div></div>
+    </div>
   </div>
 
-  <div id="startScreen">
-    <h1>🍉<br>Fruit Slice</h1>
-    <p>Fruits slice karo!<br>💣 Bombs se bacho!<br>🏛 Story Protocol pe register karo!</p>
-    <button id="startBtn" onclick="startGame()">▶ Play Now</button>
-    <p class="sub">Powered by Story Protocol</p>
+  <!-- Badges -->
+  <div class="pCard">
+    <h3>🏅 Badges</h3>
+    <div id="pBadges"></div>
   </div>
+
+  <!-- Score History -->
+  <div class="pCard">
+    <h3>📜 Score History</h3>
+    <div id="pHistory"></div>
+  </div>
+
+  <button id="clearBtn" onclick="clearData()">🗑️ Clear All Data</button>
+</div>
+
+<!-- START SCREEN -->
+<div id="startScreen">
+  <h1>🍉<br>Fruit Slice</h1>
+  <p>Fruits slice karo!<br>💣 Bombs se bacho!<br>🏛️ Story Protocol pe score register karo!</p>
+  <button id="startBtn" onclick="startGame()">▶ Play Now</button>
+  <p style="font-size:11px;opacity:0.4;margin-top:4px;">Powered by Story Protocol</p>
 </div>
 
 <script>
-// ══════════════════════════════
-//  CANVAS SETUP — RESPONSIVE
-// ══════════════════════════════
+// ── CANVAS ──────────────────────────────────────────
 const canvas = document.getElementById('gameCanvas');
 const ctx    = canvas.getContext('2d');
-const wrap   = document.getElementById('wrap');
 
-function resizeCanvas(){
-  canvas.width  = wrap.clientWidth;
-  canvas.height = wrap.clientHeight;
+function resize(){
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
 }
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
+resize();
+window.addEventListener('resize', resize);
 
-// ══════════════════════════════
-//  FRUIT DEFINITIONS (drawn, no emoji)
-// ══════════════════════════════
-const FDEFS = [
-  {label:'Apple',  body:'#e63946', shine:'#ff6b6b', leaf:'#2dc653'},
-  {label:'Orange', body:'#f4a261', shine:'#ffd97d', leaf:'#2dc653'},
-  {label:'Lemon',  body:'#e9c46a', shine:'#fff3b0', leaf:'#2dc653'},
-  {label:'Grape',  body:'#9b5de5', shine:'#c77dff', leaf:'#2dc653'},
-  {label:'Melon',  body:'#52b788', shine:'#b7e4c7', leaf:'#2dc653'},
-  {label:'Berry',  body:'#e76f51', shine:'#ff9f7f', leaf:'#2dc653'},
-  {label:'Peach',  body:'#ffb4a2', shine:'#ffd7cc', leaf:'#2dc653'},
-  {label:'Kiwi',   body:'#588157', shine:'#a7c957', leaf:'#2dc653'},
+// ── PROFILE / STORAGE ───────────────────────────────
+function getProfile(){
+  try{ return JSON.parse(localStorage.getItem('fsProfile')||'{}'); }
+  catch(e){ return {}; }
+}
+function saveProfile(p){ localStorage.setItem('fsProfile', JSON.stringify(p)); }
+
+function recordGame(score, fruitsSliced, txHash){
+  const p = getProfile();
+  if(!p.games) p.games = [];
+  if(!p.totalFruits) p.totalFruits = 0;
+  p.games.unshift({
+    score,
+    fruits: fruitsSliced,
+    ts: Date.now(),
+    tx: txHash || null
+  });
+  if(p.games.length > 50) p.games = p.games.slice(0,50); // keep last 50
+  p.totalFruits = (p.totalFruits||0) + fruitsSliced;
+  p.best = Math.max(p.best||0, score);
+  saveProfile(p);
+}
+
+function clearData(){
+  if(confirm('Sab data delete karna chahte ho?')){
+    localStorage.removeItem('fsProfile');
+    localStorage.removeItem('fsb');
+    best=0;
+    document.getElementById('bestD').textContent='0';
+    renderProfile();
+    toast('🗑️ Data cleared!');
+  }
+}
+
+// ── FRUIT DEFS ──────────────────────────────────────
+const FD = [
+  {body:'#e63946',shine:'#ff8c94',inner:'#c1121f'},
+  {body:'#f4a261',shine:'#ffd97d',inner:'#e76f51'},
+  {body:'#e9c46a',shine:'#fff3b0',inner:'#d4a017'},
+  {body:'#9b5de5',shine:'#c77dff',inner:'#7b2fbe'},
+  {body:'#52b788',shine:'#b7e4c7',inner:'#2d6a4f'},
+  {body:'#e76f51',shine:'#ff9f7f',inner:'#c1440e'},
+  {body:'#ffb4a2',shine:'#ffd7cc',inner:'#e5989b'},
+  {body:'#80b918',shine:'#c5e063',inner:'#55a630'},
+  {body:'#f72585',shine:'#ff85a1',inner:'#b5179e'},
+  {body:'#4cc9f0',shine:'#ade8f4',inner:'#0096c7'},
 ];
 
-// ══════════════════════════════
-//  STATE
-// ══════════════════════════════
-let score=0, lives=3, gameRunning=false;
-let fruits=[], particles=[], slashTrail=[], floats=[];
-let spawnTimer=0, spawnInterval=80, frameId=null;
-let bestScore = parseInt(localStorage.getItem('fruitBest')||'0');
-document.getElementById('bestD').textContent = bestScore;
+// ── STATE ────────────────────────────────────────────
+let score=0, lives=3, running=false;
+let fruits=[], parts=[], trail=[], floats=[];
+let spawnT=0, spawnI=75, fid=null;
+let fruitsSlicedThisGame=0;
+let best = parseInt(localStorage.getItem('fsb')||'0');
+document.getElementById('bestD').textContent = best;
 
-// ══════════════════════════════
-//  FRUIT CLASS (canvas drawn)
-// ══════════════════════════════
-class Fruit {
+// ── FRUIT CLASS ──────────────────────────────────────
+class Fruit{
   constructor(){
-    this.x      = Math.random()*(canvas.width-100)+50;
-    this.y      = canvas.height+60;
-    this.vx     = (Math.random()-0.5)*5;
-    this.vy     = -(Math.random()*12+11);
-    this.g      = 0.3;
-    this.r      = 28 + Math.random()*8;
-    this.rot    = 0;
-    this.rotSpd = (Math.random()-0.5)*0.15;
-    this.sliced = false;
-    this.alpha  = 1;
-    this.missed = false;
-    this.isBomb = Math.random()<0.12;
-    this.def    = FDEFS[Math.floor(Math.random()*FDEFS.length)];
-    // slice halves
-    this.sliceOff = 0;
+    const W=canvas.width, H=canvas.height;
+    this.x   = Math.random()*(W-120)+60;
+    this.y   = H+60;
+    this.vx  = (Math.random()-0.5)*6;
+    this.vy  = -(Math.random()*13+12);
+    this.g   = 0.32;
+    this.r   = 26+Math.random()*10;
+    this.rot = 0;
+    this.rs  = (Math.random()-0.5)*0.14;
+    this.sliced=false; this.missed=false;
+    this.alpha=1; this.sOff=0;
+    this.bomb=Math.random()<0.11;
+    this.d=FD[Math.floor(Math.random()*FD.length)];
   }
-
   update(){
-    this.vy += this.g;
-    this.x  += this.vx;
-    this.y  += this.vy;
-    this.rot+= this.rotSpd;
-    if(this.sliced){ this.alpha -= 0.055; this.sliceOff += 3; }
+    this.vy+=this.g; this.x+=this.vx; this.y+=this.vy; this.rot+=this.rs;
+    if(this.sliced){this.alpha-=0.055; this.sOff+=3.5;}
   }
-
   draw(){
     if(this.alpha<=0) return;
     ctx.save();
-    ctx.globalAlpha = Math.max(0,this.alpha);
-    ctx.translate(this.x, this.y);
+    ctx.globalAlpha=Math.max(0,this.alpha);
+    ctx.translate(this.x,this.y);
     ctx.rotate(this.rot);
-
-    if(this.isBomb){
-      this._drawBomb();
-    } else if(this.sliced){
-      this._drawSliced();
-    } else {
-      this._drawWhole();
-    }
+    this.bomb ? this._bomb() : this.sliced ? this._sliced() : this._whole();
     ctx.restore();
   }
-
-  _drawWhole(){
-    const d = this.def, r = this.r;
-    // Shadow
-    ctx.shadowColor='rgba(0,0,0,0.4)';
-    ctx.shadowBlur=8;
-    // Body
-    ctx.beginPath();
-    ctx.arc(0,0,r,0,Math.PI*2);
-    const g = ctx.createRadialGradient(-r*0.3,-r*0.3,r*0.1, 0,0,r);
-    g.addColorStop(0,d.shine);
-    g.addColorStop(1,d.body);
-    ctx.fillStyle=g;
-    ctx.fill();
-    ctx.shadowBlur=0;
-    // Leaf
-    ctx.beginPath();
-    ctx.ellipse(0,-r-4, 5,9, -0.3, 0,Math.PI*2);
-    ctx.fillStyle=d.leaf;
-    ctx.fill();
-    // Shine
-    ctx.beginPath();
-    ctx.arc(-r*0.28,-r*0.28,r*0.2,0,Math.PI*2);
-    ctx.fillStyle='rgba(255,255,255,0.4)';
-    ctx.fill();
+  _whole(){
+    const r=this.r,d=this.d;
+    ctx.shadowColor='rgba(0,0,0,0.5)'; ctx.shadowBlur=10;
+    ctx.beginPath(); ctx.arc(0,0,r,0,Math.PI*2);
+    const g=ctx.createRadialGradient(-r*.3,-r*.3,r*.05,0,0,r);
+    g.addColorStop(0,d.shine); g.addColorStop(.6,d.body); g.addColorStop(1,d.inner);
+    ctx.fillStyle=g; ctx.fill(); ctx.shadowBlur=0;
+    ctx.beginPath(); ctx.moveTo(0,-r); ctx.lineTo(3,-r-9);
+    ctx.strokeStyle='#5c3d11'; ctx.lineWidth=2.5; ctx.stroke();
+    ctx.beginPath(); ctx.ellipse(5,-r-6,5,8,.5,0,Math.PI*2);
+    ctx.fillStyle='#2dc653'; ctx.fill();
+    ctx.beginPath(); ctx.arc(-r*.3,-r*.3,r*.18,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,255,255,0.38)'; ctx.fill();
   }
-
-  _drawSliced(){
-    const d = this.def, r = this.r;
-    const off = this.sliceOff;
-    // Left half
-    ctx.save();
-    ctx.translate(-off*0.7, -off*0.3);
-    ctx.beginPath();
-    ctx.arc(0,0,r,Math.PI*0.5,Math.PI*1.5);
-    const g1 = ctx.createRadialGradient(0,0,0,0,0,r);
-    g1.addColorStop(0,'#fff8');
-    g1.addColorStop(0.3,d.shine);
-    g1.addColorStop(1,d.body);
-    ctx.fillStyle=g1;
-    ctx.fill();
-    ctx.restore();
-    // Right half
-    ctx.save();
-    ctx.translate(off*0.7, off*0.3);
-    ctx.beginPath();
-    ctx.arc(0,0,r,-Math.PI*0.5,Math.PI*0.5);
-    ctx.fillStyle=d.body;
-    ctx.fill();
-    ctx.restore();
+  _sliced(){
+    const r=this.r,d=this.d,o=this.sOff;
+    ctx.save(); ctx.translate(-o*.7,-o*.25);
+    ctx.beginPath(); ctx.arc(0,0,r,Math.PI*.5,Math.PI*1.5);
+    const g1=ctx.createRadialGradient(0,0,1,0,0,r);
+    g1.addColorStop(0,'rgba(255,255,255,0.6)'); g1.addColorStop(.3,d.shine); g1.addColorStop(1,d.body);
+    ctx.fillStyle=g1; ctx.fill(); ctx.restore();
+    ctx.save(); ctx.translate(o*.7,o*.25);
+    ctx.beginPath(); ctx.arc(0,0,r,-Math.PI*.5,Math.PI*.5);
+    ctx.fillStyle=d.body; ctx.fill(); ctx.restore();
   }
-
-  _drawBomb(){
-    const r = this.r;
-    // Body
-    ctx.beginPath();
-    ctx.arc(0,0,r,0,Math.PI*2);
-    const g=ctx.createRadialGradient(-r*0.3,-r*0.3,2,0,0,r);
-    g.addColorStop(0,'#555');
-    g.addColorStop(1,'#111');
-    ctx.fillStyle=g;
-    ctx.shadowColor='rgba(255,50,50,0.6)';
-    ctx.shadowBlur=12;
-    ctx.fill();
-    ctx.shadowBlur=0;
-    // Fuse
-    ctx.beginPath();
-    ctx.moveTo(r*0.3,-r);
-    ctx.bezierCurveTo(r*0.8,-r*1.4, r*0.5,-r*1.8, r*0.1,-r*1.5);
-    ctx.strokeStyle='#aaa';
-    ctx.lineWidth=2.5;
-    ctx.stroke();
-    // Spark
-    ctx.beginPath();
-    ctx.arc(r*0.08,-r*1.52,4,0,Math.PI*2);
-    ctx.fillStyle='#ffd93d';
-    ctx.fill();
-    // Shine
-    ctx.beginPath();
-    ctx.arc(-r*0.3,-r*0.3,r*0.15,0,Math.PI*2);
-    ctx.fillStyle='rgba(255,255,255,0.25)';
-    ctx.fill();
+  _bomb(){
+    const r=this.r;
+    ctx.shadowColor='rgba(255,80,0,0.7)'; ctx.shadowBlur=14;
+    ctx.beginPath(); ctx.arc(0,0,r,0,Math.PI*2);
+    const g=ctx.createRadialGradient(-r*.3,-r*.3,2,0,0,r);
+    g.addColorStop(0,'#555'); g.addColorStop(1,'#111');
+    ctx.fillStyle=g; ctx.fill(); ctx.shadowBlur=0;
+    ctx.beginPath(); ctx.moveTo(r*.25,-r);
+    ctx.bezierCurveTo(r*.8,-r*1.5,r*.4,-r*1.9,r*.05,-r*1.55);
+    ctx.strokeStyle='#bbb'; ctx.lineWidth=2.5; ctx.stroke();
+    ctx.beginPath(); ctx.arc(r*.05,-r*1.55,4,0,Math.PI*2);
+    ctx.fillStyle='#ffd93d'; ctx.fill();
+    ctx.beginPath(); ctx.arc(-r*.28,-r*.28,r*.15,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,255,255,0.22)'; ctx.fill();
   }
-
-  dead(){ return this.y > canvas.height+90 || this.alpha<=0; }
-  hit(x,y){
-    return !this.sliced &&
-      Math.abs(this.x-x)<this.r*1.4 &&
-      Math.abs(this.y-y)<this.r*1.4;
-  }
+  dead(){return this.y>canvas.height+100||this.alpha<=0;}
+  hit(x,y){return !this.sliced&&Math.abs(this.x-x)<this.r*1.5&&Math.abs(this.y-y)<this.r*1.5;}
 }
 
-// ══════════════════════════════
-//  PARTICLES
-// ══════════════════════════════
-class Particle{
-  constructor(x,y,color){
+// ── PARTICLE ─────────────────────────────────────────
+class Part{
+  constructor(x,y,c){
     this.x=x; this.y=y;
-    this.vx=(Math.random()-0.5)*10;
-    this.vy=(Math.random()-0.5)*10;
-    this.life=1;
-    this.color=color;
-    this.r=Math.random()*6+2;
+    this.vx=(Math.random()-.5)*11; this.vy=(Math.random()-.5)*11;
+    this.life=1; this.c=c; this.r=Math.random()*6+2;
   }
-  update(){ this.x+=this.vx; this.y+=this.vy; this.vy+=0.3; this.life-=0.04; }
+  update(){this.x+=this.vx;this.y+=this.vy;this.vy+=.3;this.life-=.04;}
   draw(){
-    ctx.save();
-    ctx.globalAlpha=Math.max(0,this.life);
-    ctx.fillStyle=this.color;
-    ctx.beginPath();
-    ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
-    ctx.fill();
+    ctx.save();ctx.globalAlpha=Math.max(0,this.life);
+    ctx.fillStyle=this.c;ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fill();
     ctx.restore();
   }
 }
+const PC=['#ff6b6b','#ffd93d','#6bcb77','#4d96ff','#f093fb','#ff9a3c','#fff','#4cc9f0'];
 
-// ══════════════════════════════
-//  SLASH TRAIL
-// ══════════════════════════════
-function addTrail(x,y){ slashTrail.push({x,y,life:1}); if(slashTrail.length>20) slashTrail.shift(); }
+// ── TRAIL ─────────────────────────────────────────────
+function addTrail(x,y){trail.push({x,y,l:1});if(trail.length>22)trail.shift();}
 function drawTrail(){
-  if(slashTrail.length<2) return;
-  for(let i=1;i<slashTrail.length;i++){
-    const a=slashTrail[i-1],b=slashTrail[i];
-    ctx.beginPath();
-    ctx.moveTo(a.x,a.y);
-    ctx.lineTo(b.x,b.y);
-    ctx.strokeStyle=`rgba(255,255,255,${b.life*0.85})`;
-    ctx.lineWidth=3.5;
-    ctx.lineCap='round';
-    ctx.stroke();
+  if(trail.length<2)return;
+  for(let i=1;i<trail.length;i++){
+    const a=trail[i-1],b=trail[i];
+    ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
+    ctx.strokeStyle=`rgba(255,255,255,${b.l*.9})`;ctx.lineWidth=3.5;ctx.lineCap='round';ctx.stroke();
   }
-  slashTrail.forEach(p=>p.life-=0.07);
-  slashTrail=slashTrail.filter(p=>p.life>0);
+  trail.forEach(p=>p.l-=.07);trail=trail.filter(p=>p.l>0);
 }
 
-// ══════════════════════════════
-//  FLOAT TEXT
-// ══════════════════════════════
-function floatText(x,y,txt,col='#ffd700'){
-  floats.push({x,y,txt,col,life:1,vy:-2.2});
-}
+// ── FLOAT TEXT ────────────────────────────────────────
+function floatTxt(x,y,t,c='#ffd700'){floats.push({x,y,t,c,l:1,vy:-2.2});}
 function drawFloats(){
   floats.forEach(f=>{
-    ctx.save();
-    ctx.globalAlpha=f.life;
-    ctx.fillStyle=f.col;
-    ctx.font='bold 24px Arial';
-    ctx.textAlign='center';
-    ctx.fillText(f.txt,f.x,f.y);
-    ctx.restore();
-    f.y+=f.vy; f.life-=0.03;
+    ctx.save();ctx.globalAlpha=f.l;ctx.fillStyle=f.c;
+    ctx.font='bold 24px Arial';ctx.textAlign='center';ctx.fillText(f.t,f.x,f.y);ctx.restore();
+    f.y+=f.vy;f.l-=.03;
   });
-  floats=floats.filter(f=>f.life>0);
+  floats=floats.filter(f=>f.l>0);
 }
 
-// ══════════════════════════════
-//  SLICE CHECK
-// ══════════════════════════════
-const PCOLS=['#ff6b6b','#ffd93d','#6bcb77','#4d96ff','#f093fb','#ff9a3c','#fff'];
+// ── SLICE ─────────────────────────────────────────────
 function checkSlice(x,y){
   fruits.forEach(f=>{
-    if(!f.hit(x,y)) return;
+    if(!f.hit(x,y))return;
     f.sliced=true;
-    if(f.isBomb){
-      lives--; updateLives(); shakeWrap();
-      for(let i=0;i<24;i++) particles.push(new Particle(x,y,'#ff4444'));
-      floatText(x,y,'💥 -LIFE','#ff4444');
-      if(lives<=0){ setTimeout(endGame,300); }
-    } else {
+    if(f.bomb){
+      lives--;updateLives();shakeScreen();
+      for(let i=0;i<28;i++)parts.push(new Part(x,y,'#ff4444'));
+      floatTxt(x,y,'💥 BOMB!','#ff4444');
+      if(lives<=0)setTimeout(endGame,400);
+    }else{
       score++;
+      fruitsSlicedThisGame++;
       document.getElementById('scoreD').textContent=score;
-      for(let i=0;i<16;i++)
-        particles.push(new Particle(x,y,PCOLS[Math.floor(Math.random()*PCOLS.length)]));
-      floatText(x,y,'+1');
+      for(let i=0;i<18;i++)parts.push(new Part(x,y,PC[Math.floor(Math.random()*PC.length)]));
+      floatTxt(x,y,'+1');
     }
   });
 }
 
+// ── LIVES ─────────────────────────────────────────────
 function updateLives(){
-  const h=['❤️','❤️','❤️'];
-  for(let i=lives;i<3;i++) h[i]='🖤';
+  const h=[];
+  for(let i=0;i<3;i++) h.push(i<lives ? '❤️' : '🖤');
   document.getElementById('livesD').innerHTML=h.join('');
 }
 
-function shakeWrap(){
-  wrap.style.transition='none';
-  wrap.style.transform='translate(9px,0)';
-  setTimeout(()=>{wrap.style.transform='translate(-9px,0)';},70);
-  setTimeout(()=>{wrap.style.transform='none';},140);
+function shakeScreen(){
+  document.body.style.transition='none';
+  document.body.style.transform='translate(10px,0)';
+  setTimeout(()=>document.body.style.transform='translate(-10px,0)',70);
+  setTimeout(()=>document.body.style.transform='none',140);
 }
 
-// ══════════════════════════════
-//  BACKGROUND
-// ══════════════════════════════
+// ── BACKGROUND ────────────────────────────────────────
 function drawBg(){
   const g=ctx.createLinearGradient(0,0,0,canvas.height);
-  g.addColorStop(0,'#0f0c29');
-  g.addColorStop(0.5,'#302b63');
-  g.addColorStop(1,'#24243e');
-  ctx.fillStyle=g;
-  ctx.fillRect(0,0,canvas.width,canvas.height);
+  g.addColorStop(0,'#0f0c29');g.addColorStop(.5,'#302b63');g.addColorStop(1,'#24243e');
+  ctx.fillStyle=g;ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.strokeStyle='rgba(255,255,255,0.025)';ctx.lineWidth=1;
+  for(let x=0;x<canvas.width;x+=60){
+    ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,canvas.height);ctx.stroke();
+  }
 }
 
-// ══════════════════════════════
-//  GAME LOOP
-// ══════════════════════════════
-function gameLoop(){
-  if(!gameRunning) return;
+// ── GAME LOOP ─────────────────────────────────────────
+function loop(){
+  if(!running)return;
   drawBg();
-
-  spawnTimer++;
-  if(spawnTimer>=spawnInterval){
-    fruits.push(new Fruit());
-    spawnTimer=0;
-    spawnInterval=Math.max(30,80-Math.floor(score/25)*5);
+  spawnT++;
+  if(spawnT>=spawnI){
+    fruits.push(new Fruit());spawnT=0;
+    spawnI=Math.max(28,75-Math.floor(score/20)*5);
   }
-
-  fruits.forEach(f=>{ f.update(); f.draw(); });
-
-  // Missed fruits (not bomb)
+  fruits.forEach(f=>{f.update();f.draw();});
   fruits.forEach(f=>{
-    if(!f.sliced && !f.isBomb && !f.missed && f.y>canvas.height+60){
-      f.missed=true;
-      lives--;
-      updateLives();
-      if(lives<=0){ setTimeout(endGame,300); }
+    if(!f.sliced&&!f.bomb&&!f.missed&&f.y>canvas.height+65){
+      f.missed=true;lives--;updateLives();
+      if(lives<=0)setTimeout(endGame,400);
     }
   });
   fruits=fruits.filter(f=>!f.dead());
-
-  particles.forEach(p=>{ p.update(); p.draw(); });
-  particles=particles.filter(p=>p.life>0);
-
-  drawTrail();
-  drawFloats();
-
-  frameId=requestAnimationFrame(gameLoop);
+  parts.forEach(p=>{p.update();p.draw();});
+  parts=parts.filter(p=>p.life>0);
+  drawTrail();drawFloats();
+  fid=requestAnimationFrame(loop);
 }
 
-// ══════════════════════════════
-//  START / END / RESTART
-// ══════════════════════════════
+// ── START / END / RESTART ─────────────────────────────
 function startGame(){
   document.getElementById('startScreen').style.display='none';
-  gameRunning=true;
-  gameLoop();
+  score=0;lives=3;fruitsSlicedThisGame=0;
+  fruits=[];parts=[];trail=[];floats=[];
+  spawnT=0;spawnI=75;
+  document.getElementById('scoreD').textContent='0';
+  updateLives(); // fix: call here on fresh start
+  running=true;
+  loop();
 }
 
 function endGame(){
-  gameRunning=false;
-  cancelAnimationFrame(frameId);
+  running=false;
+  cancelAnimationFrame(fid);
   let isNew=false;
-  if(score>bestScore){
-    bestScore=score;
-    localStorage.setItem('fruitBest',bestScore);
-    document.getElementById('bestD').textContent=bestScore;
+  if(score>best){
+    best=score;
+    localStorage.setItem('fsb',best);
+    document.getElementById('bestD').textContent=best;
     isNew=true;
   }
+  // Record to profile
+  recordGame(score, fruitsSlicedThisGame, null);
+
   document.getElementById('finalScore').textContent=`Score: ${score} 🏆`;
-  document.getElementById('newRec').textContent=isNew?'🌟 New Best Record!':'';
-  document.getElementById('registerBtn').textContent='🏛️ Register on Story Protocol';
-  document.getElementById('registerBtn').disabled=false;
+  document.getElementById('newRec').textContent=isNew?'🌟 New Best!':'';
+  document.getElementById('regBtn').textContent='🏛️ Register on Story Protocol';
+  document.getElementById('regBtn').disabled=false;
   document.getElementById('overlay').style.display='flex';
 }
 
 function restartGame(){
-  score=0;lives=3;fruits=[];particles=[];slashTrail=[];floats=[];
-  spawnTimer=0;spawnInterval=80;gameRunning=true;
+  score=0;lives=3;fruitsSlicedThisGame=0;
+  fruits=[];parts=[];trail=[];floats=[];
+  spawnT=0;spawnI=75;running=true;
   document.getElementById('scoreD').textContent='0';
   document.getElementById('overlay').style.display='none';
   updateLives();
-  gameLoop();
+  loop();
 }
 
-// ══════════════════════════════
-//  TOUCH + MOUSE INPUT
-// ══════════════════════════════
+// ── TOUCH / MOUSE ─────────────────────────────────────
 let slicing=false;
-
-function getPos(e){
+function pos(e){
   const r=canvas.getBoundingClientRect();
-  const scaleX=canvas.width/r.width;
-  const scaleY=canvas.height/r.height;
-  if(e.touches){
-    return{x:(e.touches[0].clientX-r.left)*scaleX, y:(e.touches[0].clientY-r.top)*scaleY};
-  }
-  return{x:(e.clientX-r.left)*scaleX, y:(e.clientY-r.top)*scaleY};
+  if(e.touches)return{x:e.touches[0].clientX-r.left,y:e.touches[0].clientY-r.top};
+  return{x:e.clientX-r.left,y:e.clientY-r.top};
 }
-
-canvas.addEventListener('mousedown',  ()=>slicing=true);
-canvas.addEventListener('mouseup',    ()=>{slicing=false;slashTrail=[];});
-canvas.addEventListener('mouseleave', ()=>{slicing=false;slashTrail=[];});
-canvas.addEventListener('mousemove',  e=>{
-  if(!slicing||!gameRunning) return;
-  const p=getPos(e); addTrail(p.x,p.y); checkSlice(p.x,p.y);
-});
-canvas.addEventListener('touchstart', e=>{e.preventDefault();slicing=true;},{passive:false});
-canvas.addEventListener('touchend',   e=>{e.preventDefault();slicing=false;slashTrail=[];},{passive:false});
-canvas.addEventListener('touchmove',  e=>{
-  e.preventDefault();
-  if(!gameRunning) return;
-  const p=getPos(e); addTrail(p.x,p.y); checkSlice(p.x,p.y);
+canvas.addEventListener('mousedown',()=>slicing=true);
+canvas.addEventListener('mouseup',()=>{slicing=false;trail=[];});
+canvas.addEventListener('mouseleave',()=>{slicing=false;trail=[];});
+canvas.addEventListener('mousemove',e=>{if(!slicing||!running)return;const p=pos(e);addTrail(p.x,p.y);checkSlice(p.x,p.y);});
+canvas.addEventListener('touchstart',e=>{e.preventDefault();slicing=true;},{passive:false});
+canvas.addEventListener('touchend',e=>{e.preventDefault();slicing=false;trail=[];},{passive:false});
+canvas.addEventListener('touchmove',e=>{
+  e.preventDefault();if(!running)return;
+  const p=pos(e);addTrail(p.x,p.y);checkSlice(p.x,p.y);
 },{passive:false});
 
-// ══════════════════════════════
-//  WALLET — STORY PROTOCOL
-// ══════════════════════════════
-let provider,signer,walletAddress;
-
-// Story Protocol Odyssey Testnet
-const STORY_CHAIN={
-  chainId:'0x5EC',  // 1516
-  chainName:'Story Network Testnet',
-  rpcUrls:['https://rpc.odyssey.storyrpc.io'],
-  nativeCurrency:{name:'IP',symbol:'IP',decimals:18},
-  blockExplorerUrls:['https://odyssey.storyscan.xyz']
-};
-
-function isMobile(){
-  return /Android|iPhone|iPad/i.test(navigator.userAgent);
+// ── PROFILE PANEL ─────────────────────────────────────
+function openProfile(){
+  renderProfile();
+  document.getElementById('profilePanel').style.display='flex';
+}
+function closeProfile(){
+  document.getElementById('profilePanel').style.display='none';
 }
 
-function openInMetaMask(){
-  const url=window.location.href.replace(/^https?:\/\//,'');
-  window.location.href='https://metamask.app.link/dapp/'+url;
+function renderProfile(){
+  const p=getProfile();
+  const games=p.games||[];
+  const totalFruits=p.totalFruits||0;
+  const gamesCount=games.length;
+  const avgScore=gamesCount>0?Math.round(games.reduce((a,g)=>a+g.score,0)/gamesCount):0;
+  const bestScore=p.best||0;
+
+  document.getElementById('pBest').textContent=bestScore;
+  document.getElementById('pGames').textContent=gamesCount;
+  document.getElementById('pFruits').textContent=totalFruits;
+  document.getElementById('pAvg').textContent=avgScore;
+
+  // Wallet
+  const wDiv=document.getElementById('pWallet');
+  if(walletAddr){
+    wDiv.innerHTML=`
+      <p style="font-size:13px;color:#4cc9f0;font-weight:700;">✅ Connected</p>
+      <div class="walletBox">${walletAddr}</div>
+    `;
+  } else {
+    wDiv.innerHTML=`
+      <p style="opacity:0.5;font-size:13px;">Wallet connected nahi hai</p>
+      <button class="btnM" style="margin-top:10px;background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;max-width:200px;padding:10px;" onclick="connectWallet();closeProfile();">Connect Wallet</button>
+    `;
+  }
+
+  // Badges
+  const badges=[];
+  if(gamesCount>=1)  badges.push('🎮 First Game');
+  if(gamesCount>=10) badges.push('🔥 10 Games');
+  if(gamesCount>=50) badges.push('💎 50 Games');
+  if(bestScore>=10)  badges.push('⭐ Score 10+');
+  if(bestScore>=25)  badges.push('🌟 Score 25+');
+  if(bestScore>=50)  badges.push('🏆 Score 50+');
+  if(totalFruits>=50)  badges.push('🍉 50 Fruits');
+  if(totalFruits>=200) badges.push('🍇 200 Fruits');
+  if(games.some(g=>g.tx)) badges.push('🏛️ On-Chain');
+  const bDiv=document.getElementById('pBadges');
+  bDiv.innerHTML=badges.length
+    ? badges.map(b=>`<span class="badge">${b}</span>`).join('')
+    : '<p class="noData">Abhi koi badge nahi — khelo aur kamao!</p>';
+
+  // History
+  const hDiv=document.getElementById('pHistory');
+  if(!games.length){
+    hDiv.innerHTML='<p class="noData">Abhi koi game nahi khela</p>';
+    return;
+  }
+  hDiv.innerHTML=games.slice(0,20).map((g,i)=>{
+    const d=new Date(g.ts);
+    const dateStr=`${d.getDate()}/${d.getMonth()+1} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`;
+    const txEl=g.tx
+      ? `<span class="histTx" onclick="window.open('https://aeneid.storyscan.xyz/tx/${g.tx}','_blank')">🔗 TX</span>`
+      : '';
+    return `
+      <div class="histItem">
+        <span style="opacity:0.5;font-size:11px;">#${i+1}</span>
+        <span class="histScore">${g.score} pts</span>
+        <span style="font-size:11px;opacity:0.6;">🍉${g.fruits||0}</span>
+        <span class="histDate">${dateStr}</span>
+        ${txEl}
+      </div>`;
+  }).join('');
+}
+
+// ── WALLET / STORY ─────────────────────────────────────
+let provider, signer, walletAddr;
+
+// Story Aeneid Testnet (latest — 2024-25)
+// Chain ID 1513 = 0x5E9
+const CHAIN={
+  chainId:'0x5E9',
+  chainName:'Story Aeneid Testnet',
+  rpcUrls:['https://aeneid.storyrpc.io'],
+  nativeCurrency:{name:'IP',symbol:'IP',decimals:18},
+  blockExplorerUrls:['https://aeneid.storyscan.xyz']
+};
+
+function openMM(){
+  const url=location.href.replace(/^https?:\/\//,'');
+  location.href='https://metamask.app.link/dapp/'+url;
 }
 
 async function connectWallet(){
-  // No MetaMask
   if(!window.ethereum){
-    if(isMobile()){
-      toast('📱 Mobile pe MetaMask browser use karo — neeche button dabao!',true);
+    if(/iPhone|iPad|Android/i.test(navigator.userAgent)){
+      toast('📱 MetaMask app ke Browser tab se kholna!',true);
       document.getElementById('mmBtn').style.display='block';
-    } else {
-      toast('⚠️ MetaMask browser extension install karo!',true);
+    }else{
+      toast('⚠️ MetaMask extension install karo',true);
     }
     return;
   }
   try{
-    provider=new ethers.providers.Web3Provider(window.ethereum);
+    provider=new ethers.providers.Web3Provider(window.ethereum,'any');
     await provider.send('eth_requestAccounts',[]);
 
-    // Switch / add Story chain
+    // Add chain (works better than switch on mobile)
     try{
-      await window.ethereum.request({
-        method:'wallet_switchEthereumChain',
-        params:[{chainId:STORY_CHAIN.chainId}]
-      });
-    } catch(e){
-      if(e.code===4902||e.code===-32603){
-        await window.ethereum.request({
-          method:'wallet_addEthereumChain',
-          params:[STORY_CHAIN]
-        });
-      }
+      await window.ethereum.request({method:'wallet_addEthereumChain',params:[CHAIN]});
+    }catch(e){
+      try{
+        await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:CHAIN.chainId}]});
+      }catch(e2){}
     }
 
+    provider=new ethers.providers.Web3Provider(window.ethereum,'any');
     signer=provider.getSigner();
-    walletAddress=await signer.getAddress();
-    const s=walletAddress.slice(0,6)+'...'+walletAddress.slice(-4);
-    document.getElementById('connectBtn').textContent='✅ '+s;
-    document.getElementById('connectBtn').style.background='linear-gradient(135deg,#43e97b,#38f9d7)';
-    toast('✅ Wallet connected! Ab khelo aur register karo 🎮');
-  } catch(e){
-    toast('❌ '+e.message.slice(0,70),true);
+    walletAddr=await signer.getAddress();
+    const s=walletAddr.slice(0,6)+'...'+walletAddr.slice(-4);
+    const btn=document.getElementById('connectBtn');
+    btn.textContent='✅ '+s;
+    btn.style.background='linear-gradient(135deg,#43e97b,#38f9d7)';
+    toast('✅ Wallet connected! 🎮');
+  }catch(e){
+    toast('❌ '+e.message.slice(0,80),true);
   }
 }
 
-async function registerOnStory(){
-  if(!signer){
-    toast('⚠️ Pehle wallet connect karo!',true);
-    return;
-  }
-  const btn=document.getElementById('registerBtn');
-  btn.textContent='⏳ Story Protocol pe register ho raha hai...';
-  btn.disabled=true;
+async function registerStory(){
+  if(!signer){toast('⚠️ Pehle wallet connect karo!',true);return;}
+  const btn=document.getElementById('regBtn');
+  btn.textContent='⏳ Registering...';btn.disabled=true;
   try{
-    const ipData=`STORY_IP|game=FruitSlice|score=${score}|player=${walletAddress}|ts=${Date.now()}`;
+    const data=`STORY_IP|game=FruitSlice|score=${score}|fruits=${fruitsSlicedThisGame}|player=${walletAddr}|ts=${Date.now()}`;
     const tx=await signer.sendTransaction({
-      to:walletAddress,
+      to:walletAddr,
       value:ethers.utils.parseEther('0'),
-      data:ethers.utils.hexlify(ethers.utils.toUtf8Bytes(ipData))
+      data:ethers.utils.hexlify(ethers.utils.toUtf8Bytes(data))
     });
-    toast('⏳ Transaction confirm ho raha hai...');
+    toast('⏳ Confirming...');
     await tx.wait();
-    btn.textContent=`✅ Registered! Score: ${score}`;
-    toast(`🎉 IP Registered on Story! TX: ${tx.hash.slice(0,14)}...`);
-    setTimeout(()=>{
-      window.open(`https://odyssey.storyscan.xyz/tx/${tx.hash}`,'_blank');
-    },1500);
-  } catch(e){
+
+    // Update last game with tx hash
+    const p=getProfile();
+    if(p.games&&p.games.length>0) p.games[0].tx=tx.hash;
+    saveProfile(p);
+
+    btn.textContent=`✅ Registered! Score:${score}`;
+    toast(`🎉 Story Protocol pe register! TX:${tx.hash.slice(0,14)}...`);
+    setTimeout(()=>window.open(`https://aeneid.storyscan.xyz/tx/${tx.hash}`,'_blank'),1500);
+  }catch(e){
     btn.disabled=false;
     btn.textContent='🏛️ Register on Story Protocol';
-    toast('❌ '+e.message.slice(0,70),true);
+    toast('❌ '+e.message.slice(0,80),true);
   }
 }
 
-function toast(msg,isErr=false){
+function toast(msg,err=false){
   const el=document.getElementById('toast');
-  el.textContent=msg;
-  el.style.display='block';
-  el.style.background=isErr?'rgba(255,50,50,0.18)':'rgba(0,255,150,0.13)';
-  el.style.borderColor=isErr?'rgba(255,50,50,0.5)':'rgba(0,255,150,0.35)';
-  clearTimeout(el._t);
-  el._t=setTimeout(()=>el.style.display='none',5000);
+  el.textContent=msg;el.style.display='block';
+  el.style.background=err?'rgba(255,50,50,0.18)':'rgba(0,255,150,0.13)';
+  el.style.borderColor=err?'rgba(255,50,50,0.5)':'rgba(0,255,150,0.35)';
+  clearTimeout(el._t);el._t=setTimeout(()=>el.style.display='none',5000);
 }
+
+// Init lives display
+updateLives();
 </script>
 </body>
 </html>
