@@ -31,7 +31,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f0c29;font-family:
 .oScore{font-size:28px;color:#f093fb;font-weight:900;}
 .oNew{color:#ffd700;font-size:13px;min-height:18px;}
 .oBtn{width:100%;max-width:280px;padding:13px;border-radius:30px;border:none;font-size:14px;font-weight:700;cursor:pointer;margin-top:3px;}
-#regBtn{background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;box-shadow:0 4px 16px rgba(240,147,251,0.4);}
+#regBtn{background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;}
 #rstBtn{background:#4ecdc4;color:#1a1a2e;}
 .panel{position:fixed;inset:0;background:linear-gradient(160deg,#0d0d1a,#1a1a2e);display:none;flex-direction:column;z-index:40;overflow:hidden;}
 .panelHead{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 12px;background:rgba(255,255,255,0.04);border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0;}
@@ -57,7 +57,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f0c29;font-family:
 .lbTab{flex:1;padding:9px;border-radius:20px;border:none;font-size:12px;font-weight:700;cursor:pointer;background:rgba(255,255,255,0.08);color:#fff;transition:all .2s;}
 .lbTab.active{background:linear-gradient(135deg,#f093fb,#f5576c);}
 .lbRow{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:14px;margin-bottom:7px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);}
-.lbRow.mine{background:rgba(240,147,251,0.12);border:1px solid rgba(240,147,251,0.4);box-shadow:0 0 14px rgba(240,147,251,0.12);}
+.lbRow.me{background:rgba(240,147,251,0.12);border:1px solid rgba(240,147,251,0.4);}
 .lbRow.top1{background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.4);}
 .lbRow.top2{background:rgba(192,192,192,0.08);border:1px solid rgba(192,192,192,0.3);}
 .lbRow.top3{background:rgba(205,127,50,0.08);border:1px solid rgba(205,127,50,0.3);}
@@ -72,7 +72,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f0c29;font-family:
 .myRankCard h3{font-size:11px;opacity:0.6;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
 .myRankBig{font-size:48px;font-weight:900;color:#f093fb;line-height:1;}
 .myRankSub{font-size:12px;opacity:0.6;margin-top:5px;}
-#confirmModal{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:50;padding:20px;backdrop-filter:blur(4px);}
+#confirmModal{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:50;padding:20px;backdrop-filter:blur(6px);}
 .confirmBox{background:linear-gradient(160deg,#1a1a2e,#16213e);border:1px solid rgba(240,147,251,0.5);border-radius:26px;padding:26px;max-width:320px;width:100%;box-shadow:0 8px 40px rgba(240,147,251,0.25);}
 .confirmBox h3{font-size:19px;margin-bottom:16px;text-align:center;}
 .confirmRow{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.07);font-size:13px;}
@@ -80,30 +80,26 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f0c29;font-family:
 .confirmRow .cl{opacity:0.6;}
 .confirmBtns{display:flex;gap:10px;margin-top:18px;}
 .confirmBtns button{flex:1;padding:13px;border-radius:22px;border:none;font-size:15px;font-weight:700;cursor:pointer;}
-#confirmYes{background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;box-shadow:0 4px 14px rgba(240,147,251,0.4);}
+#confirmYes{background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;}
 #confirmNo{background:rgba(255,255,255,0.1);color:#fff;}
-#installBanner{position:fixed;bottom:80px;left:14px;right:14px;background:linear-gradient(135deg,#1a1a2e,#302b63);border:1px solid rgba(240,147,251,0.4);border-radius:18px;padding:14px 16px;display:none;z-index:30;flex-direction:row;align-items:center;gap:12px;box-shadow:0 6px 24px rgba(0,0,0,0.5);}
-#installBanner p{flex:1;font-size:13px;line-height:1.4;}
-#installBanner p span{color:#f093fb;font-weight:700;}
-.iBtns{display:flex;flex-direction:column;gap:6px;}
-#installBtn{background:linear-gradient(135deg,#f093fb,#f5576c);border:none;color:#fff;padding:8px 16px;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;}
-#dismissBtn{background:transparent;border:none;color:rgba(255,255,255,0.4);font-size:11px;cursor:pointer;text-align:center;}
+.txSuccess{background:rgba(67,233,123,0.1);border:1px solid rgba(67,233,123,0.3);border-radius:14px;padding:14px;margin-top:4px;text-align:center;}
+.txSuccess p{font-size:13px;margin-bottom:8px;}
+.txLink{color:#4cc9f0;font-size:12px;cursor:pointer;text-decoration:underline;word-break:break-all;}
 .nickRow{display:flex;gap:8px;margin-top:8px;}
 .nickInput{flex:1;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:9px 12px;color:#fff;font-size:13px;outline:none;}
 .nickInput::placeholder{opacity:0.4;}
 .nickSave{background:linear-gradient(135deg,#f093fb,#f5576c);border:none;color:#fff;border-radius:12px;padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer;}
-.txSuccess{background:rgba(67,233,123,0.1);border:1px solid rgba(67,233,123,0.3);border-radius:14px;padding:14px;margin-top:4px;text-align:center;}
-.txSuccess p{font-size:13px;margin-bottom:8px;}
-.txLink{color:#4cc9f0;font-size:12px;cursor:pointer;text-decoration:underline;word-break:break-all;}
+.contractBadge{background:rgba(67,233,123,0.12);border:1px solid rgba(67,233,123,0.3);border-radius:10px;padding:6px 10px;font-size:10px;color:#43e97b;word-break:break-all;margin-top:6px;}
 #startScreen{position:fixed;inset:0;background:linear-gradient(160deg,#1a1a2e,#16213e,#0f3460);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:30;gap:14px;padding:30px;}
 #startScreen h1{font-size:46px;text-align:center;line-height:1.2;}
 #startScreen p{opacity:0.75;font-size:14px;text-align:center;line-height:1.7;}
 #startBtn{padding:16px 50px;border-radius:30px;border:none;background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;font-size:19px;font-weight:700;cursor:pointer;box-shadow:0 6px 24px rgba(240,147,251,0.5);}
 .chainBadge{background:rgba(240,147,251,0.15);border:1px solid rgba(240,147,251,0.3);border-radius:20px;padding:5px 14px;font-size:11px;color:#f093fb;font-weight:600;}
+.loadingSpinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;vertical-align:middle;margin-right:6px;}
+@keyframes spin{to{transform:rotate(360deg);}}
 </style>
 </head>
 <body>
-
 <canvas id="gameCanvas"></canvas>
 
 <div id="ui">
@@ -122,20 +118,12 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f0c29;font-family:
   <button class="btnM" id="connectBtn" onclick="connectWallet()">🔗 Connect Wallet</button>
 </div>
 
-<div id="installBanner">
-  <p>📱 <span>Install on Home Screen!</span><br>Open in one tap — just like an app</p>
-  <div class="iBtns">
-    <button id="installBtn" onclick="installApp()">Install ⬇</button>
-    <button id="dismissBtn" onclick="dismissInstall()">Later</button>
-  </div>
-</div>
-
 <div id="overlay">
   <h2>🍉 Game Over!</h2>
   <div class="oScore" id="finalScore"></div>
   <div class="oNew" id="newRec"></div>
   <div id="txResult"></div>
-  <button class="oBtn" id="regBtn" onclick="showConfirm()">🏛️ Register on Story Mainnet</button>
+  <button class="oBtn" id="regBtn" onclick="showConfirm()">🏛️ Register Score On-Chain</button>
   <button class="oBtn" id="rstBtn" onclick="restartGame()">🔄 Play Again</button>
   <button class="oBtn" style="background:rgba(255,255,255,0.08);color:#fff;" onclick="openLB()">🏆 Leaderboard</button>
   <button class="oBtn" style="background:rgba(255,255,255,0.08);color:#fff;" onclick="openProfile()">👤 Profile</button>
@@ -143,17 +131,17 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f0c29;font-family:
 
 <div id="confirmModal">
   <div class="confirmBox">
-    <h3>🏛️ Story Mainnet Register</h3>
-    <div class="confirmRow"><span class="cl">Score</span><span id="cScore" style="color:#f093fb;font-size:18px;font-weight:900;">0</span></div>
+    <h3>🏛️ Register Score On-Chain</h3>
+    <div class="confirmRow"><span class="cl">Score</span><span id="cScore" style="color:#f093fb;font-size:20px;font-weight:900;">0</span></div>
     <div class="confirmRow"><span class="cl">Fruits Sliced</span><span id="cFruits">0 🍉</span></div>
-    <div class="confirmRow"><span class="cl">Player</span><span id="cNick" style="color:#4cc9f0;">—</span></div>
+    <div class="confirmRow"><span class="cl">Player Name</span><span id="cNick" style="color:#4cc9f0;">—</span></div>
     <div class="confirmRow"><span class="cl">Wallet</span><span id="cWallet" style="color:#4cc9f0;font-size:11px;">—</span></div>
     <div class="confirmRow"><span class="cl">Network</span><span style="color:#43e97b;font-weight:700;">Story Mainnet ✓</span></div>
     <div class="confirmRow"><span class="cl">Balance</span><span id="cBalance" style="color:#4cc9f0;">—</span></div>
-    <div class="confirmRow"><span class="cl">Gas Fee</span><span id="cGasFee" style="color:#43e97b;">Calculating...</span></div>
+    <div class="confirmRow"><span class="cl">Est. Gas</span><span id="cGasFee" style="color:#43e97b;">Calculating...</span></div>
     <div class="confirmBtns">
       <button id="confirmNo" onclick="closeConfirm()">Cancel</button>
-      <button id="confirmYes" onclick="registerStory()">Confirm ✓</button>
+      <button id="confirmYes" onclick="registerStory()">Submit ✓</button>
     </div>
   </div>
 </div>
@@ -171,7 +159,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f0c29;font-family:
     </div>
     <div class="lbTabs">
       <button class="lbTab active" id="tabAll" onclick="switchTab('all')">🌍 All</button>
-      <button class="lbTab" id="tabVerified" onclick="switchTab('verified')">✅ Verified</button>
+      <button class="lbTab" id="tabChain" onclick="switchTab('chain')">⛓️ On-Chain</button>
       <button class="lbTab" id="tabMine" onclick="switchTab('mine')">👤 Mine</button>
     </div>
     <div id="lbList"></div>
@@ -184,10 +172,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f0c29;font-family:
     <button class="closeBtn" onclick="closeProfile()">✕</button>
   </div>
   <div class="panelBody">
-    <div class="pCard">
-      <h3>🏷️ Nickname</h3>
-      <div id="pNickSection"></div>
-    </div>
+    <div class="pCard"><h3>🏷️ Nickname</h3><div id="pNickSection"></div></div>
     <div class="pCard"><h3>🔗 Wallet</h3><div id="pWallet"></div></div>
     <div class="pCard">
       <h3>📊 Stats</h3>
@@ -199,29 +184,49 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f0c29;font-family:
       </div>
     </div>
     <div class="pCard"><h3>🏅 Badges</h3><div id="pBadges"></div></div>
+    <div class="pCard"><h3>⛓️ Contract</h3><div id="pContract"></div></div>
     <div class="pCard"><h3>📜 Recent Games</h3><div id="pHistory"></div></div>
-    <button id="clearBtn" onclick="clearData()">🗑️ Clear All Data</button>
+    <button id="clearBtn" onclick="clearData()">🗑️ Clear Local Data</button>
   </div>
 </div>
 
 <div id="startScreen">
   <h1>🍉<br>Fruit Slice</h1>
-  <p>Slice the fruits!<br>💣 Avoid the bombs!<br>🏛️ Register your score on-chain!</p>
+  <p>Slice the fruits!<br>💣 Avoid the bombs!<br>⛓️ Submit scores on-chain!</p>
   <button id="startBtn" onclick="startGame()">▶ Play Now</button>
   <div class="chainBadge">⛓️ Story Protocol Mainnet</div>
-  <p style="font-size:10px;opacity:0.3;">Gas fee ~0.0001 IP per game</p>
+  <p style="font-size:10px;opacity:0.3;">Gas fee ~0.0001 IP per submission</p>
 </div>
 
 <script>
+// ══════════════════════════════════════
+//  CONTRACT CONFIG — Deploy ke baad yahan address daalo
+// ══════════════════════════════════════
+const CONTRACT_ADDRESS = '0xD0943f4E7C34Da41fFd4c0E1B81F71a5bA198bEb';
+
+const CONTRACT_ABI = [
+  "function submitScore(uint256 _score, uint256 _fruits, string calldata _nickname) external",
+  "function bestScore(address player) view returns (uint256)",
+  "function getScoreCount() view returns (uint256)",
+  "function getScore(uint256 index) view returns (address player, uint256 score, uint256 fruits, string memory nickname, uint256 timestamp)",
+  "function getTopScores(uint256 limit) view returns (address[] memory players, uint256[] memory scores, uint256[] memory fruits, string[] memory nicknames)",
+  "event ScoreSubmitted(address indexed player, uint256 score, uint256 fruits, string nickname, uint256 timestamp)"
+];
+
+// ══════════════════════════════════════
+//  CANVAS
+// ══════════════════════════════════════
 const canvas=document.getElementById('gameCanvas');
 const ctx=canvas.getContext('2d');
 function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
 resize();
 window.addEventListener('resize',resize);
 
+// ══════════════════════════════════════
+//  STORAGE
+// ══════════════════════════════════════
 function getProfile(){try{return JSON.parse(localStorage.getItem('fsProfile')||'{}');}catch(e){return {};}}
 function saveProfile(p){localStorage.setItem('fsProfile',JSON.stringify(p));}
-function getNick(){return getProfile().nickname||'';}
 function saveNick(n){const p=getProfile();p.nickname=n;saveProfile(p);}
 
 function recordGame(sc,fr,txHash){
@@ -234,43 +239,20 @@ function recordGame(sc,fr,txHash){
   p.best=Math.max(p.best||0,sc);
   saveProfile(p);
 }
-
 function updateGameTx(txHash){
   const p=getProfile();
   if(p.games&&p.games.length>0&&!p.games[0].tx){p.games[0].tx=txHash;saveProfile(p);}
 }
-
 function clearData(){
-  if(!confirm('Delete all your data?'))return;
-  localStorage.removeItem('fsProfile');
-  localStorage.removeItem('fsb');
-  best=0;
-  document.getElementById('bestD').textContent='0';
-  renderProfile();renderLB('all');
-  toast('🗑️ All data cleared!');
+  if(!confirm('Clear all local data?'))return;
+  localStorage.removeItem('fsProfile');localStorage.removeItem('fsb');
+  best=0;document.getElementById('bestD').textContent='0';
+  renderProfile();renderLB('all');toast('🗑️ Local data cleared!');
 }
 
-let deferredPrompt=null;
-window.addEventListener('beforeinstallprompt',e=>{
-  e.preventDefault();deferredPrompt=e;
-  if(!localStorage.getItem('installDismissed')){
-    setTimeout(()=>document.getElementById('installBanner').style.display='flex',3000);
-  }
-});
-function installApp(){
-  if(deferredPrompt){
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then(()=>{deferredPrompt=null;dismissInstall();});
-  }else{
-    toast('📱 iPhone: Tap Share → "Add to Home Screen"!');
-    dismissInstall();
-  }
-}
-function dismissInstall(){
-  document.getElementById('installBanner').style.display='none';
-  localStorage.setItem('installDismissed','1');
-}
-
+// ══════════════════════════════════════
+//  FRUIT DEFS
+// ══════════════════════════════════════
 const FD=[
   {body:'#e63946',shine:'#ff8c94',inner:'#c1121f'},
   {body:'#f4a261',shine:'#ffd97d',inner:'#e76f51'},
@@ -284,12 +266,18 @@ const FD=[
   {body:'#4cc9f0',shine:'#ade8f4',inner:'#0096c7'},
 ];
 
+// ══════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════
 let score=0,lives=3,running=false;
 let fruits=[],parts=[],trail=[],floats=[];
 let spawnT=0,spawnI=75,fid=null,fruitsSliced=0;
 let best=parseInt(localStorage.getItem('fsb')||'0');
 document.getElementById('bestD').textContent=best;
 
+// ══════════════════════════════════════
+//  FRUIT
+// ══════════════════════════════════════
 class Fruit{
   constructor(){
     const W=canvas.width,H=canvas.height;
@@ -373,7 +361,6 @@ function drawTrail(){
   }
   trail.forEach(p=>p.l-=.07);trail=trail.filter(p=>p.l>0);
 }
-
 function floatTxt(x,y,t,c='#ffd700'){floats.push({x,y,t,c,l:1,vy:-2.2});}
 function drawFloats(){
   floats.forEach(f=>{
@@ -401,7 +388,6 @@ function checkSlice(x,y){
     }
   });
 }
-
 function updateLives(){
   const h=[];for(let i=0;i<3;i++)h.push(i<lives?'❤️':'🖤');
   document.getElementById('livesD').innerHTML=h.join('');
@@ -411,7 +397,6 @@ function shakeScreen(){
   setTimeout(()=>document.body.style.transform='translate(-9px,0)',70);
   setTimeout(()=>document.body.style.transform='none',140);
 }
-
 function drawBg(){
   const g=ctx.createLinearGradient(0,0,0,canvas.height);
   g.addColorStop(0,'#0f0c29');g.addColorStop(.5,'#302b63');g.addColorStop(1,'#24243e');
@@ -419,7 +404,6 @@ function drawBg(){
   ctx.strokeStyle='rgba(255,255,255,0.025)';ctx.lineWidth=1;
   for(let x=0;x<canvas.width;x+=60){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,canvas.height);ctx.stroke();}
 }
-
 function loop(){
   if(!running)return;
   drawBg();
@@ -446,7 +430,6 @@ function startGame(){
   document.getElementById('txResult').innerHTML='';
   updateLives();running=true;loop();
 }
-
 function endGame(){
   running=false;cancelAnimationFrame(fid);
   let isNew=false;
@@ -454,12 +437,11 @@ function endGame(){
   recordGame(score,fruitsSliced,null);
   document.getElementById('finalScore').textContent=`Score: ${score} 🏆`;
   document.getElementById('newRec').textContent=isNew?'🌟 New Best Score!':'';
-  document.getElementById('regBtn').textContent='🏛️ Register on Story Mainnet';
+  document.getElementById('regBtn').textContent='🏛️ Register Score On-Chain';
   document.getElementById('regBtn').disabled=false;
   document.getElementById('regBtn').style.background='linear-gradient(135deg,#f093fb,#f5576c)';
   document.getElementById('overlay').style.display='flex';
 }
-
 function restartGame(){
   score=0;lives=3;fruitsSliced=0;fruits=[];parts=[];trail=[];floats=[];
   spawnT=0;spawnI=75;running=true;
@@ -483,14 +465,53 @@ canvas.addEventListener('touchstart',e=>{e.preventDefault();slicing=true;},{pass
 canvas.addEventListener('touchend',e=>{e.preventDefault();slicing=false;trail=[];},{passive:false});
 canvas.addEventListener('touchmove',e=>{e.preventDefault();if(!running)return;const p=pos(e);addTrail(p.x,p.y);checkSlice(p.x,p.y);},{passive:false});
 
+// ══════════════════════════════════════
+//  LEADERBOARD
+// ══════════════════════════════════════
 let lbTab='all';
-function openLB(){renderLB(lbTab);document.getElementById('lbPanel').style.display='flex';}
+let chainScores=[];
+
+function openLB(){
+  renderLB(lbTab);
+  document.getElementById('lbPanel').style.display='flex';
+  if(lbTab==='chain') loadChainScores();
+}
 function closeLB(){document.getElementById('lbPanel').style.display='none';}
 function switchTab(t){
   lbTab=t;
   document.querySelectorAll('.lbTab').forEach(el=>el.classList.remove('active'));
   document.getElementById('tab'+t.charAt(0).toUpperCase()+t.slice(1)).classList.add('active');
   renderLB(t);
+  if(t==='chain') loadChainScores();
+}
+
+async function loadChainScores(){
+  if(CONTRACT_ADDRESS==='PASTE_YOUR_CONTRACT_ADDRESS_HERE') return;
+  const list=document.getElementById('lbList');
+  list.innerHTML=`<div class="noData"><span class="loadingSpinner"></span> Loading on-chain scores...</div>`;
+  try{
+    const readProvider=new ethers.providers.JsonRpcProvider('https://mainnet.storyrpc.io');
+    const contract=new ethers.Contract(CONTRACT_ADDRESS,CONTRACT_ABI,readProvider);
+    const count=await contract.getScoreCount();
+    const total=count.toNumber();
+    if(total===0){list.innerHTML='<div class="noData">No on-chain scores yet. Be the first!</div>';return;}
+    const limit=Math.min(total,20);
+    const [players,scores,fruits,nicknames]=await contract.getTopScores(limit);
+    chainScores=[];
+    for(let i=0;i<players.length;i++){
+      chainScores.push({
+        player:players[i],
+        score:scores[i].toNumber(),
+        fruits:fruits[i].toNumber(),
+        nickname:nicknames[i]||'Anonymous',
+        isMe: walletAddr&&players[i].toLowerCase()===walletAddr.toLowerCase()
+      });
+    }
+    chainScores.sort((a,b)=>b.score-a.score);
+    renderLB('chain');
+  }catch(e){
+    list.innerHTML=`<div class="noData">Could not load chain scores.<br>${e.message.slice(0,60)}</div>`;
+  }
 }
 
 function renderLB(tab){
@@ -498,30 +519,54 @@ function renderLB(tab){
   const games=p.games||[];
   const wShort=walletAddr?walletAddr.slice(0,6)+'...'+walletAddr.slice(-4):'Player';
   const displayName=p.nickname||wShort;
-  const sorted=[...games].sort((a,b)=>b.score-a.score);
-  sorted.forEach((e,i)=>e._rank=i+1);
 
-  const myBest=sorted[0];
+  const localSorted=[...games].sort((a,b)=>b.score-a.score);
+  localSorted.forEach((e,i)=>e._rank=i+1);
+  const myBest=localSorted[0];
   const myRankCard=document.getElementById('myRankCard');
   if(myBest){
     myRankCard.style.display='block';
     document.getElementById('myRankNum').textContent='#'+myBest._rank;
-    document.getElementById('myRankSub').textContent=`Best: ${myBest.score} pts  •  ${games.length} games  •  ${games.filter(g=>g.tx).length} on-chain`;
+    document.getElementById('myRankSub').textContent=
+      `Best: ${myBest.score} pts  •  ${games.length} games  •  ${games.filter(g=>g.tx).length} on-chain`;
   }else{
     myRankCard.style.display='none';
   }
 
-  let filtered=tab==='verified'?sorted.filter(e=>e.tx):sorted;
   const list=document.getElementById('lbList');
-
-  if(!filtered.length){
-    list.innerHTML=`<div class="noData">${tab==='verified'?'No verified scores yet.<br>Play a game and register on Story! 🏛️':'No games played yet'}</div>`;
-    return;
-  }
-
   const medals=['🥇','🥈','🥉'];
   const rankCls=['top1','top2','top3'];
 
+  if(tab==='chain'){
+    if(!chainScores.length){
+      list.innerHTML='<div class="noData"><span class="loadingSpinner"></span> Loading...</div>';
+      return;
+    }
+    list.innerHTML=chainScores.map((e,i)=>{
+      const medal=i<3?medals[i]:`<span style="font-size:14px;font-weight:700;opacity:0.7;">#${i+1}</span>`;
+      const cls=(e.isMe?'me ':''+(i<3?rankCls[i]:''));
+      const addrShort=e.player.slice(0,6)+'...'+e.player.slice(-4);
+      const name=e.nickname&&e.nickname!=='Anonymous'?e.nickname:addrShort;
+      const youTag=e.isMe?`<span style="font-size:10px;background:rgba(240,147,251,0.3);padding:2px 7px;border-radius:10px;">YOU</span>`:'';
+      return `<div class="lbRow ${cls}">
+        <div class="lbRank">${medal}</div>
+        <div class="lbInfo">
+          <div class="lbName">${name}${youTag}</div>
+          <div class="lbSub">${addrShort} • ✅ On-Chain</div>
+        </div>
+        <div class="lbScore">
+          <div class="lbPts">${e.score}</div>
+          <div class="lbFruits">🍉${e.fruits}</div>
+        </div>
+      </div>`;
+    }).join('');
+    return;
+  }
+
+  const filtered=tab==='mine'?localSorted:localSorted;
+  if(!filtered.length){
+    list.innerHTML='<div class="noData">No games played yet</div>';return;
+  }
   list.innerHTML=filtered.map((e,i)=>{
     const medal=i<3?medals[i]:`<span style="font-size:14px;font-weight:700;opacity:0.7;">#${e._rank}</span>`;
     const cls=i<3?rankCls[i]:'';
@@ -529,8 +574,8 @@ function renderLB(tab){
     const ds=`${d.getDate()}/${d.getMonth()+1} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`;
     const txBadge=e.tx
       ?`<span style="color:#43e97b;cursor:pointer;" onclick="window.open('https://storyscan.xyz/tx/${e.tx}','_blank')">✅ On-Chain</span>`
-      :'<span style="opacity:0.3;">Unverified</span>';
-    return `<div class="lbRow mine ${cls}">
+      :'<span style="opacity:0.3;">Local only</span>';
+    return `<div class="lbRow me ${cls}">
       <div class="lbRank">${medal}</div>
       <div class="lbInfo">
         <div class="lbName">${displayName}<span style="font-size:10px;background:rgba(240,147,251,0.3);padding:2px 7px;border-radius:10px;">YOU</span></div>
@@ -544,26 +589,25 @@ function renderLB(tab){
   }).join('');
 }
 
+// ══════════════════════════════════════
+//  PROFILE
+// ══════════════════════════════════════
 function openProfile(){renderProfile();document.getElementById('profilePanel').style.display='flex';}
 function closeProfile(){document.getElementById('profilePanel').style.display='none';}
-
 function renderProfile(){
   const p=getProfile();
   const games=p.games||[];
   const gCount=games.length;
   const avg=gCount>0?Math.round(games.reduce((a,g)=>a+g.score,0)/gCount):0;
-
   document.getElementById('pBest').textContent=p.best||0;
   document.getElementById('pGames').textContent=gCount;
   document.getElementById('pFruits').textContent=p.totalFruits||0;
   document.getElementById('pAvg').textContent=avg;
 
-  const nDiv=document.getElementById('pNickSection');
-  const curNick=p.nickname||'';
-  nDiv.innerHTML=`
+  document.getElementById('pNickSection').innerHTML=`
     <p style="font-size:12px;opacity:0.6;margin-bottom:6px;">Your name shown on the leaderboard</p>
     <div class="nickRow">
-      <input class="nickInput" id="nickInput" placeholder="Enter your name..." value="${curNick}" maxlength="20">
+      <input class="nickInput" id="nickInput" placeholder="Enter your name..." value="${p.nickname||''}" maxlength="20">
       <button class="nickSave" onclick="saveNickname()">Save</button>
     </div>`;
 
@@ -574,18 +618,24 @@ function renderProfile(){
     wDiv.innerHTML=`<p style="opacity:0.5;font-size:13px;margin-bottom:8px;">No wallet connected</p><button class="btnM" style="background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;max-width:180px;padding:10px;" onclick="connectWallet()">Connect Wallet</button>`;
   }
 
+  const cDiv=document.getElementById('pContract');
+  const isDeployed=CONTRACT_ADDRESS!=='PASTE_YOUR_CONTRACT_ADDRESS_HERE';
+  cDiv.innerHTML=isDeployed
+    ?`<p style="font-size:11px;color:#43e97b;margin-bottom:4px;">✅ Contract Deployed</p><div class="contractBadge">${CONTRACT_ADDRESS}</div><p style="font-size:10px;opacity:0.5;margin-top:6px;cursor:pointer;" onclick="window.open('https://storyscan.xyz/address/${CONTRACT_ADDRESS}','_blank')">View on StoryScan ↗</p>`
+    :`<p style="font-size:12px;opacity:0.5;">Contract not deployed yet.<br>Deploy via Remix IDE and update CONTRACT_ADDRESS.</p>`;
+
   const badges=[];
-  if(gCount>=1)           badges.push('🎮 First Game');
-  if(gCount>=10)          badges.push('🔥 10 Games');
-  if(gCount>=50)          badges.push('💎 50 Games');
-  if((p.best||0)>=10)     badges.push('⭐ Score 10+');
-  if((p.best||0)>=25)     badges.push('🌟 Score 25+');
-  if((p.best||0)>=50)     badges.push('🏆 Score 50+');
-  if((p.best||0)>=100)    badges.push('👑 Score 100+');
-  if((p.totalFruits||0)>=50)  badges.push('🍉 50 Fruits');
-  if((p.totalFruits||0)>=200) badges.push('🍇 200 Fruits');
-  if(games.some(g=>g.tx)) badges.push('🏛️ On-Chain Player');
-  if(p.nickname)          badges.push('🏷️ Named Player');
+  if(gCount>=1)badges.push('🎮 First Game');
+  if(gCount>=10)badges.push('🔥 10 Games');
+  if(gCount>=50)badges.push('💎 50 Games');
+  if((p.best||0)>=10)badges.push('⭐ Score 10+');
+  if((p.best||0)>=25)badges.push('🌟 Score 25+');
+  if((p.best||0)>=50)badges.push('🏆 Score 50+');
+  if((p.best||0)>=100)badges.push('👑 Score 100+');
+  if((p.totalFruits||0)>=50)badges.push('🍉 50 Fruits');
+  if((p.totalFruits||0)>=200)badges.push('🍇 200 Fruits');
+  if(games.some(g=>g.tx))badges.push('🏛️ On-Chain Player');
+  if(p.nickname)badges.push('🏷️ Named Player');
   document.getElementById('pBadges').innerHTML=badges.length
     ?badges.map(b=>`<span class="badge">${b}</span>`).join('')
     :'<p class="noData">Play games to earn badges!</p>';
@@ -597,7 +647,7 @@ function renderProfile(){
     const ds=`${d.getDate()}/${d.getMonth()+1} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`;
     const txEl=g.tx
       ?`<span class="histTx" onclick="window.open('https://storyscan.xyz/tx/${g.tx}','_blank')">✅ TX</span>`
-      :'<span style="font-size:10px;opacity:0.3;">—</span>';
+      :'<span style="font-size:10px;opacity:0.3;">local</span>';
     return `<div class="histItem">
       <span style="opacity:0.4;font-size:11px;">#${i+1}</span>
       <span class="histScore">${g.score} pts</span>
@@ -606,15 +656,15 @@ function renderProfile(){
     </div>`;
   }).join('');
 }
-
 function saveNickname(){
   const v=document.getElementById('nickInput').value.trim();
   if(!v){toast('❌ Name cannot be empty!',true);return;}
-  saveNick(v);
-  toast('✅ Nickname saved: "'+v+'"');
-  renderProfile();
+  saveNick(v);toast('✅ Nickname saved: "'+v+'"');renderProfile();
 }
 
+// ══════════════════════════════════════
+//  WALLET
+// ══════════════════════════════════════
 let provider,signer,walletAddr;
 const CHAIN={
   chainId:'0x5EA',
@@ -640,10 +690,18 @@ async function connectWallet(){
     return;
   }
   try{
+    await window.ethereum.request({method:'eth_requestAccounts'});
     provider=new ethers.providers.Web3Provider(window.ethereum,'any');
-    await provider.send('eth_requestAccounts',[]);
-    try{await window.ethereum.request({method:'wallet_addEthereumChain',params:[CHAIN]});}
-    catch(e){try{await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:CHAIN.chainId}]});}catch(e2){}}
+
+    // Add/switch to Story Mainnet
+    try{
+      await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:'0x5EA'}]});
+    }catch(sw){
+      if(sw.code===4902||sw.code===-32603){
+        await window.ethereum.request({method:'wallet_addEthereumChain',params:[CHAIN]});
+      }
+    }
+
     provider=new ethers.providers.Web3Provider(window.ethereum,'any');
     signer=provider.getSigner();
     walletAddr=await signer.getAddress();
@@ -653,88 +711,117 @@ async function connectWallet(){
     btn.style.background='linear-gradient(135deg,#43e97b,#38f9d7)';
     toast('✅ Story Mainnet connected! 🎮');
   }catch(e){
-    toast('❌ '+(e.message||'Connection failed').slice(0,80),true);
+    if(e.code===4001){toast('❌ Connection rejected',true);}
+    else{toast('❌ '+(e.message||'Connection failed').slice(0,80),true);}
   }
 }
 
+// ══════════════════════════════════════
+//  CONFIRM + REGISTER (Smart Contract)
+// ══════════════════════════════════════
 async function showConfirm(){
   if(!signer){toast('⚠️ Please connect your wallet first!',true);return;}
+  if(CONTRACT_ADDRESS==='PASTE_YOUR_CONTRACT_ADDRESS_HERE'){
+    toast('⚠️ Deploy the contract first and update CONTRACT_ADDRESS!',true);
+    return;
+  }
   try{
     const bal=await provider.getBalance(walletAddr);
     const balIP=parseFloat(ethers.utils.formatEther(bal));
-    if(balIP<0.0001){
-      toast(`❌ IP balance too low! ${balIP.toFixed(6)} IP — Add more IP tokens for gas`,true);
-      return;
-    }
-    let gasEst='~0.000093 IP';
-    try{
-      const gp=await provider.getGasPrice();
-      const lg=gp.mul(90).div(100);
-      gasEst='~'+parseFloat(ethers.utils.formatEther(lg.mul(60000))).toFixed(6)+' IP';
-    }catch(e){}
+    if(balIP<0.0001){toast(`❌ IP balance too low! ${balIP.toFixed(6)} IP`,true);return;}
+
+    // Estimate gas via contract
+    const tempContract=new ethers.Contract(CONTRACT_ADDRESS,CONTRACT_ABI,signer);
     const p=getProfile();
+    const nick=p.nickname||'Anonymous';
+    let gasEst='~0.0001 IP';
+    try{
+      const est=await tempContract.estimateGas.submitScore(score,fruitsSliced,nick);
+      const gp=await provider.getGasPrice();
+      gasEst='~'+parseFloat(ethers.utils.formatEther(est.mul(gp))).toFixed(6)+' IP';
+    }catch(e){}
+
     document.getElementById('cScore').textContent=score+' pts';
     document.getElementById('cFruits').textContent=fruitsSliced+' 🍉';
-    document.getElementById('cNick').textContent=p.nickname||'—';
+    document.getElementById('cNick').textContent=nick;
     document.getElementById('cWallet').textContent=walletAddr.slice(0,10)+'...'+walletAddr.slice(-4);
     document.getElementById('cBalance').textContent=balIP.toFixed(5)+' IP';
     document.getElementById('cGasFee').textContent=gasEst;
     document.getElementById('confirmModal').style.display='flex';
   }catch(e){
-    toast('❌ Balance check failed: '+(e.message||'').slice(0,60),true);
+    toast('❌ Error: '+(e.message||'').slice(0,70),true);
   }
 }
 function closeConfirm(){document.getElementById('confirmModal').style.display='none';}
 
 async function registerStory(){
   closeConfirm();
-  if(!signer){toast('⚠️ Please connect your wallet first!',true);return;}
+  if(!signer){toast('⚠️ Please connect wallet first!',true);return;}
+
   const btn=document.getElementById('regBtn');
-  btn.textContent='⏳ Approve in MetaMask...';
+  btn.textContent='⏳ Waiting for MetaMask...';
   btn.disabled=true;
+
   try{
+    // Always fresh provider
     const fp=new ethers.providers.Web3Provider(window.ethereum,'any');
-    const fs=fp.getSigner();
     const network=await fp.getNetwork();
+
+    // Switch to Story if needed
     if(network.chainId!==1514){
       try{await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:'0x5EA'}]});}
       catch(e){await window.ethereum.request({method:'wallet_addEthereumChain',params:[CHAIN]});}
-      toast('🔄 Network switched — please press Register again',true);
-      btn.disabled=false;btn.textContent='🏛️ Register on Story Mainnet';
+      toast('🔄 Switched to Story Mainnet — please tap Register again',true);
+      btn.disabled=false;btn.textContent='🏛️ Register Score On-Chain';
       return;
     }
+
+    const fs=fp.getSigner();
+    const contract=new ethers.Contract(CONTRACT_ADDRESS,CONTRACT_ABI,fs);
     const p=getProfile();
-    const nick=p.nickname||'anonymous';
-    const ipData=`STORY|game=FruitSlice|score=${score}|fruits=${fruitsSliced}|player=${nick}|wallet=${walletAddr}|ts=${Date.now()}`;
-    const gp=await fp.getGasPrice();
-    const lowGas=gp.mul(90).div(100);
-    const tx=await fs.sendTransaction({
-      to:walletAddr,
-      value:ethers.utils.parseEther('0'),
-      data:ethers.utils.hexlify(ethers.utils.toUtf8Bytes(ipData)),
-      gasPrice:lowGas,
-      gasLimit:60000
-    });
-    btn.textContent='⏳ Confirming on chain...';
-    toast('⏳ Transaction sent! Waiting for confirmation...');
-    await tx.wait(1);
+    const nick=p.nickname||'Anonymous';
+
+    // Gas estimate with 30% buffer
+    let gasLimit=ethers.BigNumber.from(200000);
+    try{
+      const est=await contract.estimateGas.submitScore(score,fruitsSliced,nick);
+      gasLimit=est.mul(130).div(100);
+    }catch(e){}
+
+    // THIS triggers MetaMask approval popup
+    const tx=await contract.submitScore(score,fruitsSliced,nick,{gasLimit});
+
+    btn.textContent='⏳ Confirming on blockchain...';
+    toast('⏳ Transaction submitted! Confirming...');
+
+    const receipt=await tx.wait(1);
+
+    // Update local data
     provider=fp;signer=fs;
     updateGameTx(tx.hash);
+
+    // Show success card
     document.getElementById('txResult').innerHTML=`
       <div class="txSuccess">
-        <p>🎉 <strong>On-Chain Registered!</strong></p>
+        <p>🎉 <strong>Score On-Chain Forever!</strong><br>
+        Score: ${score} • Fruits: ${fruitsSliced} • Player: ${nick}</p>
         <span class="txLink" onclick="window.open('https://storyscan.xyz/tx/${tx.hash}','_blank')">
-          🔗 ${tx.hash.slice(0,20)}...${tx.hash.slice(-6)}<br>View on StoryScan ↗
+          🔗 ${tx.hash.slice(0,18)}...${tx.hash.slice(-6)}<br>View on StoryScan ↗
         </span>
       </div>`;
-    btn.textContent='✅ Registered on Story Mainnet!';
+
+    btn.textContent='✅ Score On-Chain!';
     btn.style.background='linear-gradient(135deg,#43e97b,#38f9d7)';
-    toast('🎉 Score permanently stored on blockchain!');
+    toast('🎉 Score permanently stored on Story Mainnet!');
+
+    // Refresh chain leaderboard
+    if(lbTab==='chain') loadChainScores();
+
   }catch(e){
     btn.disabled=false;
-    btn.textContent='🏛️ Register on Story Mainnet';
-    if(e.code===4001){toast('❌ Cancelled in MetaMask',true);}
-    else if(e.message&&e.message.toLowerCase().includes('insufficient')){toast('❌ Insufficient IP tokens! Please add more IP',true);}
+    btn.textContent='🏛️ Register Score On-Chain';
+    if(e.code===4001){toast('❌ Rejected in MetaMask',true);}
+    else if(e.message&&e.message.includes('insufficient')){toast('❌ Not enough IP tokens for gas!',true);}
     else{toast('❌ '+(e.message||'Unknown error').slice(0,80),true);}
   }
 }
@@ -744,7 +831,7 @@ function toast(msg,err=false){
   el.textContent=msg;el.style.display='block';
   el.style.background=err?'rgba(255,50,50,0.18)':'rgba(0,255,150,0.13)';
   el.style.borderColor=err?'rgba(255,50,50,0.5)':'rgba(0,255,150,0.35)';
-  clearTimeout(el._t);el._t=setTimeout(()=>el.style.display='none',5500);
+  clearTimeout(el._t);el._t=setTimeout(()=>el.style.display='none',6000);
 }
 
 updateLives();
