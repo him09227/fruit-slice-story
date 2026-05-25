@@ -3,36 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="FruitSlice">
+<meta name="theme-color" content="#0f0c29">
+<link rel="manifest" href="manifest.json">
 <title>Fruit Slice × Story Protocol</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{width:100%;height:100%;overflow:hidden;background:#0f0c29;font-family:Arial,sans-serif;color:#fff;}
-#gameCanvas{position:fixed;top:0;left:0;}
+#gameCanvas{position:fixed;top:0;left:0;z-index:0;}
 #ui{position:fixed;top:8px;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 8px;z-index:10;pointer-events:none;}
 .box{background:rgba(255,255,255,0.13);border-radius:14px;padding:5px 10px;text-align:center;border:1px solid rgba(255,255,255,0.18);min-width:62px;}
 .box span{font-size:8px;opacity:0.65;display:block;letter-spacing:1px;text-transform:uppercase;}
 .box strong{font-size:20px;font-weight:900;display:block;line-height:1.2;}
 .hr{display:flex;gap:2px;justify-content:center;font-size:13px;min-height:22px;align-items:center;}
 .topBtns{display:flex;gap:6px;pointer-events:all;}
-.iconBtn{background:rgba(255,255,255,0.13);border:1px solid rgba(255,255,255,0.18);border-radius:50%;width:34px;height:34px;font-size:15px;cursor:pointer;color:#fff;display:flex;align-items:center;justify-content:center;}
-#bottomBar{position:fixed;bottom:0;left:0;right:0;padding:8px 14px 20px;z-index:10;display:flex;flex-direction:column;gap:7px;align-items:center;}
-.btnM{width:100%;max-width:340px;padding:12px;border-radius:30px;border:none;font-size:14px;font-weight:700;cursor:pointer;}
+.iconBtn{background:rgba(255,255,255,0.13);border:1px solid rgba(255,255,255,0.18);border-radius:50%;width:36px;height:36px;font-size:16px;cursor:pointer;color:#fff;display:flex;align-items:center;justify-content:center;}
+#bottomBar{position:fixed;bottom:0;left:0;right:0;padding:8px 14px 22px;z-index:10;display:flex;flex-direction:column;gap:7px;align-items:center;}
+.btnM{width:100%;max-width:340px;padding:13px;border-radius:30px;border:none;font-size:14px;font-weight:700;cursor:pointer;}
 #connectBtn{background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;box-shadow:0 4px 16px rgba(240,147,251,0.4);}
 #mmBtn{background:linear-gradient(135deg,#f6851b,#e2761b);color:#fff;display:none;}
-#toast{width:100%;max-width:340px;padding:8px 14px;border-radius:20px;font-size:12px;text-align:center;display:none;line-height:1.5;border:1px solid rgba(0,255,150,0.35);background:rgba(0,255,150,0.13);}
-#overlay{position:fixed;inset:0;background:rgba(0,0,0,0.93);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:20;gap:10px;padding:20px;overflow-y:auto;}
+#toast{width:100%;max-width:340px;padding:9px 14px;border-radius:20px;font-size:12px;text-align:center;display:none;line-height:1.5;border:1px solid rgba(0,255,150,0.35);background:rgba(0,255,150,0.13);z-index:100;}
+#overlay{position:fixed;inset:0;background:linear-gradient(160deg,#0f0c29ee,#302b63ee);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:20;gap:10px;padding:20px;overflow-y:auto;}
 #overlay h2{font-size:36px;}
-.oScore{font-size:26px;color:#f093fb;font-weight:900;}
-.oNew{color:#ffd700;font-size:12px;min-height:16px;}
-.oBtn{width:100%;max-width:280px;padding:12px;border-radius:30px;border:none;font-size:14px;font-weight:700;cursor:pointer;margin-top:2px;}
-#regBtn{background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;}
+.oScore{font-size:28px;color:#f093fb;font-weight:900;}
+.oNew{color:#ffd700;font-size:13px;min-height:18px;}
+.oBtn{width:100%;max-width:280px;padding:13px;border-radius:30px;border:none;font-size:14px;font-weight:700;cursor:pointer;margin-top:3px;}
+#regBtn{background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;box-shadow:0 4px 16px rgba(240,147,251,0.4);}
 #rstBtn{background:#4ecdc4;color:#1a1a2e;}
-.panel{position:fixed;inset:0;background:#0d0d1a;display:none;flex-direction:column;z-index:40;overflow:hidden;}
-.panelHead{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;background:rgba(255,255,255,0.04);border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0;}
+.panel{position:fixed;inset:0;background:linear-gradient(160deg,#0d0d1a,#1a1a2e);display:none;flex-direction:column;z-index:40;overflow:hidden;}
+.panelHead{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 12px;background:rgba(255,255,255,0.04);border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0;}
 .panelHead h2{font-size:20px;}
-.closeBtn{background:rgba(255,255,255,0.1);border:none;color:#fff;border-radius:50%;width:34px;height:34px;font-size:17px;cursor:pointer;}
-.panelBody{flex:1;overflow-y:auto;padding:14px 14px 30px;}
+.closeBtn{background:rgba(255,255,255,0.1);border:none;color:#fff;border-radius:50%;width:36px;height:36px;font-size:18px;cursor:pointer;}
+.panelBody{flex:1;overflow-y:auto;padding:14px 14px 40px;}
 .pCard{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:14px;margin-bottom:12px;}
 .pCard h3{font-size:11px;opacity:0.55;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;}
 .statsGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
@@ -41,47 +46,60 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f0c29;font-family:
 .stat .sl{font-size:10px;opacity:0.55;margin-top:2px;}
 .badge{display:inline-block;background:linear-gradient(135deg,#f093fb,#f5576c);border-radius:20px;padding:3px 9px;font-size:11px;font-weight:700;margin:3px;}
 .walletBox{font-size:11px;opacity:0.55;word-break:break-all;margin-top:6px;padding:8px;background:rgba(255,255,255,0.05);border-radius:8px;}
-.noData{text-align:center;opacity:0.4;font-size:13px;padding:16px;}
-#clearBtn{width:100%;padding:10px;border-radius:16px;border:1px solid rgba(255,80,80,0.35);background:rgba(255,80,80,0.1);color:#ff6b6b;font-size:13px;cursor:pointer;margin-top:6px;}
-.histItem{display:flex;justify-content:space-between;align-items:center;padding:8px 2px;border-bottom:1px solid rgba(255,255,255,0.06);font-size:12px;}
+.noData{text-align:center;opacity:0.4;font-size:13px;padding:20px;}
+#clearBtn{width:100%;padding:10px;border-radius:16px;border:1px solid rgba(255,80,80,0.35);background:rgba(255,80,80,0.1);color:#ff6b6b;font-size:13px;cursor:pointer;margin-top:8px;}
+.histItem{display:flex;justify-content:space-between;align-items:center;padding:9px 2px;border-bottom:1px solid rgba(255,255,255,0.06);font-size:12px;}
 .histItem:last-child{border-bottom:none;}
 .histScore{font-weight:700;color:#ffd700;}
 .histDate{font-size:10px;opacity:0.45;}
 .histTx{font-size:10px;color:#4cc9f0;cursor:pointer;text-decoration:underline;}
 .lbTabs{display:flex;gap:8px;margin-bottom:14px;}
-.lbTab{flex:1;padding:8px;border-radius:20px;border:none;font-size:12px;font-weight:700;cursor:pointer;background:rgba(255,255,255,0.08);color:#fff;transition:all .2s;}
+.lbTab{flex:1;padding:9px;border-radius:20px;border:none;font-size:12px;font-weight:700;cursor:pointer;background:rgba(255,255,255,0.08);color:#fff;transition:all .2s;}
 .lbTab.active{background:linear-gradient(135deg,#f093fb,#f5576c);}
-.lbRow{display:flex;align-items:center;gap:8px;padding:10px;border-radius:12px;margin-bottom:6px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07);}
-.lbRow.mine{background:rgba(240,147,251,0.12);border:1px solid rgba(240,147,251,0.4);box-shadow:0 0 12px rgba(240,147,251,0.15);}
-.lbRow.top1{background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.35);}
-.lbRow.top2{background:rgba(192,192,192,0.08);border:1px solid rgba(192,192,192,0.25);}
-.lbRow.top3{background:rgba(205,127,50,0.08);border:1px solid rgba(205,127,50,0.25);}
-.lbRank{font-size:18px;font-weight:900;min-width:32px;text-align:center;}
+.lbRow{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:14px;margin-bottom:7px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);}
+.lbRow.mine{background:rgba(240,147,251,0.12);border:1px solid rgba(240,147,251,0.4);box-shadow:0 0 14px rgba(240,147,251,0.12);}
+.lbRow.top1{background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.4);}
+.lbRow.top2{background:rgba(192,192,192,0.08);border:1px solid rgba(192,192,192,0.3);}
+.lbRow.top3{background:rgba(205,127,50,0.08);border:1px solid rgba(205,127,50,0.3);}
+.lbRank{font-size:20px;min-width:32px;text-align:center;}
 .lbInfo{flex:1;}
-.lbName{font-size:13px;font-weight:700;}
-.lbSub{font-size:10px;opacity:0.5;margin-top:1px;}
+.lbName{font-size:13px;font-weight:700;display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+.lbSub{font-size:10px;opacity:0.5;margin-top:2px;}
 .lbScore{text-align:right;}
-.lbPts{font-size:18px;font-weight:900;color:#ffd700;}
+.lbPts{font-size:20px;font-weight:900;color:#ffd700;}
 .lbFruits{font-size:10px;opacity:0.5;margin-top:1px;}
-.myRankCard{background:linear-gradient(135deg,rgba(240,147,251,0.15),rgba(245,87,108,0.15));border:1px solid rgba(240,147,251,0.4);border-radius:16px;padding:14px;margin-bottom:14px;display:none;}
-.myRankCard h3{font-size:11px;opacity:0.6;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
-.myRankBig{font-size:42px;font-weight:900;color:#f093fb;line-height:1;}
-.myRankSub{font-size:12px;opacity:0.6;margin-top:4px;}
-#startScreen{position:fixed;inset:0;background:linear-gradient(160deg,#1a1a2e,#16213e,#0f3460);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:30;gap:14px;padding:30px;}
-#startScreen h1{font-size:44px;text-align:center;line-height:1.2;}
-#startScreen p{opacity:0.75;font-size:14px;text-align:center;line-height:1.7;}
-#startBtn{padding:15px 46px;border-radius:30px;border:none;background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;font-size:18px;font-weight:700;cursor:pointer;box-shadow:0 6px 24px rgba(240,147,251,0.5);}
-#confirmModal{position:fixed;inset:0;background:rgba(0,0,0,0.88);display:none;align-items:center;justify-content:center;z-index:50;padding:20px;}
-.confirmBox{background:#1a1a2e;border:1px solid rgba(240,147,251,0.4);border-radius:24px;padding:24px;max-width:320px;width:100%;box-shadow:0 8px 32px rgba(240,147,251,0.2);}
-.confirmBox h3{font-size:18px;margin-bottom:14px;text-align:center;}
-.confirmRow{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.07);font-size:13px;}
+.myRankCard{background:linear-gradient(135deg,rgba(240,147,251,0.18),rgba(245,87,108,0.18));border:1px solid rgba(240,147,251,0.4);border-radius:16px;padding:16px;margin-bottom:14px;display:none;}
+.myRankCard h3{font-size:11px;opacity:0.6;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
+.myRankBig{font-size:48px;font-weight:900;color:#f093fb;line-height:1;}
+.myRankSub{font-size:12px;opacity:0.6;margin-top:5px;}
+#confirmModal{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:50;padding:20px;backdrop-filter:blur(4px);}
+.confirmBox{background:linear-gradient(160deg,#1a1a2e,#16213e);border:1px solid rgba(240,147,251,0.5);border-radius:26px;padding:26px;max-width:320px;width:100%;box-shadow:0 8px 40px rgba(240,147,251,0.25);}
+.confirmBox h3{font-size:19px;margin-bottom:16px;text-align:center;}
+.confirmRow{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.07);font-size:13px;}
 .confirmRow:last-of-type{border:none;}
-.confirmRow span:first-child{opacity:0.6;}
-.confirmRow span:last-child{font-weight:700;}
-.confirmBtns{display:flex;gap:10px;margin-top:16px;}
-.confirmBtns button{flex:1;padding:12px;border-radius:20px;border:none;font-size:14px;font-weight:700;cursor:pointer;}
-#confirmYes{background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;}
+.confirmRow .cl{opacity:0.6;}
+.confirmBtns{display:flex;gap:10px;margin-top:18px;}
+.confirmBtns button{flex:1;padding:13px;border-radius:22px;border:none;font-size:15px;font-weight:700;cursor:pointer;}
+#confirmYes{background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;box-shadow:0 4px 14px rgba(240,147,251,0.4);}
 #confirmNo{background:rgba(255,255,255,0.1);color:#fff;}
+#installBanner{position:fixed;bottom:80px;left:14px;right:14px;background:linear-gradient(135deg,#1a1a2e,#302b63);border:1px solid rgba(240,147,251,0.4);border-radius:18px;padding:14px 16px;display:none;z-index:30;flex-direction:row;align-items:center;gap:12px;box-shadow:0 6px 24px rgba(0,0,0,0.5);}
+#installBanner p{flex:1;font-size:13px;line-height:1.4;}
+#installBanner p span{color:#f093fb;font-weight:700;}
+.iBtns{display:flex;flex-direction:column;gap:6px;}
+#installBtn{background:linear-gradient(135deg,#f093fb,#f5576c);border:none;color:#fff;padding:8px 16px;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;}
+#dismissBtn{background:transparent;border:none;color:rgba(255,255,255,0.4);font-size:11px;cursor:pointer;text-align:center;}
+.nickRow{display:flex;gap:8px;margin-top:8px;}
+.nickInput{flex:1;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:9px 12px;color:#fff;font-size:13px;outline:none;}
+.nickInput::placeholder{opacity:0.4;}
+.nickSave{background:linear-gradient(135deg,#f093fb,#f5576c);border:none;color:#fff;border-radius:12px;padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer;}
+.txSuccess{background:rgba(67,233,123,0.1);border:1px solid rgba(67,233,123,0.3);border-radius:14px;padding:14px;margin-top:4px;text-align:center;}
+.txSuccess p{font-size:13px;margin-bottom:8px;}
+.txLink{color:#4cc9f0;font-size:12px;cursor:pointer;text-decoration:underline;word-break:break-all;}
+#startScreen{position:fixed;inset:0;background:linear-gradient(160deg,#1a1a2e,#16213e,#0f3460);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:30;gap:14px;padding:30px;}
+#startScreen h1{font-size:46px;text-align:center;line-height:1.2;}
+#startScreen p{opacity:0.75;font-size:14px;text-align:center;line-height:1.7;}
+#startBtn{padding:16px 50px;border-radius:30px;border:none;background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;font-size:19px;font-weight:700;cursor:pointer;box-shadow:0 6px 24px rgba(240,147,251,0.5);}
+.chainBadge{background:rgba(240,147,251,0.15);border:1px solid rgba(240,147,251,0.3);border-radius:20px;padding:5px 14px;font-size:11px;color:#f093fb;font-weight:600;}
 </style>
 </head>
 <body>
@@ -104,26 +122,35 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f0c29;font-family:
   <button class="btnM" id="connectBtn" onclick="connectWallet()">🔗 Connect Wallet</button>
 </div>
 
+<div id="installBanner">
+  <p>📱 <span>Install on Home Screen!</span><br>Open in one tap — just like an app</p>
+  <div class="iBtns">
+    <button id="installBtn" onclick="installApp()">Install ⬇</button>
+    <button id="dismissBtn" onclick="dismissInstall()">Later</button>
+  </div>
+</div>
+
 <div id="overlay">
   <h2>🍉 Game Over!</h2>
   <div class="oScore" id="finalScore"></div>
   <div class="oNew" id="newRec"></div>
+  <div id="txResult"></div>
   <button class="oBtn" id="regBtn" onclick="showConfirm()">🏛️ Register on Story Mainnet</button>
   <button class="oBtn" id="rstBtn" onclick="restartGame()">🔄 Play Again</button>
   <button class="oBtn" style="background:rgba(255,255,255,0.08);color:#fff;" onclick="openLB()">🏆 Leaderboard</button>
-  <button class="oBtn" style="background:rgba(255,255,255,0.08);color:#fff;" onclick="openProfile()">👤 My Profile</button>
+  <button class="oBtn" style="background:rgba(255,255,255,0.08);color:#fff;" onclick="openProfile()">👤 Profile</button>
 </div>
 
-<!-- CONFIRM MODAL -->
 <div id="confirmModal">
   <div class="confirmBox">
     <h3>🏛️ Story Mainnet Register</h3>
-    <div class="confirmRow"><span>Score</span><span id="cScore" style="color:#f093fb;">0 pts</span></div>
-    <div class="confirmRow"><span>Fruits Sliced</span><span id="cFruits">0 🍉</span></div>
-    <div class="confirmRow"><span>Wallet</span><span id="cWallet" style="color:#4cc9f0;">—</span></div>
-    <div class="confirmRow"><span>Network</span><span style="color:#43e97b;">Story Mainnet</span></div>
-    <div class="confirmRow"><span>Balance</span><span id="cBalance" style="color:#4cc9f0;">—</span></div>
-    <div class="confirmRow"><span>Gas Fee</span><span id="cGasFee" style="color:#43e97b;">Calculating...</span></div>
+    <div class="confirmRow"><span class="cl">Score</span><span id="cScore" style="color:#f093fb;font-size:18px;font-weight:900;">0</span></div>
+    <div class="confirmRow"><span class="cl">Fruits Sliced</span><span id="cFruits">0 🍉</span></div>
+    <div class="confirmRow"><span class="cl">Player</span><span id="cNick" style="color:#4cc9f0;">—</span></div>
+    <div class="confirmRow"><span class="cl">Wallet</span><span id="cWallet" style="color:#4cc9f0;font-size:11px;">—</span></div>
+    <div class="confirmRow"><span class="cl">Network</span><span style="color:#43e97b;font-weight:700;">Story Mainnet ✓</span></div>
+    <div class="confirmRow"><span class="cl">Balance</span><span id="cBalance" style="color:#4cc9f0;">—</span></div>
+    <div class="confirmRow"><span class="cl">Gas Fee</span><span id="cGasFee" style="color:#43e97b;">Calculating...</span></div>
     <div class="confirmBtns">
       <button id="confirmNo" onclick="closeConfirm()">Cancel</button>
       <button id="confirmYes" onclick="registerStory()">Confirm ✓</button>
@@ -131,7 +158,6 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f0c29;font-family:
   </div>
 </div>
 
-<!-- LEADERBOARD -->
 <div class="panel" id="lbPanel">
   <div class="panelHead">
     <h2>🏆 Leaderboard</h2>
@@ -139,9 +165,9 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f0c29;font-family:
   </div>
   <div class="panelBody">
     <div class="myRankCard" id="myRankCard">
-      <h3>🎯 Meri Rank</h3>
+      <h3>🎯 My Rank</h3>
       <div class="myRankBig" id="myRankNum">#—</div>
-      <div class="myRankSub" id="myRankSub">Best: 0 pts</div>
+      <div class="myRankSub" id="myRankSub"></div>
     </div>
     <div class="lbTabs">
       <button class="lbTab active" id="tabAll" onclick="switchTab('all')">🌍 All</button>
@@ -152,13 +178,16 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f0c29;font-family:
   </div>
 </div>
 
-<!-- PROFILE -->
 <div class="panel" id="profilePanel">
   <div class="panelHead">
     <h2>👤 My Profile</h2>
     <button class="closeBtn" onclick="closeProfile()">✕</button>
   </div>
   <div class="panelBody">
+    <div class="pCard">
+      <h3>🏷️ Nickname</h3>
+      <div id="pNickSection"></div>
+    </div>
     <div class="pCard"><h3>🔗 Wallet</h3><div id="pWallet"></div></div>
     <div class="pCard">
       <h3>📊 Stats</h3>
@@ -175,38 +204,32 @@ html,body{width:100%;height:100%;overflow:hidden;background:#0f0c29;font-family:
   </div>
 </div>
 
-<!-- START SCREEN -->
 <div id="startScreen">
   <h1>🍉<br>Fruit Slice</h1>
-  <p>Fruits slice karo!<br>💣 Bombs se bacho!<br>🏛️ Story Mainnet pe register karo!</p>
+  <p>Slice the fruits!<br>💣 Avoid the bombs!<br>🏛️ Register your score on-chain!</p>
   <button id="startBtn" onclick="startGame()">▶ Play Now</button>
-  <p style="font-size:11px;opacity:0.35;margin-top:4px;">Powered by Story Protocol Mainnet</p>
+  <div class="chainBadge">⛓️ Story Protocol Mainnet</div>
+  <p style="font-size:10px;opacity:0.3;">Gas fee ~0.0001 IP per game</p>
 </div>
 
 <script>
-// ═══════════════════════════════
-//  CANVAS
-// ═══════════════════════════════
-const canvas = document.getElementById('gameCanvas');
-const ctx    = canvas.getContext('2d');
-function resize(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
+const canvas=document.getElementById('gameCanvas');
+const ctx=canvas.getContext('2d');
+function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
 resize();
 window.addEventListener('resize',resize);
 
-// ═══════════════════════════════
-//  STORAGE
-// ═══════════════════════════════
-function getProfile(){
-  try{ return JSON.parse(localStorage.getItem('fsProfile')||'{}'); }catch(e){ return {}; }
-}
-function saveProfile(p){ localStorage.setItem('fsProfile',JSON.stringify(p)); }
+function getProfile(){try{return JSON.parse(localStorage.getItem('fsProfile')||'{}');}catch(e){return {};}}
+function saveProfile(p){localStorage.setItem('fsProfile',JSON.stringify(p));}
+function getNick(){return getProfile().nickname||'';}
+function saveNick(n){const p=getProfile();p.nickname=n;saveProfile(p);}
 
 function recordGame(sc,fr,txHash){
   const p=getProfile();
-  if(!p.games) p.games=[];
-  if(!p.totalFruits) p.totalFruits=0;
+  if(!p.games)p.games=[];
+  if(!p.totalFruits)p.totalFruits=0;
   p.games.unshift({score:sc,fruits:fr,ts:Date.now(),tx:txHash||null});
-  if(p.games.length>100) p.games=p.games.slice(0,100);
+  if(p.games.length>100)p.games=p.games.slice(0,100);
   p.totalFruits=(p.totalFruits||0)+fr;
   p.best=Math.max(p.best||0,sc);
   saveProfile(p);
@@ -214,26 +237,40 @@ function recordGame(sc,fr,txHash){
 
 function updateGameTx(txHash){
   const p=getProfile();
-  if(p.games&&p.games.length>0&&!p.games[0].tx){
-    p.games[0].tx=txHash;
-    saveProfile(p);
-  }
+  if(p.games&&p.games.length>0&&!p.games[0].tx){p.games[0].tx=txHash;saveProfile(p);}
 }
 
 function clearData(){
-  if(!confirm('Sab data delete karna chahte ho?')) return;
+  if(!confirm('Delete all your data?'))return;
   localStorage.removeItem('fsProfile');
   localStorage.removeItem('fsb');
   best=0;
   document.getElementById('bestD').textContent='0';
-  renderProfile();
-  renderLB('all');
-  toast('🗑️ Data cleared!');
+  renderProfile();renderLB('all');
+  toast('🗑️ All data cleared!');
 }
 
-// ═══════════════════════════════
-//  FRUIT DEFS
-// ═══════════════════════════════
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();deferredPrompt=e;
+  if(!localStorage.getItem('installDismissed')){
+    setTimeout(()=>document.getElementById('installBanner').style.display='flex',3000);
+  }
+});
+function installApp(){
+  if(deferredPrompt){
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(()=>{deferredPrompt=null;dismissInstall();});
+  }else{
+    toast('📱 iPhone: Tap Share → "Add to Home Screen"!');
+    dismissInstall();
+  }
+}
+function dismissInstall(){
+  document.getElementById('installBanner').style.display='none';
+  localStorage.setItem('installDismissed','1');
+}
+
 const FD=[
   {body:'#e63946',shine:'#ff8c94',inner:'#c1121f'},
   {body:'#f4a261',shine:'#ffd97d',inner:'#e76f51'},
@@ -247,94 +284,78 @@ const FD=[
   {body:'#4cc9f0',shine:'#ade8f4',inner:'#0096c7'},
 ];
 
-// ═══════════════════════════════
-//  STATE
-// ═══════════════════════════════
 let score=0,lives=3,running=false;
 let fruits=[],parts=[],trail=[],floats=[];
-let spawnT=0,spawnI=75,fid=null;
-let fruitsSliced=0;
+let spawnT=0,spawnI=75,fid=null,fruitsSliced=0;
 let best=parseInt(localStorage.getItem('fsb')||'0');
 document.getElementById('bestD').textContent=best;
 
-// ═══════════════════════════════
-//  FRUIT CLASS
-// ═══════════════════════════════
 class Fruit{
   constructor(){
     const W=canvas.width,H=canvas.height;
-    this.x=Math.random()*(W-120)+60;
-    this.y=H+60;
-    this.vx=(Math.random()-0.5)*6;
-    this.vy=-(Math.random()*13+12);
-    this.g=0.32;
-    this.r=26+Math.random()*10;
-    this.rot=0; this.rs=(Math.random()-0.5)*0.14;
-    this.sliced=false; this.missed=false;
-    this.alpha=1; this.sOff=0;
+    this.x=Math.random()*(W-120)+60;this.y=H+60;
+    this.vx=(Math.random()-0.5)*6;this.vy=-(Math.random()*13+12);
+    this.g=0.32;this.r=26+Math.random()*10;
+    this.rot=0;this.rs=(Math.random()-0.5)*0.14;
+    this.sliced=false;this.missed=false;this.alpha=1;this.sOff=0;
     this.bomb=Math.random()<0.11;
     this.d=FD[Math.floor(Math.random()*FD.length)];
   }
   update(){
-    this.vy+=this.g; this.x+=this.vx; this.y+=this.vy; this.rot+=this.rs;
-    if(this.sliced){this.alpha-=0.055; this.sOff+=3.5;}
+    this.vy+=this.g;this.x+=this.vx;this.y+=this.vy;this.rot+=this.rs;
+    if(this.sliced){this.alpha-=0.055;this.sOff+=3.5;}
   }
   draw(){
     if(this.alpha<=0)return;
-    ctx.save();
-    ctx.globalAlpha=Math.max(0,this.alpha);
-    ctx.translate(this.x,this.y);
-    ctx.rotate(this.rot);
+    ctx.save();ctx.globalAlpha=Math.max(0,this.alpha);
+    ctx.translate(this.x,this.y);ctx.rotate(this.rot);
     this.bomb?this._bomb():this.sliced?this._sliced():this._whole();
     ctx.restore();
   }
   _whole(){
     const r=this.r,d=this.d;
-    ctx.shadowColor='rgba(0,0,0,0.5)'; ctx.shadowBlur=10;
-    ctx.beginPath(); ctx.arc(0,0,r,0,Math.PI*2);
+    ctx.shadowColor='rgba(0,0,0,0.5)';ctx.shadowBlur=10;
+    ctx.beginPath();ctx.arc(0,0,r,0,Math.PI*2);
     const g=ctx.createRadialGradient(-r*.3,-r*.3,r*.05,0,0,r);
-    g.addColorStop(0,d.shine); g.addColorStop(.6,d.body); g.addColorStop(1,d.inner);
-    ctx.fillStyle=g; ctx.fill(); ctx.shadowBlur=0;
-    ctx.beginPath(); ctx.moveTo(0,-r); ctx.lineTo(3,-r-9);
-    ctx.strokeStyle='#5c3d11'; ctx.lineWidth=2.5; ctx.stroke();
-    ctx.beginPath(); ctx.ellipse(5,-r-6,5,8,.5,0,Math.PI*2);
-    ctx.fillStyle='#2dc653'; ctx.fill();
-    ctx.beginPath(); ctx.arc(-r*.3,-r*.3,r*.18,0,Math.PI*2);
-    ctx.fillStyle='rgba(255,255,255,0.38)'; ctx.fill();
+    g.addColorStop(0,d.shine);g.addColorStop(.6,d.body);g.addColorStop(1,d.inner);
+    ctx.fillStyle=g;ctx.fill();ctx.shadowBlur=0;
+    ctx.beginPath();ctx.moveTo(0,-r);ctx.lineTo(3,-r-9);
+    ctx.strokeStyle='#5c3d11';ctx.lineWidth=2.5;ctx.stroke();
+    ctx.beginPath();ctx.ellipse(5,-r-6,5,8,.5,0,Math.PI*2);
+    ctx.fillStyle='#2dc653';ctx.fill();
+    ctx.beginPath();ctx.arc(-r*.3,-r*.3,r*.18,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,255,255,0.38)';ctx.fill();
   }
   _sliced(){
     const r=this.r,d=this.d,o=this.sOff;
-    ctx.save(); ctx.translate(-o*.7,-o*.25);
-    ctx.beginPath(); ctx.arc(0,0,r,Math.PI*.5,Math.PI*1.5);
+    ctx.save();ctx.translate(-o*.7,-o*.25);
+    ctx.beginPath();ctx.arc(0,0,r,Math.PI*.5,Math.PI*1.5);
     const g1=ctx.createRadialGradient(0,0,1,0,0,r);
-    g1.addColorStop(0,'rgba(255,255,255,0.6)'); g1.addColorStop(.3,d.shine); g1.addColorStop(1,d.body);
-    ctx.fillStyle=g1; ctx.fill(); ctx.restore();
-    ctx.save(); ctx.translate(o*.7,o*.25);
-    ctx.beginPath(); ctx.arc(0,0,r,-Math.PI*.5,Math.PI*.5);
-    ctx.fillStyle=d.body; ctx.fill(); ctx.restore();
+    g1.addColorStop(0,'rgba(255,255,255,0.6)');g1.addColorStop(.3,d.shine);g1.addColorStop(1,d.body);
+    ctx.fillStyle=g1;ctx.fill();ctx.restore();
+    ctx.save();ctx.translate(o*.7,o*.25);
+    ctx.beginPath();ctx.arc(0,0,r,-Math.PI*.5,Math.PI*.5);
+    ctx.fillStyle=d.body;ctx.fill();ctx.restore();
   }
   _bomb(){
     const r=this.r;
-    ctx.shadowColor='rgba(255,80,0,0.7)'; ctx.shadowBlur=14;
-    ctx.beginPath(); ctx.arc(0,0,r,0,Math.PI*2);
+    ctx.shadowColor='rgba(255,80,0,0.7)';ctx.shadowBlur=14;
+    ctx.beginPath();ctx.arc(0,0,r,0,Math.PI*2);
     const g=ctx.createRadialGradient(-r*.3,-r*.3,2,0,0,r);
-    g.addColorStop(0,'#555'); g.addColorStop(1,'#111');
-    ctx.fillStyle=g; ctx.fill(); ctx.shadowBlur=0;
-    ctx.beginPath(); ctx.moveTo(r*.25,-r);
+    g.addColorStop(0,'#555');g.addColorStop(1,'#111');
+    ctx.fillStyle=g;ctx.fill();ctx.shadowBlur=0;
+    ctx.beginPath();ctx.moveTo(r*.25,-r);
     ctx.bezierCurveTo(r*.8,-r*1.5,r*.4,-r*1.9,r*.05,-r*1.55);
-    ctx.strokeStyle='#bbb'; ctx.lineWidth=2.5; ctx.stroke();
-    ctx.beginPath(); ctx.arc(r*.05,-r*1.55,4,0,Math.PI*2);
-    ctx.fillStyle='#ffd93d'; ctx.fill();
-    ctx.beginPath(); ctx.arc(-r*.28,-r*.28,r*.15,0,Math.PI*2);
-    ctx.fillStyle='rgba(255,255,255,0.22)'; ctx.fill();
+    ctx.strokeStyle='#bbb';ctx.lineWidth=2.5;ctx.stroke();
+    ctx.beginPath();ctx.arc(r*.05,-r*1.55,4,0,Math.PI*2);
+    ctx.fillStyle='#ffd93d';ctx.fill();
+    ctx.beginPath();ctx.arc(-r*.28,-r*.28,r*.15,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,255,255,0.22)';ctx.fill();
   }
   dead(){return this.y>canvas.height+100||this.alpha<=0;}
   hit(x,y){return !this.sliced&&Math.abs(this.x-x)<this.r*1.5&&Math.abs(this.y-y)<this.r*1.5;}
 }
 
-// ═══════════════════════════════
-//  PARTICLE
-// ═══════════════════════════════
 class Part{
   constructor(x,y,c){this.x=x;this.y=y;this.vx=(Math.random()-.5)*11;this.vy=(Math.random()-.5)*11;this.life=1;this.c=c;this.r=Math.random()*6+2;}
   update(){this.x+=this.vx;this.y+=this.vy;this.vy+=.3;this.life-=.04;}
@@ -342,9 +363,6 @@ class Part{
 }
 const PC=['#ff6b6b','#ffd93d','#6bcb77','#4d96ff','#f093fb','#ff9a3c','#fff','#4cc9f0'];
 
-// ═══════════════════════════════
-//  TRAIL
-// ═══════════════════════════════
 function addTrail(x,y){trail.push({x,y,l:1});if(trail.length>22)trail.shift();}
 function drawTrail(){
   if(trail.length<2)return;
@@ -356,9 +374,6 @@ function drawTrail(){
   trail.forEach(p=>p.l-=.07);trail=trail.filter(p=>p.l>0);
 }
 
-// ═══════════════════════════════
-//  FLOAT TEXT
-// ═══════════════════════════════
 function floatTxt(x,y,t,c='#ffd700'){floats.push({x,y,t,c,l:1,vy:-2.2});}
 function drawFloats(){
   floats.forEach(f=>{
@@ -369,9 +384,6 @@ function drawFloats(){
   floats=floats.filter(f=>f.l>0);
 }
 
-// ═══════════════════════════════
-//  SLICE
-// ═══════════════════════════════
 function checkSlice(x,y){
   fruits.forEach(f=>{
     if(!f.hit(x,y))return;
@@ -391,20 +403,15 @@ function checkSlice(x,y){
 }
 
 function updateLives(){
-  const h=[];
-  for(let i=0;i<3;i++) h.push(i<lives?'❤️':'🖤');
+  const h=[];for(let i=0;i<3;i++)h.push(i<lives?'❤️':'🖤');
   document.getElementById('livesD').innerHTML=h.join('');
 }
-
 function shakeScreen(){
   document.body.style.transform='translate(9px,0)';
   setTimeout(()=>document.body.style.transform='translate(-9px,0)',70);
   setTimeout(()=>document.body.style.transform='none',140);
 }
 
-// ═══════════════════════════════
-//  BACKGROUND
-// ═══════════════════════════════
 function drawBg(){
   const g=ctx.createLinearGradient(0,0,0,canvas.height);
   g.addColorStop(0,'#0f0c29');g.addColorStop(.5,'#302b63');g.addColorStop(1,'#24243e');
@@ -413,17 +420,11 @@ function drawBg(){
   for(let x=0;x<canvas.width;x+=60){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,canvas.height);ctx.stroke();}
 }
 
-// ═══════════════════════════════
-//  GAME LOOP
-// ═══════════════════════════════
 function loop(){
   if(!running)return;
   drawBg();
   spawnT++;
-  if(spawnT>=spawnI){
-    fruits.push(new Fruit());spawnT=0;
-    spawnI=Math.max(28,75-Math.floor(score/20)*5);
-  }
+  if(spawnT>=spawnI){fruits.push(new Fruit());spawnT=0;spawnI=Math.max(28,75-Math.floor(score/20)*5);}
   fruits.forEach(f=>{f.update();f.draw();});
   fruits.forEach(f=>{
     if(!f.sliced&&!f.bomb&&!f.missed&&f.y>canvas.height+65){
@@ -438,15 +439,11 @@ function loop(){
   fid=requestAnimationFrame(loop);
 }
 
-// ═══════════════════════════════
-//  GAME CONTROLS
-// ═══════════════════════════════
 function startGame(){
   document.getElementById('startScreen').style.display='none';
-  score=0;lives=3;fruitsSliced=0;
-  fruits=[];parts=[];trail=[];floats=[];
-  spawnT=0;spawnI=75;
-  document.getElementById('scoreD').textContent='0';
+  score=0;lives=3;fruitsSliced=0;fruits=[];parts=[];trail=[];floats=[];
+  spawnT=0;spawnI=75;document.getElementById('scoreD').textContent='0';
+  document.getElementById('txResult').innerHTML='';
   updateLives();running=true;loop();
 }
 
@@ -456,24 +453,22 @@ function endGame(){
   if(score>best){best=score;localStorage.setItem('fsb',best);document.getElementById('bestD').textContent=best;isNew=true;}
   recordGame(score,fruitsSliced,null);
   document.getElementById('finalScore').textContent=`Score: ${score} 🏆`;
-  document.getElementById('newRec').textContent=isNew?'🌟 New Best!':'';
+  document.getElementById('newRec').textContent=isNew?'🌟 New Best Score!':'';
   document.getElementById('regBtn').textContent='🏛️ Register on Story Mainnet';
   document.getElementById('regBtn').disabled=false;
+  document.getElementById('regBtn').style.background='linear-gradient(135deg,#f093fb,#f5576c)';
   document.getElementById('overlay').style.display='flex';
 }
 
 function restartGame(){
-  score=0;lives=3;fruitsSliced=0;
-  fruits=[];parts=[];trail=[];floats=[];
+  score=0;lives=3;fruitsSliced=0;fruits=[];parts=[];trail=[];floats=[];
   spawnT=0;spawnI=75;running=true;
   document.getElementById('scoreD').textContent='0';
   document.getElementById('overlay').style.display='none';
+  document.getElementById('txResult').innerHTML='';
   updateLives();loop();
 }
 
-// ═══════════════════════════════
-//  TOUCH / MOUSE
-// ═══════════════════════════════
 let slicing=false;
 function pos(e){
   const r=canvas.getBoundingClientRect();
@@ -488,13 +483,9 @@ canvas.addEventListener('touchstart',e=>{e.preventDefault();slicing=true;},{pass
 canvas.addEventListener('touchend',e=>{e.preventDefault();slicing=false;trail=[];},{passive:false});
 canvas.addEventListener('touchmove',e=>{e.preventDefault();if(!running)return;const p=pos(e);addTrail(p.x,p.y);checkSlice(p.x,p.y);},{passive:false});
 
-// ═══════════════════════════════
-//  LEADERBOARD
-// ═══════════════════════════════
 let lbTab='all';
 function openLB(){renderLB(lbTab);document.getElementById('lbPanel').style.display='flex';}
 function closeLB(){document.getElementById('lbPanel').style.display='none';}
-
 function switchTab(t){
   lbTab=t;
   document.querySelectorAll('.lbTab').forEach(el=>el.classList.remove('active'));
@@ -505,6 +496,8 @@ function switchTab(t){
 function renderLB(tab){
   const p=getProfile();
   const games=p.games||[];
+  const wShort=walletAddr?walletAddr.slice(0,6)+'...'+walletAddr.slice(-4):'Player';
+  const displayName=p.nickname||wShort;
   const sorted=[...games].sort((a,b)=>b.score-a.score);
   sorted.forEach((e,i)=>e._rank=i+1);
 
@@ -513,51 +506,44 @@ function renderLB(tab){
   if(myBest){
     myRankCard.style.display='block';
     document.getElementById('myRankNum').textContent='#'+myBest._rank;
-    document.getElementById('myRankSub').textContent=`Best: ${myBest.score} pts • ${games.length} games played`;
-  } else {
+    document.getElementById('myRankSub').textContent=`Best: ${myBest.score} pts  •  ${games.length} games  •  ${games.filter(g=>g.tx).length} on-chain`;
+  }else{
     myRankCard.style.display='none';
   }
 
-  let filtered;
-  if(tab==='verified') filtered=sorted.filter(e=>e.tx);
-  else if(tab==='mine') filtered=sorted;
-  else filtered=sorted;
-
+  let filtered=tab==='verified'?sorted.filter(e=>e.tx):sorted;
   const list=document.getElementById('lbList');
+
   if(!filtered.length){
-    list.innerHTML=`<div class="noData">${tab==='verified'?'Koi verified score nahi — Story pe register karo!':'Abhi koi game nahi khela'}</div>`;
+    list.innerHTML=`<div class="noData">${tab==='verified'?'No verified scores yet.<br>Play a game and register on Story! 🏛️':'No games played yet'}</div>`;
     return;
   }
 
   const medals=['🥇','🥈','🥉'];
   const rankCls=['top1','top2','top3'];
-  const name=walletAddr?walletAddr.slice(0,6)+'...'+walletAddr.slice(-4):'You';
 
   list.innerHTML=filtered.map((e,i)=>{
-    const medal=i<3?medals[i]:`#${e._rank}`;
+    const medal=i<3?medals[i]:`<span style="font-size:14px;font-weight:700;opacity:0.7;">#${e._rank}</span>`;
     const cls=i<3?rankCls[i]:'';
     const d=new Date(e.ts);
     const ds=`${d.getDate()}/${d.getMonth()+1} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`;
     const txBadge=e.tx
-      ?`<span style="font-size:10px;color:#43e97b;cursor:pointer;" onclick="window.open('https://storyscan.xyz/tx/${e.tx}','_blank')">✅ On-Chain</span>`
-      :'<span style="font-size:10px;opacity:0.3;">Unverified</span>';
+      ?`<span style="color:#43e97b;cursor:pointer;" onclick="window.open('https://storyscan.xyz/tx/${e.tx}','_blank')">✅ On-Chain</span>`
+      :'<span style="opacity:0.3;">Unverified</span>';
     return `<div class="lbRow mine ${cls}">
       <div class="lbRank">${medal}</div>
       <div class="lbInfo">
-        <div class="lbName">${name} <span style="font-size:10px;background:rgba(240,147,251,0.3);padding:2px 6px;border-radius:10px;">YOU</span></div>
+        <div class="lbName">${displayName}<span style="font-size:10px;background:rgba(240,147,251,0.3);padding:2px 7px;border-radius:10px;">YOU</span></div>
         <div class="lbSub">${ds} • ${txBadge}</div>
       </div>
       <div class="lbScore">
         <div class="lbPts">${e.score}</div>
-        <div class="lbFruits">🍉 ${e.fruits||0}</div>
+        <div class="lbFruits">🍉${e.fruits||0}</div>
       </div>
     </div>`;
   }).join('');
 }
 
-// ═══════════════════════════════
-//  PROFILE
-// ═══════════════════════════════
 function openProfile(){renderProfile();document.getElementById('profilePanel').style.display='flex';}
 function closeProfile(){document.getElementById('profilePanel').style.display='none';}
 
@@ -572,11 +558,20 @@ function renderProfile(){
   document.getElementById('pFruits').textContent=p.totalFruits||0;
   document.getElementById('pAvg').textContent=avg;
 
+  const nDiv=document.getElementById('pNickSection');
+  const curNick=p.nickname||'';
+  nDiv.innerHTML=`
+    <p style="font-size:12px;opacity:0.6;margin-bottom:6px;">Your name shown on the leaderboard</p>
+    <div class="nickRow">
+      <input class="nickInput" id="nickInput" placeholder="Enter your name..." value="${curNick}" maxlength="20">
+      <button class="nickSave" onclick="saveNickname()">Save</button>
+    </div>`;
+
   const wDiv=document.getElementById('pWallet');
   if(walletAddr){
     wDiv.innerHTML=`<p style="font-size:13px;color:#43e97b;font-weight:700;">✅ Story Mainnet Connected</p><div class="walletBox">${walletAddr}</div>`;
-  } else {
-    wDiv.innerHTML=`<p style="opacity:0.5;font-size:13px;margin-bottom:8px;">Wallet connect nahi hai</p><button class="btnM" style="background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;max-width:180px;padding:10px;" onclick="connectWallet()">Connect Wallet</button>`;
+  }else{
+    wDiv.innerHTML=`<p style="opacity:0.5;font-size:13px;margin-bottom:8px;">No wallet connected</p><button class="btnM" style="background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;max-width:180px;padding:10px;" onclick="connectWallet()">Connect Wallet</button>`;
   }
 
   const badges=[];
@@ -589,14 +584,14 @@ function renderProfile(){
   if((p.best||0)>=100)    badges.push('👑 Score 100+');
   if((p.totalFruits||0)>=50)  badges.push('🍉 50 Fruits');
   if((p.totalFruits||0)>=200) badges.push('🍇 200 Fruits');
-  if(games.some(g=>g.tx)) badges.push('🏛 On-Chain Player');
-
+  if(games.some(g=>g.tx)) badges.push('🏛️ On-Chain Player');
+  if(p.nickname)          badges.push('🏷️ Named Player');
   document.getElementById('pBadges').innerHTML=badges.length
     ?badges.map(b=>`<span class="badge">${b}</span>`).join('')
-    :'<p class="noData">Khelo aur badges kamao!</p>';
+    :'<p class="noData">Play games to earn badges!</p>';
 
   const hDiv=document.getElementById('pHistory');
-  if(!games.length){hDiv.innerHTML='<p class="noData">Abhi koi game nahi khela</p>';return;}
+  if(!games.length){hDiv.innerHTML='<p class="noData">No games played yet</p>';return;}
   hDiv.innerHTML=games.slice(0,15).map((g,i)=>{
     const d=new Date(g.ts);
     const ds=`${d.getDate()}/${d.getMonth()+1} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`;
@@ -607,17 +602,20 @@ function renderProfile(){
       <span style="opacity:0.4;font-size:11px;">#${i+1}</span>
       <span class="histScore">${g.score} pts</span>
       <span style="font-size:11px;opacity:0.55;">🍉${g.fruits||0}</span>
-      <span class="histDate">${ds}</span>
-      ${txEl}
+      <span class="histDate">${ds}</span>${txEl}
     </div>`;
   }).join('');
 }
 
-// ═══════════════════════════════
-//  WALLET — STORY MAINNET
-// ═══════════════════════════════
-let provider,signer,walletAddr;
+function saveNickname(){
+  const v=document.getElementById('nickInput').value.trim();
+  if(!v){toast('❌ Name cannot be empty!',true);return;}
+  saveNick(v);
+  toast('✅ Nickname saved: "'+v+'"');
+  renderProfile();
+}
 
+let provider,signer,walletAddr;
 const CHAIN={
   chainId:'0x5EA',
   chainName:'Story Mainnet',
@@ -634,21 +632,18 @@ function openMM(){
 async function connectWallet(){
   if(!window.ethereum){
     if(/iPhone|iPad|Android/i.test(navigator.userAgent)){
-      toast('📱 MetaMask app ke Browser tab se kholna!',true);
+      toast('📱 Open this page in MetaMask app Browser tab!',true);
       document.getElementById('mmBtn').style.display='block';
     }else{
-      toast('⚠️ MetaMask extension install karo',true);
+      toast('⚠️ Please install MetaMask extension',true);
     }
     return;
   }
   try{
     provider=new ethers.providers.Web3Provider(window.ethereum,'any');
     await provider.send('eth_requestAccounts',[]);
-    try{
-      await window.ethereum.request({method:'wallet_addEthereumChain',params:[CHAIN]});
-    }catch(e){
-      try{await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:CHAIN.chainId}]});}catch(e2){}
-    }
+    try{await window.ethereum.request({method:'wallet_addEthereumChain',params:[CHAIN]});}
+    catch(e){try{await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:CHAIN.chainId}]});}catch(e2){}}
     provider=new ethers.providers.Web3Provider(window.ethereum,'any');
     signer=provider.getSigner();
     walletAddr=await signer.getAddress();
@@ -658,82 +653,61 @@ async function connectWallet(){
     btn.style.background='linear-gradient(135deg,#43e97b,#38f9d7)';
     toast('✅ Story Mainnet connected! 🎮');
   }catch(e){
-    toast('❌ '+e.message.slice(0,80),true);
+    toast('❌ '+(e.message||'Connection failed').slice(0,80),true);
   }
 }
 
-// ═══════════════════════════════
-//  CONFIRM MODAL
-// ═══════════════════════════════
 async function showConfirm(){
-  if(!signer){toast('⚠️ Pehle wallet connect karo!',true);return;}
-
-  // Balance check
+  if(!signer){toast('⚠️ Please connect your wallet first!',true);return;}
   try{
     const bal=await provider.getBalance(walletAddr);
     const balIP=parseFloat(ethers.utils.formatEther(bal));
-
     if(balIP<0.0001){
-      toast(`❌ IP tokens nahi hain! Balance: ${balIP.toFixed(6)} IP — Thoda IP chahiye gas ke liye`,true);
+      toast(`❌ IP balance too low! ${balIP.toFixed(6)} IP — Add more IP tokens for gas`,true);
       return;
     }
-
-    // Gas estimate
-    let gasEst='~0.000021 IP';
+    let gasEst='~0.000093 IP';
     try{
-      const gasPrice=await provider.getGasPrice();
-      const lowGas=gasPrice.mul(90).div(100);
-      const totalGas=lowGas.mul(60000);
-      const gasIP=parseFloat(ethers.utils.formatEther(totalGas));
-      gasEst=`~${gasIP.toFixed(6)} IP`;
+      const gp=await provider.getGasPrice();
+      const lg=gp.mul(90).div(100);
+      gasEst='~'+parseFloat(ethers.utils.formatEther(lg.mul(60000))).toFixed(6)+' IP';
     }catch(e){}
-
+    const p=getProfile();
     document.getElementById('cScore').textContent=score+' pts';
     document.getElementById('cFruits').textContent=fruitsSliced+' 🍉';
-    document.getElementById('cWallet').textContent=walletAddr.slice(0,8)+'...';
+    document.getElementById('cNick').textContent=p.nickname||'—';
+    document.getElementById('cWallet').textContent=walletAddr.slice(0,10)+'...'+walletAddr.slice(-4);
     document.getElementById('cBalance').textContent=balIP.toFixed(5)+' IP';
     document.getElementById('cGasFee').textContent=gasEst;
     document.getElementById('confirmModal').style.display='flex';
   }catch(e){
-    toast('❌ Balance check fail: '+e.message.slice(0,60),true);
+    toast('❌ Balance check failed: '+(e.message||'').slice(0,60),true);
   }
 }
-
 function closeConfirm(){document.getElementById('confirmModal').style.display='none';}
 
-// ═══════════════════════════════
-//  REGISTER — STORY MAINNET
-// ═══════════════════════════════
 async function registerStory(){
   closeConfirm();
-  if(!signer){toast('⚠️ Pehle wallet connect karo!',true);return;}
+  if(!signer){toast('⚠️ Please connect your wallet first!',true);return;}
   const btn=document.getElementById('regBtn');
-  btn.textContent='⏳ MetaMask approve karo...';
+  btn.textContent='⏳ Approve in MetaMask...';
   btn.disabled=true;
-
   try{
-    // Fresh provider after any network switch
     const fp=new ethers.providers.Web3Provider(window.ethereum,'any');
     const fs=fp.getSigner();
-
-    // Network verify
     const network=await fp.getNetwork();
     if(network.chainId!==1514){
-      try{
-        await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:'0x5EA'}]});
-      }catch(e){
-        await window.ethereum.request({method:'wallet_addEthereumChain',params:[CHAIN]});
-      }
-      toast('🔄 Network switch hua — dobara Register dabao',true);
-      btn.disabled=false;
-      btn.textContent='🏛️ Register on Story Mainnet';
+      try{await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:'0x5EA'}]});}
+      catch(e){await window.ethereum.request({method:'wallet_addEthereumChain',params:[CHAIN]});}
+      toast('🔄 Network switched — please press Register again',true);
+      btn.disabled=false;btn.textContent='🏛️ Register on Story Mainnet';
       return;
     }
-
-    const ipData=`STORY_IP|game=FruitSlice|score=${score}|fruits=${fruitsSliced}|player=${walletAddr}|ts=${Date.now()}`;
-    const gasPrice=await fp.getGasPrice();
-    const lowGas=gasPrice.mul(90).div(100);
-
+    const p=getProfile();
+    const nick=p.nickname||'anonymous';
+    const ipData=`STORY|game=FruitSlice|score=${score}|fruits=${fruitsSliced}|player=${nick}|wallet=${walletAddr}|ts=${Date.now()}`;
+    const gp=await fp.getGasPrice();
+    const lowGas=gp.mul(90).div(100);
     const tx=await fs.sendTransaction({
       to:walletAddr,
       value:ethers.utils.parseEther('0'),
@@ -741,32 +715,27 @@ async function registerStory(){
       gasPrice:lowGas,
       gasLimit:60000
     });
-
-    btn.textContent='⏳ Blockchain confirm ho raha...';
-    toast('⏳ TX bheja! Confirm hone do...');
-
-    const receipt=await tx.wait(1);
-
-    // Update global provider
-    provider=fp; signer=fs;
-
-    // Save TX to profile
+    btn.textContent='⏳ Confirming on chain...';
+    toast('⏳ Transaction sent! Waiting for confirmation...');
+    await tx.wait(1);
+    provider=fp;signer=fs;
     updateGameTx(tx.hash);
-
-    btn.textContent=`✅ On-Chain! Score: ${score}`;
-    toast(`🎉 Story Mainnet pe registered! TX: ${tx.hash.slice(0,14)}...`);
-    setTimeout(()=>window.open(`https://storyscan.xyz/tx/${tx.hash}`,'_blank'),1500);
-
+    document.getElementById('txResult').innerHTML=`
+      <div class="txSuccess">
+        <p>🎉 <strong>On-Chain Registered!</strong></p>
+        <span class="txLink" onclick="window.open('https://storyscan.xyz/tx/${tx.hash}','_blank')">
+          🔗 ${tx.hash.slice(0,20)}...${tx.hash.slice(-6)}<br>View on StoryScan ↗
+        </span>
+      </div>`;
+    btn.textContent='✅ Registered on Story Mainnet!';
+    btn.style.background='linear-gradient(135deg,#43e97b,#38f9d7)';
+    toast('🎉 Score permanently stored on blockchain!');
   }catch(e){
     btn.disabled=false;
     btn.textContent='🏛️ Register on Story Mainnet';
-    if(e.code===4001){
-      toast('❌ MetaMask mein Cancel kiya',true);
-    }else if(e.message&&e.message.toLowerCase().includes('insufficient')){
-      toast('❌ IP tokens kam hain! Wallet mein IP add karo',true);
-    }else{
-      toast('❌ '+(e.message||'Unknown error').slice(0,80),true);
-    }
+    if(e.code===4001){toast('❌ Cancelled in MetaMask',true);}
+    else if(e.message&&e.message.toLowerCase().includes('insufficient')){toast('❌ Insufficient IP tokens! Please add more IP',true);}
+    else{toast('❌ '+(e.message||'Unknown error').slice(0,80),true);}
   }
 }
 
@@ -778,7 +747,6 @@ function toast(msg,err=false){
   clearTimeout(el._t);el._t=setTimeout(()=>el.style.display='none',5500);
 }
 
-// Init
 updateLives();
 </script>
 </body>
