@@ -1,0 +1,22 @@
+{
+  "name": "Fruit Slice × Story Protocol",
+  "short_name": "FruitSlice",
+  "description": "Slice fruits & register scores on Story Mainnet!",
+  "start_url": "/fruit-slice-story/",
+  "display": "standalone",
+  "background_color": "#0f0c29",
+  "theme_color": "#f093fb",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f349.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "https://raw.githubusercontent.com/twitter/twemoji/master/assets/72x72/1f349.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
